@@ -51,6 +51,7 @@ const RegisterPage = () => {
         await doCreateUserWithEmailAndPassword(
           email.value,
           passwordOne.value,
+          displayName.value
         );
       } catch (error) {
         alert(error);
@@ -82,7 +83,18 @@ const RegisterPage = () => {
           </Box>
           <div>
             <form onSubmit={handleSignUp}>
-
+            <div className='form-group'>
+              <label>
+                Display Name:
+                <input
+                  className='form-control'
+                  required
+                  name='displayName'
+                  type='text'
+                  placeholder='enter display name'
+                />
+              </label>
+            </div>
               <div className='form-group'>
                 <label>
                   Email:
