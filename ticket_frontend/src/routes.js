@@ -13,6 +13,8 @@ import NotFound from './pages/Page404';
 import Admin from './pages/Admin';
 import Client from './pages/Client';
 import Staff from './pages/Staff';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -28,11 +30,13 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <LogoOnlyLayout />,
+      // element: <LogoOnlyLayout />,
       children: [
         { path: '/', element: <Navigate to="/register" /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
+        { path: 'login-page', element: <LoginPage />},
+        { path: 'register-page', element: <RegisterPage />},
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
