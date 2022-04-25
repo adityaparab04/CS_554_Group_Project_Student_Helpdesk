@@ -42,7 +42,7 @@ const RegisterPage = () => {
     const [pwMatch, setPwMatch] = useState('');
     const handleSignUp = async (e) => {
       e.preventDefault();
-      const {email, passwordOne, passwordTwo} = e.target.elements;
+      const {email, passwordOne, passwordTwo, displayName} = e.target.elements;
       if (passwordOne.value !== passwordTwo.value) {
         setPwMatch('Passwords do not match');
         return false;
