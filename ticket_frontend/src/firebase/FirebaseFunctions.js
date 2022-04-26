@@ -1,15 +1,17 @@
-import firebase from 'firebase/compat/app';
 
-
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,updateProfile  } from "firebase/auth";
+const auth = getAuth();
 async function doCreateUserWithEmailAndPassword(email, password, diplayName){
-    await firebase.auth().createUserWithEmailAndPassword(email, password);
-    firebase.auth().currentUser.updateProfile({displayName: diplayName});
-    console.log("User Created having UID:", firebase.auth().currentUser.uid)
+    
+    await createUserWithEmailAndPassword(auth,email, password);
+    updateProfile(auth.currentUser, {displayName: diplayName});
+    console.log("User Created having UID:", auth.currentUser.uid)
 }
 
 async function doSignInWithEmailAndPassword(email, password) {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
-    console.log("User Signed-In having UID:", firebase.auth().currentUser.uid)
+    
+    await signInWithEmailAndPassword(auth,email, password);
+    console.log("User Signed-In having UID:", auth.currentUser.uid)
 }
 
 export {
