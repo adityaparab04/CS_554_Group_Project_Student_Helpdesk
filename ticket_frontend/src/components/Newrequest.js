@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import PropTypes from 'prop-types';
 import { formatDistance } from 'date-fns';
 import { Link as RouterLink } from 'react-router-dom';
+import * as React from 'react';
 // material
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -16,8 +17,28 @@ import AssignDialog from './AssignDialog';
 
 // ----------------------------------------------------------------------
 
+import firebaseApp from '../firebase/Firebase';
+
 
 export default function NewRequest() {
+  const [title,setTitle] = React.useState('');
+  const [tickettext,setTickettext] = React.useState('');
+  const handleSubmitTicket = () => {
+    firebaseApp.collection("Tickets").add({
+      ClientID: "",
+      StaffID: "",
+      TicketContent: [{author: "username", text: tickettext}],
+      TicketTitle: title,
+      isAssigned: false,
+      isResolved: false,
+  })
+  .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id);
+  })
+  .catch((error) => {
+      console.error("Error adding document: ", error);
+  });
+  }
   return (
     <Card>
       <CardHeader title="Create new ticket" />
@@ -27,6 +48,8 @@ export default function NewRequest() {
             required
             id="title"
             name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             label="Breifly summarize the issue"
             fullWidth
             variant="filled"
@@ -34,7 +57,7 @@ export default function NewRequest() {
         </Grid>
         <Grid item xs={2}>
             <Stack spacing={1}>
-            <Button variant='contained' startIcon={<Iconify icon="mdi:weather-cloudy-arrow-right" />} >Submit</Button>
+            <Button variant='contained' onClick={handleSubmitTicket} startIcon={<Iconify icon="mdi:weather-cloudy-arrow-right" />} >Submit</Button>
             <Button variant='contained' color='warning' startIcon={<Iconify icon="mdi:backspace" />} >Clear</Button>
             </Stack>
             </Grid>
@@ -43,6 +66,8 @@ export default function NewRequest() {
             required
             id="content"
             name="content"
+            value={tickettext}
+            onChange={(e) => setTickettext(e.target.value)}
             label="Enter you problem"
             fullWidth
             multiline

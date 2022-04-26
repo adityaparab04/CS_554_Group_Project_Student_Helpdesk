@@ -55,7 +55,6 @@ function NewsItem({ news }) {
       </Typography>
       <Box sx={{display:'flex', gap: '5%'}}>
       <AssignDialog />
-      <Button variant='contained' color='warning' startIcon={<Iconify icon="mdi:account-cancel-outline" />}>Unassign</Button>
       </Box>
       
     </Stack>

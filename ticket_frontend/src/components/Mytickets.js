@@ -10,6 +10,7 @@ import { mockImgCover } from '../utils/mockImages';
 import Scrollbar from './Scrollbar';
 import Iconify from './Iconify';
 import AssignDialog from './AssignDialog';
+import EditTicket from './EditTicket';
 
 // ----------------------------------------------------------------------
 
@@ -54,8 +55,7 @@ function NewsItem({ news }) {
         {formatDistance(postedAt, new Date())}
       </Typography>
       <Box sx={{display:'flex', gap: '5%'}}>
-      <AssignDialog />
-      <Button variant='contained' color='warning' startIcon={<Iconify icon="mdi:account-cancel-outline" />}>Unassign</Button>
+      <EditTicket />
       </Box>
       
     </Stack>

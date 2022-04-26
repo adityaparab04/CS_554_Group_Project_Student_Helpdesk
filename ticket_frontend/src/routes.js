@@ -23,6 +23,7 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
+
         { path: 'admin', element: <Admin /> },
         { path: 'client', element: <Client /> },
         { path: 'staff', element: <Staff /> },
@@ -32,7 +33,7 @@ export default function Router() {
       path: '/',
       // element: <LogoOnlyLayout />,
       children: [
-        { path: '/', element: <Navigate to="/register" /> },
+        { path: '/', element: <Navigate to="/login" /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: 'login-page', element: <LoginPage />},

@@ -95,6 +95,7 @@ export default function AssignDialog() {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
+      <Button variant='contained' color='warning' startIcon={<Iconify icon="mdi:account-cancel-outline" />}>Unassign</Button>
     </React.Fragment>
   );
 }

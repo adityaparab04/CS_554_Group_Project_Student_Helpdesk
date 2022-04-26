@@ -1,6 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-
+import "firebase/firestore";
 const firebaseApp = firebase.initializeApp({
         apiKey: "AIzaSyAIktrdu4d1hwhuB9WN4DbN6VU2Q0KoxrU",
         authDomain: "ticketing-system-1c19d.firebaseapp.com",
@@ -11,5 +11,4 @@ const firebaseApp = firebase.initializeApp({
         appId: "1:1004522528495:web:0daf45151ff6c59f16451a",
         measurementId: "G-XLGTCN8GK1"
 });
-
 export default firebaseApp;
