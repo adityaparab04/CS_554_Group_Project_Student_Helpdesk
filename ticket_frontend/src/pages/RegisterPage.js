@@ -99,6 +99,7 @@ const RegisterPage = () => {
           values.confirmPassword,
           displayName
         );
+        navigate('/login-page', {replace: true})
       } catch (error) {
         console.log(error);
       }

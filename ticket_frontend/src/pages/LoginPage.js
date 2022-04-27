@@ -69,6 +69,7 @@ const LoginPage = () => {
       e.preventDefault();
       try {
         await doSignInWithEmailAndPassword(values.email, values.password);
+        navigate('/dashboard', { replace: true })
       } catch (error) {
         alert(error);
       }
