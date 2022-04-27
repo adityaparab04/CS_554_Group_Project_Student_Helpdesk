@@ -1,16 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Page from '../components/Page';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+
+import * as Yup from 'yup';
+import { useFormik, Form, FormikProvider } from 'formik';
+
 // material
 import { styled } from '@mui/material/styles';
-import { Card, Stack, Link, Container, Typography } from '@mui/material';
-import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions'
+import { Box, Card, Stack, Link, Container, Typography, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+
+//firebase auth function
+import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 // components
-import { LoginForm } from '../sections/authentication/login';
-import AuthSocial from '../sections/authentication/AuthSocial';
-
+import Iconify from '../components/Iconify';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -39,11 +44,31 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 const LoginPage = () => {
-    const handleLogin = async (event) => {
-      event.preventDefault();
-      let {email, password} = event.target.elements;
+    const navigate = useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+
+    const LoginSchema = Yup.object().shape({
+      email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+      password: Yup.string().required('Password is required')
+    });
+    const formik = useFormik({
+      initialValues: {
+        email: '',
+        password: '',
+        remember: false
+      },
+      validationSchema: LoginSchema,
+    });
+    const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, handleChange } = formik;
+
+    const handleShowPassword = () => {
+      setShowPassword((show) => !show);
+    };
+    
+    const handleLogin = async (e) => {
+      e.preventDefault();
       try {
-        await doSignInWithEmailAndPassword(email.value, password.value);
+        await doSignInWithEmailAndPassword(values.email, values.password);
       } catch (error) {
         alert(error);
       }
@@ -67,38 +92,70 @@ const LoginPage = () => {
           <Container maxWidth="sm">
             <ContentStyle>
               <Stack sx={{ mb: 5 }}>
+              <Box sx={{ mb: 5 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Raise a Ticket
+                  Sign In To Raise a Ticket.
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
-                <form onSubmit={handleLogin}>
-                <div className='form-group'>
-                  <label>
-                    Email:
-                    <input
-                      className='form-control'
-                      name='email'
-                      id='email'
-                      type='email'
-                      placeholder='Email'
-                      required
-                    />
-                  </label>
-                </div>
-                <div className='form-group'>
-                  <label>
-                    Password:
-                    <input
-                      className='form-control'
-                      name='password'
-                      type='password'
-                      placeholder='Password'
-                      required
-                    />
-                  </label>
-                </div>
-                <button type='submit'>Log in</button>
-              </form>
+                <Typography sx={{ color: 'text.secondary' }}>
+                  Enter your details below.
+                </Typography>
+              </Box>
+                <FormikProvider value={formik}>
+                  <Form autoComplete="off" noValidate onSubmit={handleLogin}>
+                    <Stack spacing={3}>
+                      <TextField
+                        fullWidth
+                        autoComplete="username"
+                        type="email"
+                        label="Email address"
+                        {...getFieldProps('email')}
+                        onChange={handleChange}
+                        value={values.email}
+                        error={Boolean(touched.email && errors.email)}
+                        helperText={touched.email && errors.email}
+                      />
+
+                      <TextField
+                        fullWidth
+                        autoComplete="current-password"
+                        type={showPassword ? 'text' : 'password'}
+                        label="Password"
+                        {...getFieldProps('password')}
+                        onChange={handleChange}
+                        value={values.password}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton onClick={handleShowPassword} edge="end">
+                                <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                              </IconButton>
+                            </InputAdornment>
+                          )
+                        }}
+                        error={Boolean(touched.password && errors.password)}
+                        helperText={touched.password && errors.password}
+                      />
+                      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+                        <FormControlLabel
+                          control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
+                          label="Remember me"
+                        />
+                        <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
+                          Forgot password?
+                        </Link>
+                      </Stack>
+                      <LoadingButton
+                        fullWidth
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        loading={isSubmitting}
+                      >
+                        Login
+                      </LoadingButton>
+                    </Stack>
+                  </Form>
+                </FormikProvider>
               </Stack>
             </ContentStyle>
           </Container>
