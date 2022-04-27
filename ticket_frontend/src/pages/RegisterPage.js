@@ -1,13 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { Link as RouterLink, Navigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Typography } from '@mui/material';
+import { Box, Card, Link, Container, Typography, Stack, TextField, IconButton, InputAdornment } from '@mui/material';
+import { LoadingButton, Button } from '@mui/lab';
+//formik
+import * as Yup from 'yup';
+import { useFormik, Form, FormikProvider } from 'formik';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
-import AuthSocial from '../sections/authentication/AuthSocial';
+import Iconify from '../components/Iconify';
 import { AuthContext } from '../firebase/Auth';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 
@@ -38,23 +42,65 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 
 const RegisterPage = () => {
+    const navigate = useNavigate();
     // const { currentUser } = useContext(AuthContext);
     const [pwMatch, setPwMatch] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const RegisterSchema = Yup.object().shape({
+      firstName: Yup.string()
+        .min(2, 'Too Short!')
+        .max(50, 'Too Long!')
+        .required('First name required'),
+      lastName: Yup.string()
+        .min(2, 'Too Short!')
+        .max(50, 'Too Long!')
+        .required('Last name required'),
+      email: Yup.string()
+        .email('Email must be a valid email address')
+        .required('Email is required'),
+      password: Yup.string()
+        .required('Password is required'),
+      confirmPassword: Yup.string()
+        .when("password", {
+          is: val => (val && val.length > 0 ? true : false),
+          then: Yup.string().oneOf(
+            [Yup.ref("password")],
+            "Both password need to be the same"
+          )
+        })
+    });
+
+    const formik = useFormik({
+      initialValues: {
+        firstName:'',
+        lastName:'',
+        email:'',
+        password:'',
+        confirmPassword:''
+      },
+      validationSchema: RegisterSchema,
+    });
+    const { errors, touched, handleSubmit, isSubmitting, getFieldProps, handleChange, values } = formik;
+    
+    // console.log('Form values', values.email);
+
     const handleSignUp = async (e) => {
       e.preventDefault();
-      const {email, passwordOne, passwordTwo, displayName} = e.target.elements;
-      if (passwordOne.value !== passwordTwo.value) {
+      if (values.password !== values.confirmPassword) {
         setPwMatch('Passwords do not match');
         return false;
       }
       try {
+        let displayName = values.firstName + ' ' + values.lastName
         await doCreateUserWithEmailAndPassword(
-          email.value,
-          passwordOne.value,
-          displayName.value
+          values.email,
+          values.confirmPassword,
+          displayName
         );
       } catch (error) {
-        alert(error);
+        console.log(error);
       }
     }
     // if (currentUser) {
@@ -80,67 +126,102 @@ const RegisterPage = () => {
             <Typography variant="h4" gutterBottom>
               Register To Raise a Ticket.
             </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+              Enter your details below.
+            </Typography>
           </Box>
-          <div>
-            <form onSubmit={handleSignUp}>
-            <div className='form-group'>
-              <label>
-                Display Name:
-                <input
-                  className='form-control'
-                  required
-                  name='displayName'
-                  type='text'
-                  placeholder='enter display name'
-                />
-              </label>
-            </div>
-              <div className='form-group'>
-                <label>
-                  Email:
-                  <input
-                    className='form-control'
-                    required
-                    name='email'
+          <FormikProvider value={formik}>
+            <Form autoComplete="off" noValidate onSubmit={handleSignUp}>
+              <Stack spacing={3}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                  <TextField
+                    fullWidth
+                    label="First Name"
+                    {...getFieldProps('firstName')}
+                    id='firstName'
+                    onChange={handleChange}
+                    value={values.firstName}
+                    error={Boolean(touched.firstName && errors.firstName)}
+                    helperText={touched.firstName && errors.firstName}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Last Name"
+                    {...getFieldProps('lastName')}
+                    id='lastName'
+                    onChange={handleChange}
+                    value={values.lastName}
+                    error={Boolean(touched.lastName && errors.lastName)}
+                    helperText={touched.lastName && errors.lastName}
+                  />
+                </Stack>
+                  <TextField
+                    fullWidth
+                    label="Email"
+                    {...getFieldProps('email')}
+                    id='email'
                     type='email'
-                    placeholder='Email'
+                    onChange={handleChange}
+                    value={values.email}
+                    error={Boolean(touched.email && errors.email)}
+                    helperText={touched.email && errors.email}
                   />
-                </label>
-              </div>
-              <div className='form-group'>
-                <label>
-                  Password:
-                  <input
-                    className='form-control'
-                    id='passwordOne'
-                    name='passwordOne'
-                    type='password'
-                    placeholder='Password'
-                    required
+                  <TextField
+                    fullWidth
+                    label="Password"
+                    {...getFieldProps('password')}
+                    id='password'
+                    type={showPassword ? 'text' : 'password'}
+                    onChange={handleChange}
+                    value={values.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                    error={Boolean(touched.password && errors.password)}
+                    helperText={touched.password && errors.password}
                   />
-                </label>
-              </div>
-              <div className='form-group'>
-                <label>
-                  Confirm Password:
-                  <input
-                    className='form-control'
-                    name='passwordTwo'
-                    type='password'
-                    placeholder='Confirm Password'
-                    required
+                  <TextField
+                    fullWidth
+                    label="Confirm Password"
+                    {...getFieldProps('confirmPassword')}
+                    id='confirmPassword'
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    onChange={handleChange}
+                    value={values.confirmPassword}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton edge="end" onClick={() => setShowConfirmPassword((prev) => !prev)}>
+                            <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                    error={Boolean(touched.confirmPassword && errors.confirmPassword)}
+                    helperText={touched.confirmPassword && errors.confirmPassword}
                   />
-                </label>
-              </div>
-              <button id='submitButton' name='submitButton' type='submit'>
-                Sign Up
-              </button>
-            </form>
-          </div>
-          </ContentStyle>
-        </Container>
-      </RootStyle>
-    )
+                  <LoadingButton
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    loading={isSubmitting}
+                  >
+                    Register
+                  </LoadingButton>
+              </Stack>
+            </Form>
+          </FormikProvider>
+        </ContentStyle>
+      </Container>
+    </RootStyle>
+  )
 }
 
 export default RegisterPage;
