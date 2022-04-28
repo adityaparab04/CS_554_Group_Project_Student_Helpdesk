@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography, Stack, TextField, IconButton, InputAdornment } from '@mui/material';
@@ -43,8 +43,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 const RegisterPage = () => {
     const navigate = useNavigate();
-    // const { currentUser } = useContext(AuthContext);
-    const [pwMatch, setPwMatch] = useState('');
+    const { currentUser } = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -60,7 +59,7 @@ const RegisterPage = () => {
       email: Yup.string()
         .email('Email must be a valid email address')
         .required('Email is required'),
-      password: Yup.string()
+      password: Yup.string().min(6, 'Too Short!')
         .required('Password is required'),
       confirmPassword: Yup.string()
         .when("password", {
@@ -89,7 +88,6 @@ const RegisterPage = () => {
     const handleSignUp = async (e) => {
       e.preventDefault();
       if (values.password !== values.confirmPassword) {
-        setPwMatch('Passwords do not match');
         return false;
       }
       try {
@@ -99,19 +97,22 @@ const RegisterPage = () => {
           values.confirmPassword,
           displayName
         );
-        navigate('/login-page', {replace: true})
+        navigate('/login', {replace: true})
       } catch (error) {
         console.log(error);
       }
     }
-    // if (currentUser) {
-    //   return <Navigate to='/dashboard' />;
-    // }
+
+    if (currentUser) {
+      console.log(currentUser);
+      return <Navigate to='/dashboard' />;
+    }
+    
     return(
         <RootStyle title="Register | Minimal-UI">
         <AuthLayout>
             Already have an account? &nbsp;
-            <Link underline="none" variant="subtitle2" component={RouterLink} to="/login-page">
+            <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
             Login
             </Link>
         </AuthLayout>
