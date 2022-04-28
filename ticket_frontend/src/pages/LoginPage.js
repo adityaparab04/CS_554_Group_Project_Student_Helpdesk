@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Page from '../components/Page';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -14,6 +14,7 @@ import { LoadingButton } from '@mui/lab';
 import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
+import { AuthContext } from '../firebase/Auth';
 // components
 import Iconify from '../components/Iconify';
 // ----------------------------------------------------------------------
@@ -44,6 +45,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 const LoginPage = () => {
+    const { currentUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
 
@@ -74,11 +76,15 @@ const LoginPage = () => {
         alert(error);
       }
     };
+
+    if(currentUser){
+      return <Navigate to='/dashboard' />
+    }
     return(
         <RootStyle title="Login | Minimal-UI">
           <AuthLayout>
             Don’t have an account? &nbsp;
-            <Link underline="none" variant="subtitle2" component={RouterLink} to="/register-page">
+            <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
               Get started
             </Link>
           </AuthLayout>
