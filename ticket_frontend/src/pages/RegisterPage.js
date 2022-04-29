@@ -14,7 +14,7 @@ import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import { AuthContext } from '../firebase/Auth';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
-
+import { useSnackbar } from 'notistack';
 const RootStyle = styled(Page)(({ theme }) => ({
     [theme.breakpoints.up('md')]: {
       display: 'flex'
@@ -43,7 +43,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 const RegisterPage = () => {
     const navigate = useNavigate();
-    const { currentUser } = useContext(AuthContext);
+    const { enqueueSnackbar } = useSnackbar();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -99,7 +99,7 @@ const RegisterPage = () => {
         );
         navigate('/login', {replace: true})
       } catch (error) {
-        console.log(error);
+        enqueueSnackbar(error.message, {variant: 'error'});
       }
     }
 

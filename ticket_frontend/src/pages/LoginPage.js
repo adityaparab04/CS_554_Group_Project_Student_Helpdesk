@@ -17,6 +17,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import { AuthContext } from '../firebase/Auth';
 // components
 import Iconify from '../components/Iconify';
+import { useSnackbar } from 'notistack';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -45,9 +46,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 const LoginPage = () => {
-    const { currentUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
 
     const LoginSchema = Yup.object().shape({
       email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -73,7 +74,7 @@ const LoginPage = () => {
         await doSignInWithEmailAndPassword(values.email, values.password);
         navigate('/dashboard', { replace: true })
       } catch (error) {
-        alert(error);
+        enqueueSnackbar(error.message, {variant: 'error'});
       }
     };
 
