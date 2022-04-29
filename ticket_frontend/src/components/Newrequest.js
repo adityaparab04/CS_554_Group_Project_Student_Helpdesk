@@ -17,27 +17,18 @@ import AssignDialog from './AssignDialog';
 
 // ----------------------------------------------------------------------
 
-import firebaseApp from '../firebase/Firebase';
+import { userAddTicket } from 'src/firebase/DataBase';
 
 
 export default function NewRequest() {
   const [title,setTitle] = React.useState('');
   const [tickettext,setTickettext] = React.useState('');
-  const handleSubmitTicket = () => {
-    firebaseApp.collection("Tickets").add({
-      ClientID: "",
-      StaffID: "",
-      TicketContent: [{author: "username", text: tickettext}],
-      TicketTitle: title,
-      isAssigned: false,
-      isResolved: false,
-  })
-  .then((docRef) => {
-      console.log("Document written with ID: ", docRef.id);
-  })
-  .catch((error) => {
-      console.error("Error adding document: ", error);
-  });
+  const handleSubmitTicket = async () => {
+    try {
+      userAddTicket(title,tickettext);
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <Card>

@@ -15,7 +15,7 @@ export default function Router() {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-
+        { path: '/dashboard', element: <Navigate to="client" /> },
         { path: 'admin', element: <Admin /> },
         { path: 'client', element: <Client /> },
         { path: 'staff', element: <Staff /> },
