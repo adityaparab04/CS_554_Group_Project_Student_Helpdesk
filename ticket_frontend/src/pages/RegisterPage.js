@@ -103,10 +103,10 @@ const RegisterPage = () => {
       }
     }
 
-    if (currentUser) {
-      console.log(currentUser);
-      return <Navigate to='/dashboard' />;
-    }
+    // if (currentUser) {
+    //   console.log(currentUser);
+    //   return <Navigate to='/dashboard' />;
+    // }
     
     return(
         <RootStyle title="Register | Minimal-UI">

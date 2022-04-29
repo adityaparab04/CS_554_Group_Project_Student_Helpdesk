@@ -16,7 +16,7 @@ import AssignDialog from './AssignDialog';
 const TICKETS = [...Array(5)].map((_, index) => {
   const setIndex = index + 1;
   return {
-    title: "ticket name",
+    title: `ticket name ${setIndex}`,
     description: "ticket content paragraph: " +faker.lorem.paragraphs(),
     image: mockImgCover(setIndex),
     postedAt: faker.date.soon()

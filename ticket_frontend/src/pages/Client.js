@@ -5,6 +5,7 @@ import Mytickets from 'src/components/Mytickets';
 import NewRequest from 'src/components/Newrequest';
 // components
 import Page from '../components/Page';
+import { AuthContext } from '../firebase/Auth';
 import {
   AppTasks,
   AppNewUsers,

@@ -49,9 +49,6 @@ export default function AssignDialog() {
       >
         <DialogTitle>Choose an employee for the ticket</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            You can set my maximum width and whether to adapt or not.
-          </DialogContentText>
           <Box
             noValidate
             component="form"
@@ -63,7 +60,7 @@ export default function AssignDialog() {
             }}
           >
             <FormControl sx={{ mt: 2, minWidth: 120 }}>
-              <InputLabel htmlFor="max-width">maxWidth</InputLabel>
+              <InputLabel htmlFor="max-width">Staff</InputLabel>
               <Select
                 autoFocus
                 value={maxWidth}

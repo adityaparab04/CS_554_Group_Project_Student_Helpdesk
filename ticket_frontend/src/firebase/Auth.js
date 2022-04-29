@@ -17,6 +17,7 @@ export const AuthProvider = ({children}) => {
         setCurrentUser(user);
         // setLoadingUser(false);
       }else{
+        setCurrentUser(null);
         console.log('no user signed in')
       }
     });

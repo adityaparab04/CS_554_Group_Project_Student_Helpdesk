@@ -11,6 +11,7 @@ import Scrollbar from './Scrollbar';
 import Iconify from './Iconify';
 import AssignDialog from './AssignDialog';
 import EditTicket from './EditTicket';
+import StaffEditTicket from './StaffEditTicket';
 
 // ----------------------------------------------------------------------
 
@@ -55,17 +56,17 @@ function NewsItem({ news }) {
         {formatDistance(postedAt, new Date())}
       </Typography>
       <Box sx={{display:'flex', gap: '5%'}}>
-      <EditTicket />
+      <StaffEditTicket />
       </Box>
       
     </Stack>
   );
 }
 
-export default function Mytickets() {
+export default function StaffTickets() {
   return (
     <Card>
-      <CardHeader title="My tickets" />
+      <CardHeader title="Your Assigned Tickets" />
 
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>

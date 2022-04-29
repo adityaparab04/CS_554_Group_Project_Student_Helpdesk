@@ -77,9 +77,9 @@ const LoginPage = () => {
       }
     };
 
-    if(currentUser){
-      return <Navigate to='/dashboard' />
-    }
+    // if(currentUser){
+    //   return <Navigate to='/dashboard' />
+    // }
     return(
         <RootStyle title="Login | Minimal-UI">
           <AuthLayout>
