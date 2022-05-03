@@ -13,7 +13,8 @@ import { mockImgCover } from '../utils/mockImages';
 import Scrollbar from './Scrollbar';
 import Iconify from './Iconify';
 import AssignDialog from './AssignDialog';
-
+import { AuthContext } from 'src/firebase/Auth';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -21,13 +22,16 @@ import { userAddTicket } from 'src/firebase/DataBase';
 
 
 export default function NewRequest() {
+  const { currentUser } = React.useContext(AuthContext);
+  const { enqueueSnackbar } = useSnackbar();
   const [title,setTitle] = React.useState('');
   const [tickettext,setTickettext] = React.useState('');
   const handleSubmitTicket = async () => {
     try {
-      userAddTicket(title,tickettext);
+      userAddTicket(currentUser,title,tickettext);
+      enqueueSnackbar("Ticket submit Successfully", {variant: 'success'});
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar(error.message, {variant: 'error'});
     }
   }
   return (

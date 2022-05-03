@@ -18,8 +18,8 @@ import { listAllTickets } from 'src/firebase/DataBase';
 
 
 function TicketItem({ticket}) {
-  const {TicketTitle, TicketContent, ClientID, UpdateTime} = ticket;
-  
+  const {TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved} = ticket.data();
+  const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
       {/* <Box
@@ -28,7 +28,7 @@ function TicketItem({ticket}) {
         src={image}
         sx={{ width: 48, height: 48, borderRadius: 1.5 }}
       /> */}
-      <Box sx={{ minWidth: 240, maxWidth: 800 }}>
+      <Box sx={{ width: 800 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
             {TicketTitle}
@@ -42,9 +42,9 @@ function TicketItem({ticket}) {
         
         {formatDistance(new Date(UpdateTime.toDate()), new Date())}
       </Typography>
-      <Box sx={{display:'flex', gap: '5%'}}>
-      <AssignDialog />
-      </Box>
+
+      <AssignDialog TicketTitle={TicketTitle} TicketID={TicketID} isAssigned={isAssigned} isResolved={isResolved}/>
+
       
     </Stack>
   );

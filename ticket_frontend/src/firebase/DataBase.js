@@ -16,12 +16,12 @@ async function userUpdateTicket(ticketID, newText){
 
 }
 
-async function userAddTicket(title, text){
+async function userAddTicket(currentUser,title, text){
     
     const docRef = await addDoc(collection(db, "Tickets"), {
-        ClientID: "",
+        ClientID: currentUser.uid,
         StaffID: "",
-        TicketContent: [{author: "username", text: text}],
+        TicketContent: [{author: currentUser.displayName, text: text}],
         TicketTitle: title,
         isAssigned: false,
         isResolved: false,
@@ -44,7 +44,7 @@ async function adminUnassignTicket(ticketID){
 
 async function listAllTickets(){
     const querySnapshot = await getDocs(collection(db, "Tickets"));
-    return querySnapshot.docs.map(doc => doc.data());
+    return querySnapshot.docs;
 }
 
 async function listTicketsByStaffID(staffID){

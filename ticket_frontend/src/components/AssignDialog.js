@@ -14,7 +14,7 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import Iconify from './Iconify';
 
-export default function AssignDialog() {
+export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResolved}) {
   const [open, setOpen] = React.useState(false);
   const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState('sm');
@@ -37,18 +37,37 @@ export default function AssignDialog() {
   const handleFullWidthChange = (event) => {
     setFullWidth(event.target.checked);
   };
-
+  if (isResolved) {
+    return(
+      <>
+      <Button sx={{width:150}} variant='outlined' color='warning' disabled startIcon={<Iconify icon="ic:baseline-done" />}>Resolved</Button>
+      </>
+    )
+  }
+  if (isAssigned) {
+    return(
+      <>
+      <Button sx={{width:150}} variant='contained' color='warning' startIcon={<Iconify icon="mdi:account-cancel-outline" />}>Unassign</Button>
+      </>
+    )
+  }
   return (
     <React.Fragment>
-     <Button variant='contained' startIcon={<Iconify icon="mdi:account-arrow-right" />} onClick={handleClickOpen}>Assign</Button>
+     <Button sx={{width:150}} variant='contained' startIcon={<Iconify icon="mdi:account-arrow-right" />} onClick={handleClickOpen}>Assign</Button>
       <Dialog
         fullWidth={fullWidth}
         maxWidth={maxWidth}
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>Choose an employee for the ticket</DialogTitle>
+        <DialogTitle>Choose an employee for the Ticket:</DialogTitle>
         <DialogContent>
+          <DialogContentText>
+            Ticket Title: {TicketTitle}
+          </DialogContentText>
+          <DialogContentText>
+            Ticket ID: {TicketID}
+          </DialogContentText>
           <Box
             noValidate
             component="form"
@@ -59,7 +78,7 @@ export default function AssignDialog() {
               width: 'fit-content',
             }}
           >
-            <FormControl sx={{ mt: 2, minWidth: 120 }}>
+            <FormControl sx={{ mt: 2, width: 220 }}>
               <InputLabel htmlFor="max-width">Staff</InputLabel>
               <Select
                 autoFocus
@@ -79,20 +98,13 @@ export default function AssignDialog() {
                 <MenuItem value="xl">xl</MenuItem>
               </Select>
             </FormControl>
-            <FormControlLabel
-              sx={{ mt: 1 }}
-              control={
-                <Switch checked={fullWidth} onChange={handleFullWidthChange} />
-              }
-              label="Full width"
-            />
           </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-      <Button variant='contained' color='warning' startIcon={<Iconify icon="mdi:account-cancel-outline" />}>Unassign</Button>
+      
     </React.Fragment>
   );
 }
