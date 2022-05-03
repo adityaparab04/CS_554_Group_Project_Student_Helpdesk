@@ -9,13 +9,17 @@ export const AuthContext = React.createContext();
 
 export const AuthProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState(null);
-  // const [loadingUser, setLoadingUser] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if(user){
-        setCurrentUser(user);
-        // setLoadingUser(false);
+        let userData = {
+          displayName: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          role: 'admin'
+        }
+        setCurrentUser(userData);
       }else{
         setCurrentUser(null);
         console.log('no user signed in')
@@ -23,13 +27,6 @@ export const AuthProvider = ({children}) => {
     });
   }, []);
 
-  // if (loadingUser) {
-  //   return (
-  //     <div>
-  //       <h1>Loading....Loading....Loading....Loading....Loading....</h1>
-  //     </div>
-  //   );
-  // }
 
   return (
     <AuthContext.Provider value={{currentUser}}>

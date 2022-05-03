@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { formatDistance } from 'date-fns';
 import { Link as RouterLink } from 'react-router-dom';
@@ -10,48 +11,36 @@ import { mockImgCover } from '../utils/mockImages';
 import Scrollbar from './Scrollbar';
 import Iconify from './Iconify';
 import AssignDialog from './AssignDialog';
+import { listAllTickets } from 'src/firebase/DataBase';
+
 
 // ----------------------------------------------------------------------
 
-const TICKETS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: `ticket name ${setIndex}`,
-    description: "ticket content paragraph: " +faker.lorem.paragraphs(),
-    image: mockImgCover(setIndex),
-    postedAt: faker.date.soon()
-  };
-});
 
-// ----------------------------------------------------------------------
-
-NewsItem.propTypes = {
-  news: PropTypes.object.isRequired
-};
-
-function NewsItem({ news }) {
-  const { image, title, description, postedAt } = news;
-
+function TicketItem({ticket}) {
+  const {TicketTitle, TicketContent, ClientID, UpdateTime} = ticket;
+  
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
-      <Box
+      {/* <Box
         component="img"
         alt={title}
         src={image}
         sx={{ width: 48, height: 48, borderRadius: 1.5 }}
-      />
-      <Box sx={{ minWidth: 240 }}>
+      /> */}
+      <Box sx={{ minWidth: 240, maxWidth: 800 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
-            {title}
+            {TicketTitle}
           </Typography>
         </Link>
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {description}
+          {TicketContent[0].author}: {TicketContent[0].text}
         </Typography>
       </Box>
-      <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
-        {formatDistance(postedAt, new Date())}
+      <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, width: 100, color: 'text.secondary' }}>
+        
+        {formatDistance(new Date(UpdateTime.toDate()), new Date())}
       </Typography>
       <Box sx={{display:'flex', gap: '5%'}}>
       <AssignDialog />
@@ -61,15 +50,20 @@ function NewsItem({ news }) {
   );
 }
 
-export default function ListofTickets() {
+
+export default function ListofTickets({data}) {
+  if (!data) {
+    return (<div>Loading...</div>);
+  }
+
   return (
     <Card>
       <CardHeader title="All tickets" />
 
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {TICKETS.map((news) => (
-            <NewsItem key={news.title} news={news} />
+          {data.map((ticket,index) => (
+            <TicketItem key={index} ticket={ticket} />
           ))}
         </Stack>
       </Scrollbar>

@@ -11,21 +11,20 @@ import RegisterPage from './pages/RegisterPage';
 // ----------------------------------------------------------------------
 
 import { AuthContext } from './firebase/Auth';
-import AuthLayout from './layouts/AuthLayout';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 
 export default function Router() {
   const { currentUser } = useContext(AuthContext);
-  console.log(currentUser);
+  // console.log(currentUser)
   return useRoutes([
     {
       path: '/dashboard',
       element: currentUser? <DashboardLayout /> : <Navigate to="/login" />,
       children: [
         { path: '/dashboard', element: <Navigate to="client" /> },
-        { path: 'admin', element: <Admin /> },
+        { path: 'admin', element: (currentUser && currentUser.role === 'admin') ? <Admin /> : <Navigate to="/client" /> },
         { path: 'client', element: <Client /> },
-        { path: 'staff', element: <Staff /> },
+        { path: 'staff', element: (currentUser && (currentUser.role === 'staff' ||currentUser.role === 'admin') ) ? <Staff /> : <Navigate to="/client" /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

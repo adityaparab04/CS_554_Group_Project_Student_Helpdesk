@@ -8,17 +8,19 @@ import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/mater
 import account from '../../_mocks_/account';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
+import { AuthContext } from '../../firebase/Auth';
+import { useContext} from 'react';
 // components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 //
 import sidebarConfig from './SidebarConfig';
-
+import sidebarConfigClient from './SidebarConfigClient';
+import sidebarConfigStaff from './SidebarConfigStaff';
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
-
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     flexShrink: 0,
@@ -43,8 +45,8 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
-
   const isDesktop = useResponsive('up', 'lg');
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -70,18 +72,19 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                firstname lastname
+                {currentUser.displayName}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                admin
+                {currentUser.role}
               </Typography>
             </Box>
           </AccountStyle>
         </Link>
       </Box>
 
-      <NavSection navConfig={sidebarConfig} />
-
+      {currentUser.role === 'admin' && <NavSection navConfig={sidebarConfig} />}
+      {currentUser.role === 'staff' && <NavSection navConfig={sidebarConfigStaff} />}
+      {currentUser.role === 'client' && <NavSection navConfig={sidebarConfigClient} />}
       <Box sx={{ flexGrow: 1 }} />
 
       <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>

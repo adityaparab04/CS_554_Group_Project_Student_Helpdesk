@@ -14,11 +14,11 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import Iconify from './Iconify';
 import { TextField } from '@mui/material';
+import History from './History';
 
 export default function EditTicket() {
   const [open, setOpen] = React.useState(false);
-  const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState('sm');
+  const [ticket, setTicket] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,48 +28,34 @@ export default function EditTicket() {
     setOpen(false);
   };
 
-  const handleMaxWidthChange = (event) => {
-    setMaxWidth(
-      // @ts-expect-error autofill of arbitrary value is not handled.
-      event.target.value,
-    );
-  };
-
-  const handleFullWidthChange = (event) => {
-    setFullWidth(event.target.checked);
-  };
+  const handleSubmitReply = () => {
+    let obj = {
+      
+    }
+    setOpen(false);
+  }
 
   return (
     <React.Fragment>
      <Button variant='contained' color='warning' startIcon={<Iconify icon="clarity:note-edit-line" />} onClick={handleClickOpen}>Edit</Button>
      <Button variant='contained' startIcon={<Iconify icon="akar-icons:check-box" />}>Resolve</Button>
       <Dialog
-        fullWidth={fullWidth}
-        maxWidth='xl'
+        fullWidth
+        maxWidth='md'
         open={open}
         onClose={handleClose}
       >
         <DialogTitle>Ticket name</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            message history........ asdasdasd asdasdasdasd
-          </DialogContentText>
-          <DialogContentText>
-            message history........ asdasdasd asdasdasdasd
-          </DialogContentText>
-          <DialogContentText>
-            message history........ asdasdasd asdasdasdasd
-          </DialogContentText>
-          <DialogContentText>
-            message history........ asdasdasd asdasdasdasd
-          </DialogContentText>
-          <DialogContentText>
-            message history........ asdasdasd asdasdasdasd
-          </DialogContentText>
+          <Box>
+            <History />
+          </Box>
           <TextField
             required
             id="content"
             name="content"
+            value={ticket}
+            oncChange={(e) => setTicket(e.target.value)}
             label="Enter you problem"
             fullWidth
             multiline

@@ -3,6 +3,8 @@ import { Box, Grid, Container, Typography } from '@mui/material';
 import ListofTickets from 'src/components/ListofTickets';
 // components
 import Page from '../components/Page';
+import * as React from 'react';
+import { listAllTickets } from 'src/firebase/DataBase';
 import {
   AppTasks,
   AppNewUsers,
@@ -21,6 +23,20 @@ import {
 // ----------------------------------------------------------------------
 
 export default function Admin() {
+  const [data, setData] = React.useState(null);
+  const fetchTickets = async () => {
+    try {
+      const tickets = await listAllTickets();
+      setData(tickets)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  React.useEffect(() => {
+
+    fetchTickets();
+    
+  },[]);
   return (
     <Page title="Admin">
       <Container maxWidth="xl">
@@ -31,7 +47,7 @@ export default function Admin() {
 
 
           <Grid item lg={10}>
-            <ListofTickets />
+            <ListofTickets data={data}/>
           </Grid>
         </Grid>
       </Container>
