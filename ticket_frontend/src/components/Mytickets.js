@@ -14,63 +14,52 @@ import EditTicket from './EditTicket';
 
 // ----------------------------------------------------------------------
 
-const TICKETS = [...Array(5)].map((_, index) => {
-  const setIndex = index + 1;
-  return {
-    title: `ticket name ${setIndex}`,
-    description: "ticket content paragraph: " +faker.lorem.paragraphs(),
-    image: mockImgCover(setIndex),
-    postedAt: faker.date.soon()
-  };
-});
 
-// ----------------------------------------------------------------------
-
-NewsItem.propTypes = {
-  news: PropTypes.object.isRequired
-};
-
-function NewsItem({ news }) {
-  const { image, title, description, postedAt } = news;
-
+function TicketItem({ticket}) {
+  const {TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved} = ticket.data;
+  const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
-      <Box
+      {/* <Box
         component="img"
         alt={title}
         src={image}
         sx={{ width: 48, height: 48, borderRadius: 1.5 }}
-      />
-      <Box sx={{ minWidth: 240 }}>
+      /> */}
+      <Box sx={{ width: 800 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
-            {title}
+            {TicketTitle}
           </Typography>
         </Link>
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {description}
+          {TicketContent[0].author}: {TicketContent[0].text}
         </Typography>
       </Box>
-      <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
-        {formatDistance(postedAt, new Date())}
+      <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, width: 100, color: 'text.secondary' }}>
+        
+      {formatDistance(Date.parse(TicketContent[0].Time), new Date())}
       </Typography>
-      <Box sx={{display:'flex', gap: '5%'}}>
-      <EditTicket />
-      </Box>
+
+      <EditTicket TicketContent={TicketContent} TicketName={TicketTitle} TicketID={TicketID} isResolved={isResolved}/>
+
       
     </Stack>
   );
 }
 
-export default function Mytickets() {
+export default function Mytickets({data}) {
+  if (!data) {
+    return (<div>Loading...</div>);
+  }
   return (
     <Card>
       <CardHeader title="My tickets" />
 
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {TICKETS.map((news) => (
-            <NewsItem key={news.title} news={news} />
+        {data.map((ticket,index) => (
+            <TicketItem key={index} ticket={ticket} />
           ))}
         </Stack>
       </Scrollbar>

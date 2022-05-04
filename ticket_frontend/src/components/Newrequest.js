@@ -24,15 +24,22 @@ import { userAddTicket } from 'src/firebase/DataBase';
 export default function NewRequest() {
   const { currentUser } = React.useContext(AuthContext);
   const { enqueueSnackbar } = useSnackbar();
-  const [title,setTitle] = React.useState('');
-  const [tickettext,setTickettext] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  const [tickettext, setTickettext] = React.useState('');
   const handleSubmitTicket = async () => {
     try {
-      userAddTicket(currentUser,title,tickettext);
-      enqueueSnackbar("Ticket submit Successfully", {variant: 'success'});
+      userAddTicket(currentUser, title, tickettext);
+      enqueueSnackbar("Ticket submitted Successfully", { variant: 'success' });
+      setTitle('');
+      setTickettext('');
     } catch (error) {
-      enqueueSnackbar(error.message, {variant: 'error'});
+      enqueueSnackbar(error.message, { variant: 'error' });
     }
+  }
+  const handleClearText = () => {
+    setTitle('');
+    setTickettext('');
+    enqueueSnackbar("Text clared", { variant: 'success' });
   }
   return (
     <Card>
@@ -51,11 +58,11 @@ export default function NewRequest() {
           />
         </Grid>
         <Grid item xs={2}>
-            <Stack spacing={1}>
+          <Stack spacing={1}>
             <Button variant='contained' onClick={handleSubmitTicket} startIcon={<Iconify icon="mdi:weather-cloudy-arrow-right" />} >Submit</Button>
-            <Button variant='contained' color='warning' startIcon={<Iconify icon="mdi:backspace" />} >Clear</Button>
-            </Stack>
-            </Grid>
+            <Button variant='contained' color='warning' startIcon={<Iconify icon="mdi:backspace" />} onClick={handleClearText}>Clear</Button>
+          </Stack>
+        </Grid>
         <Grid item xs={10}>
           <TextField
             required
@@ -71,7 +78,7 @@ export default function NewRequest() {
           />
         </Grid>
       </Grid>
-      
+
     </Card>
   );
 }

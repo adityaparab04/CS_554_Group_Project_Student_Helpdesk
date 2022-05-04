@@ -11,14 +11,13 @@ import { mockImgCover } from '../utils/mockImages';
 import Scrollbar from './Scrollbar';
 import Iconify from './Iconify';
 import AssignDialog from './AssignDialog';
-import { listAllTickets } from 'src/firebase/DataBase';
 
 
 // ----------------------------------------------------------------------
 
 
 function TicketItem({ticket}) {
-  const {TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved} = ticket.data();
+  const {TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved} = ticket.data;
   const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
@@ -40,7 +39,7 @@ function TicketItem({ticket}) {
       </Box>
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, width: 100, color: 'text.secondary' }}>
         
-        {formatDistance(new Date(UpdateTime.toDate()), new Date())}
+        {formatDistance(Date.parse(TicketContent[0].Time), new Date())}
       </Typography>
 
       <AssignDialog TicketTitle={TicketTitle} TicketID={TicketID} isAssigned={isAssigned} isResolved={isResolved}/>
@@ -54,33 +53,34 @@ function TicketItem({ticket}) {
 export default function ListofTickets({data}) {
   if (!data) {
     return (<div>Loading...</div>);
+  }else{
+    return (
+      <Card>
+        <CardHeader title="All tickets" />
+  
+        <Scrollbar>
+          <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
+            {data.map((ticket,index) => (
+              <TicketItem key={index} ticket={ticket} />
+            ))}
+          </Stack>
+        </Scrollbar>
+  
+        <Divider />
+  
+        <Box sx={{ p: 2, textAlign: 'right' }}>
+          <Button
+            to="#"
+            size="small"
+            color="inherit"
+            component={RouterLink}
+            endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
+          >
+            View all
+          </Button>
+        </Box>
+      </Card>
+    );
   }
-
-  return (
-    <Card>
-      <CardHeader title="All tickets" />
-
-      <Scrollbar>
-        <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-          {data.map((ticket,index) => (
-            <TicketItem key={index} ticket={ticket} />
-          ))}
-        </Stack>
-      </Scrollbar>
-
-      <Divider />
-
-      <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button
-          to="#"
-          size="small"
-          color="inherit"
-          component={RouterLink}
-          endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
-        >
-          View all
-        </Button>
-      </Box>
-    </Card>
-  );
+  
 }

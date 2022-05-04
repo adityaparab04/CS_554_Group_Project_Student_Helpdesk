@@ -24,18 +24,8 @@ import {
 
 export default function Admin() {
   const [data, setData] = React.useState(null);
-  const fetchTickets = async () => {
-    try {
-      const tickets = await listAllTickets();
-      setData(tickets)
-    } catch (error) {
-      console.log(error);
-    }
-  }
   React.useEffect(() => {
-
-    fetchTickets();
-    
+    listAllTickets(setData);
   },[]);
   return (
     <Page title="Admin">

@@ -15,11 +15,14 @@ import Switch from '@mui/material/Switch';
 import Iconify from './Iconify';
 import { TextField } from '@mui/material';
 import History from './History';
-
-export default function EditTicket() {
+import { AuthContext } from 'src/firebase/Auth';
+import { userUpdateTicket,userResolveTicket } from 'src/firebase/DataBase';
+import { useSnackbar } from 'notistack';
+export default function EditTicket({TicketContent, TicketName, TicketID, isResolved}) {
   const [open, setOpen] = React.useState(false);
   const [ticket, setTicket] = React.useState('');
-
+  const { currentUser } = React.useContext(AuthContext);
+  const { enqueueSnackbar } = useSnackbar();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -28,44 +31,56 @@ export default function EditTicket() {
     setOpen(false);
   };
 
-  const handleSubmitReply = () => {
-    let obj = {
-      
+  const handleSubmitReply = async  () => {
+    try {
+      await userResolveTicket(TicketID);
+      enqueueSnackbar("Ticket replied Successfully", {variant: 'success'});
+      setTicket('')
+    } catch (error) {
+      enqueueSnackbar(error.message, {variant: 'error'});
+    }
+    setOpen(false);
+  }
+  const handleResolved = async () => {
+    try {
+      await userUpdateTicket(currentUser,TicketID,ticket,true);
+    } catch (error) {
+      enqueueSnackbar(error.message, {variant: 'error'});
     }
     setOpen(false);
   }
 
   return (
     <React.Fragment>
-     <Button variant='contained' color='warning' startIcon={<Iconify icon="clarity:note-edit-line" />} onClick={handleClickOpen}>Edit</Button>
-     <Button variant='contained' startIcon={<Iconify icon="akar-icons:check-box" />}>Resolve</Button>
+     <Button variant='contained' color='warning' startIcon={<Iconify icon="clarity:note-edit-line" />} onClick={handleClickOpen}>View/Edit</Button>
+     <Button variant='contained' startIcon={<Iconify icon="akar-icons:check-box"  />} disabled={isResolved}>Resolve</Button>
       <Dialog
         fullWidth
         maxWidth='md'
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>Ticket name</DialogTitle>
+        <DialogTitle>{TicketName}</DialogTitle>
         <DialogContent>
           <Box>
-            <History />
+            <History content={TicketContent} />
           </Box>
-          <TextField
+          {!isResolved && <TextField
             required
             id="content"
             name="content"
             value={ticket}
-            oncChange={(e) => setTicket(e.target.value)}
+            onChange={(e) => setTicket(e.target.value)}
             label="Enter you problem"
             fullWidth
             multiline
             rows={10}
             variant="filled"
-          />
+          />}
           
         </DialogContent>
         <DialogActions>
-        <Button onClick={handleClose}>Submit</Button>
+        {!isResolved && <Button onClick={handleSubmitReply}>Submit</Button>}
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>

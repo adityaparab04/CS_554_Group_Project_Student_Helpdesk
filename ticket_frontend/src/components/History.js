@@ -6,17 +6,25 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
+import {Typography} from '@mui/material';
 
-export default function History() {
-  const data = [{author: 'author1', text: 'i have a question'},{author: 'author2', text: 'i have a respond'},{author: 'author1', text: 'i have a question'},{author: 'author2', text: 'i have a respond'},{author: 'author1', text: 'i have a question'},{author: 'author2', text: 'i have a respond'},{author: 'author1', text: 'i have a question'},{author: 'author2', text: 'i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond i have a respond '}]
+export default function History({content}) {
   return (
     <React.Fragment>
       
       <Timeline >
-      {data.map((item, index) => (
+      {content.map((item, index) => (
         <TimelineItem key={index}>
           <TimelineOppositeContent sx={{ flex: 0.2 }} color="text.secondary">
-            {item.author} on {new Date().toLocaleString()}
+            <Typography variant="caption" color="text.secondary">
+            {item.author}
+            </Typography>
+            <br />
+            <Typography variant="caption" color="text.secondary">
+            {new Date(Date.parse(item.Time)).toLocaleString()}
+            </Typography>
+
+            
           </TimelineOppositeContent>
           <TimelineSeparator>
             <TimelineDot variant="outlined" color="primary" />

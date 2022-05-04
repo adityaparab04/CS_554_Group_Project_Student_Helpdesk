@@ -1,5 +1,6 @@
 // material
 import { Box, Grid, Container, Typography } from '@mui/material';
+import * as React from 'react';
 import ListofTickets from 'src/components/ListofTickets';
 import Mytickets from 'src/components/Mytickets';
 import NewRequest from 'src/components/Newrequest';
@@ -20,12 +21,17 @@ import {
   AppCurrentSubject,
   AppConversionRates
 } from '../sections/@dashboard/app';
+import { listTicketsByClientID,listAllTickets } from 'src/firebase/DataBase';
 
 // ----------------------------------------------------------------------
 
 export default function Client() {
+  const [data, setData] = React.useState(null);
+  React.useEffect(() => {
+    listAllTickets(setData);
+  },[]);
   return (
-    <Page title="Admin">
+    <Page title="Client">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
           <Typography variant="h4">Hi, Welcome back</Typography>
@@ -34,7 +40,7 @@ export default function Client() {
 
 
           <Grid item lg={10}>
-            <Mytickets />
+            <Mytickets data={data}/>
             
           </Grid>
           <Grid item lg={10}>
