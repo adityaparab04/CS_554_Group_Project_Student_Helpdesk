@@ -1,22 +1,92 @@
 /* eslint-disable no-unused-vars */
 import { getFirestore } from "firebase/firestore";
 import firebaseApp from './Firebase';
-import { collection, addDoc,doc, getDocs, onSnapshot,query  } from "firebase/firestore"; 
+import { collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, arrayUnion, arrayRemove  } from "firebase/firestore"; 
 const db = getFirestore(firebaseApp);
 
-async function getUserInfo(userID){
+async function createUser(user, firstName, lastName){
+    const newUser = await setDoc(doc(db, 'Users', user.uid), {
+        uid: user.uid,
+        firstName: firstName,
+        lastName: lastName,
+        role: 'client'
+    });
+    return newUser;
+}
 
+async function getAllClients(){
+    const q = query(collection(db, "Users"), where("role", "==", "client"));
+    const allClients = await getDocs(q);
+    let clients = [];
+    allClients.forEach((doc) => {
+        clients.push({
+            ...doc.data()
+        })
+    })
+    return clients;
+}
+
+async function getAllStaff(){
+    const q = query(collection(db, "Users"), where("role", "==", "staff"));
+    const allStaff = await getDocs(q);
+    let staff = [];
+    allStaff.forEach((doc) => {
+        staff.push({
+            ...doc.data()
+        })
+    })
+    return staff;
+}
+
+async function getAllAdmins(){
+    const q = query(collection(db, "Users"), where("role", "==", "admins"));
+    const allAdmins = await getDocs(q);
+    let admins = [];
+    allAdmins.forEach((doc) => {
+        admins.push({
+            ...doc.data()
+        })
+    })
+    return admins;
+}
+
+async function getUserInfo(userID){
+    const docRef = doc(db, "Users", userID)
+    const user = await getDoc(docRef);
+    if (user.exists()) {
+        console.log(user.data());
+        return user.data();
+      } else {
+        console.log("No such document!");
+      }
 }
 
 async function userResolveTicket(ticketID){
-
+    const getTicket = doc(db, "Tickets", ticketID);
+    const resolvedTicket = await updateDoc(getTicket, {
+        isResolved: true
+    });
+    return resolvedTicket;
 }
 
-async function userUpdateTicket(currentUser,ticketID, newText){
-    console.log(currentUser.uid, ticketID, newText);
+async function userUnResolveTicket(ticketID){
+    const getTicket = doc(db, "Tickets", ticketID);
+    const unResolvedTicket = await updateDoc(getTicket, {
+        isResolved: false
+    });
+    return unResolvedTicket;
 }
 
-async function userAddTicket(currentUser,title, text){
+async function userUpdateTicket(currentUser, ticketID, newText){
+    // console.log(currentUser.uid, ticketID, newText);
+    const getTicket = doc(db, "Tickets", ticketID);
+    const addComment = await updateDoc(getTicket, {
+        TicketContent: arrayUnion({author: currentUser.displayName, text: newText, Time: Date().toString()})
+    });
+    return addComment;
+}
+
+async function userAddTicket(currentUser, title, text){
     
     const docRef = await addDoc(collection(db, "Tickets"), {
         ClientID: currentUser.uid,
@@ -26,19 +96,34 @@ async function userAddTicket(currentUser,title, text){
         isAssigned: false,
         isResolved: false,
       });
-      console.log("Document written with ID: ", docRef.id);
+    console.log("Document written with ID: ", docRef.id);
+    return docRef;
 }
 
-async function staffUpdateTicket(ticketID, newText){
-
+async function staffUpdateTicket(currentUser, ticketID, newText){
+    const getTicket = doc(db, "Tickets", ticketID);
+    const addComment = await updateDoc(getTicket, {
+        TicketContent: arrayUnion({author: currentUser.displayName, text: newText, Time: Date().toString()})
+    });
+    return addComment;
 }
 
 async function adminAssignTicket(ticketID, staffID){
-
+    const getTicket = doc(db, "Tickets", ticketID);
+    const assignTicket = await updateDoc(getTicket, {
+        isAssigned: true,
+        StaffID: staffID
+    })
+    return assignTicket;
 }
 
 async function adminUnassignTicket(ticketID){
-
+    const getTicket = doc(db, "Tickets", ticketID);
+    const unAssignTicket = await updateDoc(getTicket, {
+        isAssigned: false,
+        StaffID: ""
+    })
+    return unAssignTicket;
 }
 
 async function listAllTickets(callback){
@@ -58,21 +143,44 @@ async function listAllTickets(callback){
 }
 
 async function listTicketsByStaffID(staffID){
-    // todo
-    return listAllTickets();
+    const q = query(collection(db, "Tickets"), where("StaffID", "==", staffID));
+    const staffTickets = await getDocs(q);
+    let tickets = [];
+    staffTickets.forEach((doc) => {
+        tickets.push({
+            ...doc.data()
+        })
+    })
+    return tickets;
 
 }
 
-async function listTicketsByClientID(staffID){
-    // todo
-    return listAllTickets();
-
+async function listTicketsByClientID(clientID){
+    const q = query(collection(db, "Tickets"), where("CLientID", "==", clientID));
+    const clientTickets = await getDocs(q);
+    let tickets = [];
+    clientTickets.forEach((doc) => {
+        tickets.push({
+            ...doc.data()
+        })
+    })
+    return tickets;
 }
+
 export {
+    createUser,
+    getAllClients,
+    getAllStaff,
+    getAllAdmins,
+    getUserInfo,
     userAddTicket,
     listAllTickets,
     listTicketsByStaffID,
     listTicketsByClientID,
     userUpdateTicket,
-    userResolveTicket
+    userResolveTicket,
+    userUnResolveTicket,
+    adminAssignTicket,
+    adminUnassignTicket,
+    staffUpdateTicket
 }

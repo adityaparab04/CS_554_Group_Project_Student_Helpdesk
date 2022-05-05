@@ -91,11 +91,11 @@ const RegisterPage = () => {
         return false;
       }
       try {
-        let displayName = values.firstName + ' ' + values.lastName
         await doCreateUserWithEmailAndPassword(
           values.email,
           values.confirmPassword,
-          displayName
+          values.firstName,
+          values.lastName
         );
         navigate('/login', {replace: true})
       } catch (error) {
