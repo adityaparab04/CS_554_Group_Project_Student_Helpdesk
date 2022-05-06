@@ -20,6 +20,12 @@ const sidebarConfig = [
     path: '/dashboard/staff',
     icon: getIcon('mdi:account-tie')
   },
+  {
+    title: 'Student Help',
+    path: '/dashboard/mainform',
+    icon: getIcon('mdi:account-tie')
+  }
+
 ];
 
 export default sidebarConfig;

@@ -2,27 +2,28 @@ import { useEffect, useRef, useState } from "react"
 import { useLocation } from "react-router-dom"
 import Moment from 'react-moment'
 import { io } from "socket.io-client"
-
-const ChatRoom = () => {
+import { useParams } from "react-router-dom"
+const ChatRoom = (props) => {
 
     const location = useLocation()
     const msgBoxRef = useRef()
 
     const [ data, setData ] = useState({})
+    console.log(data)
     const [ msg, setMsg ] = useState("")
     const [ loading, setLoading ] = useState(false)
     const [ allMessages, setMessages ] = useState([])
     const [ socket, setSocket ] = useState()
-
+    const {roomId} = useParams();
     useEffect(() => {
         const socket = io("http://localhost:9000")
         setSocket(socket)
 
         socket.on("connect", () => {
             console.log("socket Connected")
-            socket.emit("joinRoom", location.state.room)
-        })        
-    }, [])
+            socket.emit("joinRoom", roomId)
+        })       
+    }, [roomId])
 
     useEffect(() => {
         if(socket){
@@ -54,7 +55,7 @@ const ChatRoom = () => {
     return (
         <div className="py-4 m-5 w-50 shadow bg-white text-dark border rounded container" >
                 <div className="text-center px-3 mb-4 text-capitalize">
-                    <h1 className="text-warning mb-4">{data?.room} Student Support Desk </h1>
+                    <h1 className="text-warning mb-4">{data?.room} Support Desk </h1>
                 </div>
                 <div className="bg-light border rounded p-3 mb-4" style={{height: "450px", overflowY:"scroll"}}>
                     {

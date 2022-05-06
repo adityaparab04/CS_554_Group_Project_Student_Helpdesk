@@ -32,7 +32,7 @@ const MainForm = () => {
         e.preventDefault()
         const isValid = validation()
         if(isValid){
-            navigate(`/chat/${data.room}`, { state: data });
+            navigate(`/dashboard/chatroom/${data.room}`, { state: data });
         }
     }
 
@@ -40,7 +40,7 @@ const MainForm = () => {
         <div className="px-3 py-4 shadow bg-white text-dark border rounded row">
             <form onSubmit={handleSubmit}>
                 <div className="form-group mb-4">
-                    <h2 className="text-warning mb-4">Welcome to Chatclub</h2>
+                    <h2 className="text-warning mb-4">Student Support Desk</h2>
                 </div>
                 <div className="form-group mb-4">
                     <input type="name" className="form-control bg-light" name="name" placeholder="Enter name" onChange={handleChange} />
@@ -48,8 +48,8 @@ const MainForm = () => {
                 <div className="form-group mb-4">
                     <select className="form-select bg-light" name="room" aria-label="Default select example" onChange={handleChange}>
                         <option value="">Select Room</option>
-                        <option value="Student-Room">Student Room</option>
-                        <option value="Ticket-Enquiry">Ticket Enquiry</option>
+                        <option value="Student-Enquiry">Student-Enquiry</option>
+                        <option value="Ticket">Ticket</option>
                        
                     </select>
                 </div>
