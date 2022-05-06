@@ -8,6 +8,8 @@ import Client from './pages/Client';
 import Staff from './pages/Staff';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import MainChatPage from './components/socket/MainForm.js';
+import ChatRoomPage from './components/socket/ChatRoom.js';
 // ----------------------------------------------------------------------
 
 import { AuthContext } from './firebase/Auth';
@@ -24,16 +26,21 @@ export default function Router() {
         { path: '/dashboard', element: <Navigate to="client" /> },
         { path: 'admin', element: (currentUser && currentUser.role === 'admin') ? <Admin /> : <Navigate to="/client" /> },
         { path: 'client', element: <Client /> },
+        { path: 'mainform', element: <MainChatPage /> },
+        { path: 'chatroom/:roomId', element: <ChatRoomPage /> },
         { path: 'staff', element: (currentUser && (currentUser.role === 'staff' ||currentUser.role === 'admin') ) ? <Staff /> : <Navigate to="/client" /> },
         { path: '*', element: <Navigate to="/404" /> }
+     
       ]
     },
+    
     {
       path: '/',
       element: !currentUser ? <LogoOnlyLayout /> : <Navigate to="/dashboard" />,
       children: [
         { path: '/', element: <Navigate to="/login" /> },
         { path: 'login', element: <LoginPage />},
+        
         { path: 'register', element: <RegisterPage />},
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" /> }
