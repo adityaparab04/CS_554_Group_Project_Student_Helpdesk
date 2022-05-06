@@ -23,6 +23,9 @@ export default function Client() {
   snapshot.forEach((doc) => {
     data.push({id: doc.id, data: doc.data()});
 });
+const sorted = data.sort((a, b) => {
+  return new Date(b.data.TicketContent[b.data.TicketContent.length - 1].Time) - new Date(a.data.TicketContent[a.data.TicketContent.length - 1].Time)
+});
   return (
     <Page title="Client">
       <Container maxWidth="xl">
@@ -30,15 +33,11 @@ export default function Client() {
           <Typography variant="h4">Hi, Welcome back</Typography>
         </Box>
         <Grid container spacing={3}>
-
-
           <Grid item lg={10}>
-            <Mytickets data={data}/>
-            
+            <Mytickets data={sorted}/>
           </Grid>
           <Grid item lg={10}>
             <NewRequest />
-            
           </Grid>
         </Grid>
       </Container>

@@ -43,6 +43,10 @@ export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResol
     setOpen(false);
   };
   const handleAssign = async () => {
+      if (selectedstaff === ``) {
+        enqueueSnackbar("Please select a staff", {variant: 'error'});
+        return;
+      }
       try {
         await adminAssignTicket(TicketID, selectedstaff);
         enqueueSnackbar("Ticket Assigned", { variant: "success" });
@@ -114,7 +118,6 @@ export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResol
                   id: 'max-width',
                 }}
               >
-                <MenuItem value='none'>None</MenuItem>
                 {staff.map((employee,index) => (
               <MenuItem key={index} value={employee.uid}>{employee.firstName} {employee.lastName}</MenuItem>
             ))}

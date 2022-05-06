@@ -34,12 +34,12 @@ function TicketItem({ticket}) {
           </Typography>
         </Link>
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {TicketContent[0].author}: {TicketContent[0].text}
+          {TicketContent[TicketContent.length - 1].author}: {TicketContent[TicketContent.length - 1].text}
         </Typography>
       </Box>
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, width: 100, color: 'text.secondary' }}>
         
-        {formatDistance(Date.parse(TicketContent[0].Time), new Date())}
+        {formatDistance(Date.parse(TicketContent[TicketContent.length - 1].Time), new Date())}
       </Typography>
 
       <AssignDialog TicketTitle={TicketTitle} TicketID={TicketID} isAssigned={isAssigned} isResolved={isResolved}/>
@@ -65,20 +65,6 @@ export default function ListofTickets({data}) {
             ))}
           </Stack>
         </Scrollbar>
-  
-        <Divider />
-  
-        <Box sx={{ p: 2, textAlign: 'right' }}>
-          <Button
-            to="#"
-            size="small"
-            color="inherit"
-            component={RouterLink}
-            endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
-          >
-            View all
-          </Button>
-        </Box>
       </Card>
     );
   }

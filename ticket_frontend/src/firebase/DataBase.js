@@ -90,7 +90,7 @@ async function userAddTicket(currentUser, title, text){
     const docRef = await addDoc(collection(db, "Tickets"), {
         ClientID: currentUser.uid,
         StaffID: "",
-        TicketContent: [{author: currentUser.firstName +currentUser.lastName, text: text, Time: Date().toString()}],
+        TicketContent: [{author: currentUser.firstName + ' '+currentUser.lastName, text: text, Time: Date().toString()}],
         TicketTitle: title,
         isAssigned: false,
         isResolved: false,
@@ -102,7 +102,7 @@ async function userAddTicket(currentUser, title, text){
 async function staffUpdateTicket(currentUser, ticketID, newText){
     const getTicket = doc(db, "Tickets", ticketID);
     const addComment = await updateDoc(getTicket, {
-        TicketContent: arrayUnion({author: currentUser.displayName, text: newText, Time: Date().toString()})
+        TicketContent: arrayUnion({author: currentUser.firstName + ' '+currentUser.lastName, text: newText, Time: Date().toString()})
     });
     return addComment;
 }
