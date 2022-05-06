@@ -54,7 +54,6 @@ async function getUserInfo(userID){
     const docRef = doc(db, "Users", userID)
     const user = await getDoc(docRef);
     if (user.exists()) {
-        console.log(user.data());
         return user.data();
       } else {
         console.log("No such document!");
@@ -91,7 +90,7 @@ async function userAddTicket(currentUser, title, text){
     const docRef = await addDoc(collection(db, "Tickets"), {
         ClientID: currentUser.uid,
         StaffID: "",
-        TicketContent: [{author: currentUser.displayName, text: text, Time: Date().toString()}],
+        TicketContent: [{author: currentUser.firstName +currentUser.lastName, text: text, Time: Date().toString()}],
         TicketTitle: title,
         isAssigned: false,
         isResolved: false,

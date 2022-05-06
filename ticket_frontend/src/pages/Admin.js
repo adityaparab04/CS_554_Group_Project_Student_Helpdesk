@@ -40,6 +40,7 @@ export default function Admin() {
             <ListofTickets data={data}/>
           </Grid>
         </Grid>
+        
       </Container>
     </Page>
   );
