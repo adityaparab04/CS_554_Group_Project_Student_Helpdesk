@@ -15,7 +15,7 @@ const io = new Server(server, {
   }
 });
 
-app.get("/", (req, res) => {res.send("Chat BE with Socket.io by Prince Raj"); res.end()})
+app.get("/", (req, res) => {res.send("Mutables chat system backend."); res.end()})
 
 io.on("connection", (socket) => {
   console.log(socket.id)
@@ -32,4 +32,4 @@ io.on("connection", (socket) => {
 
 const port = process.env.PORT || 9000
 
-server.listen(port, console.log(`App started at port ${port}`))
+server.listen(port, console.log(`Server Created on port ${port}`))
