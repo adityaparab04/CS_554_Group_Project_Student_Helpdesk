@@ -4,29 +4,21 @@ import ListofTickets from 'src/components/ListofTickets';
 // components
 import Page from '../components/Page';
 import * as React from 'react';
-import { listAllTickets } from 'src/firebase/DataBase';
-import {
-  AppTasks,
-  AppNewUsers,
-  AppBugReports,
-  AppItemOrders,
-  AppNewsUpdate,
-  AppWeeklySales,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppCurrentSubject,
-  AppConversionRates
-} from '../sections/@dashboard/app';
-
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { getFirestore } from 'firebase/firestore';
+import firebaseApp from '../firebase/Firebase'; 
+import {  query,collection} from "firebase/firestore"; 
 // ----------------------------------------------------------------------
 
 export default function Admin() {
-  const [data, setData] = React.useState(null);
-  React.useEffect(() => {
-    listAllTickets(setData);
-  },[]);
+  const db = getFirestore(firebaseApp);
+  const q = query(collection(db, "Tickets"));
+  const [snapshot, loading] = useCollection(q);
+  if(loading) return <div>Loading...</div>;
+  const data = [];
+  snapshot.forEach((doc) => {
+    data.push({id: doc.id, data: doc.data()});
+});
   return (
     <Page title="Admin">
       <Container maxWidth="xl">
