@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import Page from '../components/Page';
 import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ import { Box, Card, Stack, Link, Container, Typography, Checkbox, TextField, Ico
 import { LoadingButton } from '@mui/lab';
 
 //firebase auth function
-import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
+import { doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword , doPasswordReset} from '../firebase/FirebaseFunctions';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 import { AuthContext } from '../firebase/Auth';
@@ -46,129 +46,146 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 const LoginPage = () => {
-    const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
-    const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
-    const LoginSchema = Yup.object().shape({
-      email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-      password: Yup.string().required('Password is required')
-    });
-    const formik = useFormik({
-      initialValues: {
-        email: '',
-        password: '',
-        remember: false
-      },
-      validationSchema: LoginSchema,
-    });
-    const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, handleChange } = formik;
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    password: Yup.string().required('Password is required')
+  });
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      remember: false
+    },
+    validationSchema: LoginSchema,
+  });
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, handleChange } = formik;
 
-    const handleShowPassword = () => {
-      setShowPassword((show) => !show);
-    };
-    
-    const handleLogin = async (e) => {
-      e.preventDefault();
-      try {
-        await doSignInWithEmailAndPassword(values.email, values.password);
-        navigate('/dashboard', { replace: true })
-      } catch (error) {
-        enqueueSnackbar(error.message, {variant: 'error'});
+  const handleShowPassword = () => {
+    setShowPassword((show) => !show);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await doSignInWithEmailAndPassword(values.email, values.password);
+      navigate('/dashboard', { replace: true })
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  };
+
+  const forgotPassword = async (e) => {
+    e.preventDefault();
+    try {
+      if (values.email) {
+        await doPasswordReset(values.email);
+        alert('Password reset email was sent');
+      } else {
+        alert(
+          'Please enter an email address before you click the forgot password link'
+        );
       }
-    };
+    } catch (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
 
-    // if(currentUser){
-    //   return <Navigate to='/dashboard' />
-    // }
-    return(
-        <RootStyle title="Login | Minimal-UI">
-          <AuthLayout>
-            Don’t have an account? &nbsp;
-            <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
-              Get started
-            </Link>
-          </AuthLayout>
-    
-          <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <img src="/static/illustrations/illustration_login.png" alt="login" />
-          </SectionStyle>
-    
-          <Container maxWidth="sm">
-            <ContentStyle>
-              <Stack sx={{ mb: 5 }}>
-              <Box sx={{ mb: 5 }}>
-                <Typography variant="h4" gutterBottom>
-                  Sign In To Raise a Ticket.
-                </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>
-                  Enter your details below.
-                </Typography>
-              </Box>
-                <FormikProvider value={formik}>
-                  <Form autoComplete="off" noValidate onSubmit={handleLogin}>
-                    <Stack spacing={3}>
-                      <TextField
-                        fullWidth
-                        autoComplete="username"
-                        type="email"
-                        label="Email address"
-                        {...getFieldProps('email')}
-                        onChange={handleChange}
-                        value={values.email}
-                        error={Boolean(touched.email && errors.email)}
-                        helperText={touched.email && errors.email}
-                      />
+  }
 
-                      <TextField
-                        fullWidth
-                        autoComplete="current-password"
-                        type={showPassword ? 'text' : 'password'}
-                        label="Password"
-                        {...getFieldProps('password')}
-                        onChange={handleChange}
-                        value={values.password}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <IconButton onClick={handleShowPassword} edge="end">
-                                <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                              </IconButton>
-                            </InputAdornment>
-                          )
-                        }}
-                        error={Boolean(touched.password && errors.password)}
-                        helperText={touched.password && errors.password}
-                      />
-                      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-                        <FormControlLabel
-                          control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
-                          label="Remember me"
-                        />
-                        <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
-                          Forgot password?
-                        </Link>
-                      </Stack>
-                      <LoadingButton
-                        fullWidth
-                        size="large"
-                        type="submit"
-                        variant="contained"
-                        loading={isSubmitting}
-                      >
-                        Login
-                      </LoadingButton>
-                    </Stack>
-                  </Form>
-                </FormikProvider>
-              </Stack>
-            </ContentStyle>
-          </Container>
-        </RootStyle>
-    )
+  // if(currentUser){
+  //   return <Navigate to='/dashboard' />
+  // }
+  return (
+    <RootStyle title="Login | Minimal-UI">
+      <AuthLayout>
+        Don’t have an account? &nbsp;
+        <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
+          Get started
+        </Link>
+      </AuthLayout>
+
+      <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+          Hi, Welcome Back
+        </Typography>
+        <img src="/static/illustrations/illustration_login.png" alt="login" />
+      </SectionStyle>
+
+      <Container maxWidth="sm">
+        <ContentStyle>
+          <Stack sx={{ mb: 5 }}>
+            <Box sx={{ mb: 5 }}>
+              <Typography variant="h4" gutterBottom>
+                Sign In To Raise a Ticket.
+              </Typography>
+              <Typography sx={{ color: 'text.secondary' }}>
+                Enter your details below.
+              </Typography>
+            </Box>
+            <FormikProvider value={formik}>
+              <Form autoComplete="off" noValidate onSubmit={handleLogin}>
+                <Stack spacing={3}>
+                  <TextField
+                    fullWidth
+                    autoComplete="username"
+                    type="email"
+                    label="Email address"
+                    {...getFieldProps('email')}
+                    onChange={handleChange}
+                    value={values.email}
+                    error={Boolean(touched.email && errors.email)}
+                    helperText={touched.email && errors.email}
+                  />
+
+                  <TextField
+                    fullWidth
+                    autoComplete="current-password"
+                    type={showPassword ? 'text' : 'password'}
+                    label="Password"
+                    {...getFieldProps('password')}
+                    onChange={handleChange}
+                    value={values.password}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleShowPassword} edge="end">
+                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                    error={Boolean(touched.password && errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+                    <FormControlLabel
+                      control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
+                      label="Remember me"
+                    />
+                    <Link component={RouterLink} variant="subtitle2" to="#" underline="hover" onClick={forgotPassword}>
+                      Forgot password?
+                    </Link>
+                  </Stack>
+                  <LoadingButton
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    loading={isSubmitting}
+                  >
+                    Login
+                  </LoadingButton>
+                </Stack>
+              </Form>
+            </FormikProvider>
+          </Stack>
+        </ContentStyle>
+      </Container>
+    </RootStyle>
+  )
 }
 
 export default LoginPage;
