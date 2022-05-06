@@ -7,11 +7,11 @@ import { useFormik, Form, FormikProvider } from 'formik';
 
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Card, Stack, Link, Container, Typography, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@mui/material';
+import { Box, Card, Stack, Link, Button, Divider, Container, Typography, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 //firebase auth function
-import { doCreateUserWithEmailAndPassword, doSignInWithEmailAndPassword , doPasswordReset} from '../firebase/FirebaseFunctions';
+import { doGoogleSignIn, doSignInWithEmailAndPassword , doPasswordReset} from '../firebase/FirebaseFunctions';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 import { AuthContext } from '../firebase/Auth';
@@ -94,6 +94,14 @@ const LoginPage = () => {
     }
 
   }
+  const handleSocialSignIn = async (e) => {
+    e.preventDefault();
+    try {
+        await doGoogleSignIn();
+      } catch (error) {
+        enqueueSnackbar(error.message, { variant: 'error' });
+      }
+    };
 
   // if(currentUser){
   //   return <Navigate to='/dashboard' />
@@ -125,6 +133,19 @@ const LoginPage = () => {
                 Enter your details below.
               </Typography>
             </Box>
+            <>
+            <Stack direction="row" spacing={2}>
+              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleSocialSignIn} alt='google signin'>
+                <Iconify icon="eva:google-fill" color="#DF3E30" height={24} />
+              </Button>
+            </Stack>
+
+            <Divider sx={{ my: 3 }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                OR
+              </Typography>
+            </Divider>
+          </>
             <FormikProvider value={formik}>
               <Form autoComplete="off" noValidate onSubmit={handleLogin}>
                 <Stack spacing={3}>
