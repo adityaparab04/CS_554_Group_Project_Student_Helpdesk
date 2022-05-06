@@ -4,6 +4,8 @@ import ListofTickets from 'src/components/ListofTickets';
 import StaffTickets from 'src/components/StaffTickets';
 // components
 import Page from '../components/Page';
+import * as React from 'react';
+import { listAllTickets } from 'src/firebase/DataBase';
 import {
   AppTasks,
   AppNewUsers,
@@ -21,9 +23,13 @@ import {
 
 // ----------------------------------------------------------------------
 
-export default function Admin() {
+export default function Staff() {
+  const [data, setData] = React.useState(null);
+  React.useEffect(() => {
+    listAllTickets(setData);
+  },[]);
   return (
-    <Page title="Admin">
+    <Page title="Staff">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
           <Typography variant="h4">Hi, Welcome back</Typography>
@@ -32,7 +38,7 @@ export default function Admin() {
 
 
           <Grid item lg={10}>
-           <StaffTickets />
+           <StaffTickets data={data}/>
           </Grid>
         </Grid>
       </Container>

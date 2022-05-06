@@ -13,12 +13,28 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import Iconify from './Iconify';
-
+import { useSnackbar } from 'notistack';
+import {getAllStaff,adminAssignTicket,adminUnassignTicket} from '../firebase/DataBase';
 export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResolved}) {
   const [open, setOpen] = React.useState(false);
-  const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState('sm');
+  const [selectedstaff, setSelectedstaff] = React.useState(``);
+  const [staff, setStaff] = React.useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+  React.useEffect(() => {
 
+    const getStaff = async () => {
+      try {
+        let objs = await getAllStaff();
+        setStaff(objs);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getStaff();
+  }, []);
+  const handleSelectStaff = (event) => {
+    setSelectedstaff(event.target.value);
+  }
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -26,17 +42,25 @@ export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResol
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handleMaxWidthChange = (event) => {
-    setMaxWidth(
-      // @ts-expect-error autofill of arbitrary value is not handled.
-      event.target.value,
-    );
-  };
-
-  const handleFullWidthChange = (event) => {
-    setFullWidth(event.target.checked);
-  };
+  const handleAssign = async () => {
+      try {
+        await adminAssignTicket(TicketID, selectedstaff);
+        enqueueSnackbar("Ticket Assigned", { variant: "success" });
+        setOpen(false);
+      } catch (error) {
+        console.log(error)
+        enqueueSnackbar(error.message, {variant: 'error'});
+      }
+  }
+  const handleUnassign = async () => {
+    try {
+      await adminUnassignTicket(TicketID);
+      enqueueSnackbar("Ticket Unassigned", { variant: "success" });
+    } catch (error) {
+      console.log(error)
+      enqueueSnackbar(error.message, {variant: 'error'});
+    }
+  }
   if (isResolved) {
     return(
       <>
@@ -47,7 +71,7 @@ export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResol
   if (isAssigned) {
     return(
       <>
-      <Button sx={{width:150}} variant='contained' color='warning' startIcon={<Iconify icon="mdi:account-cancel-outline" />}>Unassign</Button>
+      <Button sx={{width:150}} variant='contained' color='warning' startIcon={<Iconify icon="mdi:account-cancel-outline" />} onClick={handleUnassign}>Unassign</Button>
       </>
     )
   }
@@ -55,8 +79,8 @@ export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResol
     <React.Fragment>
      <Button sx={{width:150}} variant='contained' startIcon={<Iconify icon="mdi:account-arrow-right" />} onClick={handleClickOpen}>Assign</Button>
       <Dialog
-        fullWidth={fullWidth}
-        maxWidth={maxWidth}
+        fullWidth
+        maxWidth='md'
         open={open}
         onClose={handleClose}
       >
@@ -82,25 +106,24 @@ export default function AssignDialog({TicketTitle, TicketID, isAssigned, isResol
               <InputLabel htmlFor="max-width">Staff</InputLabel>
               <Select
                 autoFocus
-                value={maxWidth}
-                onChange={handleMaxWidthChange}
-                label="maxWidth"
+                value={selectedstaff}
+                onChange={handleSelectStaff}
+                label="select staff"
                 inputProps={{
                   name: 'max-width',
                   id: 'max-width',
                 }}
               >
-                <MenuItem value={false}>false</MenuItem>
-                <MenuItem value="xs">xs</MenuItem>
-                <MenuItem value="sm">sm</MenuItem>
-                <MenuItem value="md">md</MenuItem>
-                <MenuItem value="lg">lg</MenuItem>
-                <MenuItem value="xl">xl</MenuItem>
+                <MenuItem value='none'>None</MenuItem>
+                {staff.map((employee,index) => (
+              <MenuItem key={index} value={employee.uid}>{employee.firstName} {employee.lastName}</MenuItem>
+            ))}
               </Select>
             </FormControl>
           </Box>
         </DialogContent>
         <DialogActions>
+        <Button onClick={handleAssign}>Apply</Button>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
