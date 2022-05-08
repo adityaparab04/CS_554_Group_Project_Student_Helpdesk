@@ -16,8 +16,9 @@ import Iconify from './Iconify';
 import { TextField } from '@mui/material';
 import History from './History';
 import { AuthContext } from 'src/firebase/Auth';
-import { userUpdateTicket,userResolveTicket } from 'src/firebase/DataBase';
+import { userUpdateTicket, userResolveTicket } from 'src/firebase/DataBase';
 import { useSnackbar } from 'notistack';
+
 export default function EditTicket({TicketContent, TicketName, TicketID, isResolved}) {
   const [open, setOpen] = React.useState(false);
   const [ticket, setTicket] = React.useState('');
@@ -31,7 +32,7 @@ export default function EditTicket({TicketContent, TicketName, TicketID, isResol
     setOpen(false);
   };
 
-  const handleSubmitReply = async  () => {
+  const handleResolveTicket = async  () => {
     try {
       await userResolveTicket(TicketID);
       enqueueSnackbar("Ticket replied Successfully", {variant: 'success'});
@@ -41,9 +42,9 @@ export default function EditTicket({TicketContent, TicketName, TicketID, isResol
     }
     setOpen(false);
   }
-  const handleResolved = async () => {
+  const handleSubmitReply = async () => {
     try {
-      await userUpdateTicket(currentUser,TicketID,ticket,true);
+      await userUpdateTicket(currentUser, TicketID, ticket);
     } catch (error) {
       enqueueSnackbar(error.message, {variant: 'error'});
     }
@@ -53,7 +54,7 @@ export default function EditTicket({TicketContent, TicketName, TicketID, isResol
   return (
     <React.Fragment>
      <Button variant='contained' color='warning' startIcon={<Iconify icon="clarity:note-edit-line" />} onClick={handleClickOpen}>View/Edit</Button>
-     <Button variant='contained' startIcon={<Iconify icon="akar-icons:check-box"  />} disabled={isResolved}>Resolve</Button>
+     <Button variant='contained' startIcon={<Iconify icon="akar-icons:check-box"  />} disabled={isResolved} onClick={handleResolveTicket}>Resolve</Button>
       <Dialog
         fullWidth
         maxWidth='md'

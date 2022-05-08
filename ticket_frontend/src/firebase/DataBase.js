@@ -4,11 +4,12 @@ import firebaseApp from './Firebase';
 import { collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, arrayUnion, arrayRemove  } from "firebase/firestore"; 
 const db = getFirestore(firebaseApp);
 
-async function createUser(user, firstName, lastName){
+async function createUser(user, firstName, lastName, displayName){
     const newUser = await setDoc(doc(db, 'Users', user.uid), {
         uid: user.uid,
         firstName: firstName,
         lastName: lastName,
+        displayName: displayName,
         role: 'client'
     });
     return newUser;
@@ -77,10 +78,15 @@ async function userUnResolveTicket(ticketID){
 }
 
 async function userUpdateTicket(currentUser, ticketID, newText){
-    // console.log(currentUser.uid, ticketID, newText);
+    console.log(currentUser.displayName);
     const getTicket = doc(db, "Tickets", ticketID);
+    const comment = {
+        "author": currentUser.displayName, 
+        text: newText, 
+        Time: Date().toString()
+    }
     const addComment = await updateDoc(getTicket, {
-        TicketContent: arrayUnion({author: currentUser.displayName, text: newText, Time: Date().toString()})
+        TicketContent: arrayUnion(comment)
     });
     return addComment;
 }
@@ -90,7 +96,7 @@ async function userAddTicket(currentUser, title, text){
     const docRef = await addDoc(collection(db, "Tickets"), {
         ClientID: currentUser.uid,
         StaffID: "",
-        TicketContent: [{author: currentUser.firstName + ' '+currentUser.lastName, text: text, Time: Date().toString()}],
+        TicketContent: [{author: currentUser.displayName, text: text, Time: Date().toString()}],
         TicketTitle: title,
         isAssigned: false,
         isResolved: false,

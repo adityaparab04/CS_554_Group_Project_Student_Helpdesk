@@ -39,7 +39,7 @@ export default function NewRequest() {
   const handleClearText = () => {
     setTitle('');
     setTickettext('');
-    enqueueSnackbar("Text clared", { variant: 'success' });
+    enqueueSnackbar("Text cleared", { variant: 'success' });
   }
   return (
     <Card>
