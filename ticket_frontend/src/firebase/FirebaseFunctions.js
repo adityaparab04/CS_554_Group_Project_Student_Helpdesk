@@ -7,7 +7,7 @@ async function doCreateUserWithEmailAndPassword(email, password, firstName, last
     let displayName = firstName + ' ' + lastName
     console.log(firstName, lastName, displayName);
     await createUserWithEmailAndPassword(auth, email, password);
-    await createUser(auth.currentUser, firstName, lastName);
+    await createUser(auth.currentUser, firstName, lastName, displayName);
     updateProfile(auth.currentUser, { displayName: displayName });
     console.log("User Created having UID:", auth.currentUser.uid)
 }
