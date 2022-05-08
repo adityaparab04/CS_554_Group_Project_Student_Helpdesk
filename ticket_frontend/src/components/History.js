@@ -6,7 +6,7 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-import {Typography} from '@mui/material';
+import {Card, CardContent, Typography} from '@mui/material';
 
 export default function History({content}) {
   return (
@@ -30,7 +30,11 @@ export default function History({content}) {
             <TimelineDot variant="outlined" color="primary" />
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent>{item.text}</TimelineContent>
+          <TimelineContent><Card sx={{backgroundColor: 'primary.lighter',}} >
+            <CardContent>
+            <Typography sx={{ color: 'white'}} paragraph variant='body'>{item.text}</Typography>
+            </CardContent>
+            </Card></TimelineContent>
         </TimelineItem>
       ))}
       </Timeline>

@@ -33,13 +33,10 @@ async function doChangePassword(email, oldPassword, newPassword) {
     await doSignOut();
 }
 
-async function doSocialSignIn(provider) {
+async function doGoogleSignIn() {
     let socialProvider = null;
-    if (provider === 'google') {
         socialProvider = new GoogleAuthProvider(auth);
-    } else if (provider === 'facebook') {
-        socialProvider = new FacebookAuthProvider(auth);
-    }
+        console.log(socialProvider);
     await signInWithPopup(auth, socialProvider);
 }
 
@@ -56,7 +53,7 @@ export {
     doSignInWithEmailAndPassword,
     doSignOut,
     doChangePassword,
-    doSocialSignIn,
+    doGoogleSignIn,
     doPasswordUpdate,
     doPasswordReset
 }

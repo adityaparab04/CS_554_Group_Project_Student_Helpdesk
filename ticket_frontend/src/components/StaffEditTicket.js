@@ -16,7 +16,7 @@ import Iconify from './Iconify';
 import { TextField } from '@mui/material';
 import History from './History';
 import { AuthContext } from 'src/firebase/Auth';
-import { userUpdateTicket,userResolveTicket } from 'src/firebase/DataBase';
+import { staffUpdateTicket } from 'src/firebase/DataBase';
 import { useSnackbar } from 'notistack';
 export default function StaffEditTicket({TicketContent, TicketName, TicketID, isResolved}) {
   const [open, setOpen] = React.useState(false);
@@ -33,21 +33,12 @@ export default function StaffEditTicket({TicketContent, TicketName, TicketID, is
 
   const handleSubmitReply = async  () => {
     try {
-      await userResolveTicket(TicketID);
+      await staffUpdateTicket(currentUser,TicketID, ticket);
       enqueueSnackbar("Ticket replied Successfully", {variant: 'success'});
       setTicket('')
     } catch (error) {
       enqueueSnackbar(error.message, {variant: 'error'});
     }
-    setOpen(false);
-  }
-  const handleResolved = async () => {
-    try {
-      await userUpdateTicket(currentUser,TicketID,ticket,true);
-    } catch (error) {
-      enqueueSnackbar(error.message, {variant: 'error'});
-    }
-    setOpen(false);
   }
 
   return (
