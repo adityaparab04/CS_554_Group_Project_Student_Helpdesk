@@ -4,12 +4,13 @@ import firebaseApp from './Firebase';
 import { collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, arrayUnion, arrayRemove  } from "firebase/firestore"; 
 const db = getFirestore(firebaseApp);
 
-async function createUser(user, firstName, lastName, displayName){
+async function createUser(user, firstName, lastName, displayName, email){
     const newUser = await setDoc(doc(db, 'Users', user.uid), {
         uid: user.uid,
         firstName: firstName,
         lastName: lastName,
         displayName: displayName,
+        email: email,
         role: 'client'
     });
     return newUser;
@@ -58,7 +59,7 @@ async function getUserInfo(userID){
         return user.data();
       } else {
         console.log("No such document!");
-      }
+    }
 }
 
 async function userResolveTicket(ticketID){
@@ -78,7 +79,7 @@ async function userUnResolveTicket(ticketID){
 }
 
 async function userUpdateTicket(currentUser, ticketID, newText){
-    console.log(currentUser.displayName);
+    // console.log(currentUser.displayName);
     const getTicket = doc(db, "Tickets", ticketID);
     const comment = {
         "author": currentUser.displayName, 

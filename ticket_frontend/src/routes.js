@@ -10,6 +10,9 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MainChatPage from './components/socket/MainForm.js';
 import ChatRoomPage from './components/socket/ChatRoom.js';
+import UserProfilePage from './pages/UserProfilePage';
+import UserSettingsPage from './pages/UserSettingsPage';
+import Page404 from './pages/Page404';
 // ----------------------------------------------------------------------
 
 import { AuthContext } from './firebase/Auth';
@@ -28,7 +31,7 @@ export default function Router() {
         { path: 'client', element: <Client /> },
         { path: 'mainform', element: <MainChatPage /> },
         { path: 'chatroom/:roomId', element: <ChatRoomPage /> },
-        { path: 'staff', element: (currentUser && (currentUser.role === 'staff' ||currentUser.role === 'admin') ) ? <Staff /> : <Navigate to="/client" /> },
+        { path: 'staff', element: (currentUser && (currentUser.role === 'staff' || currentUser.role === 'admin') ) ? <Staff /> : <Navigate to="/client" /> },
         { path: '*', element: <Navigate to="/404" /> }
      
       ]
@@ -46,6 +49,26 @@ export default function Router() {
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },
+
+    {
+      path: '/profile/:uid',
+      element: !currentUser ? <Navigate to='/login'/> : <UserProfilePage />,
+      children: [
+        { path: '*', element: <Navigate to="/404" /> }
+      ]
+    },
+
+    {
+      path: '/settings',
+      element: !currentUser ? <Navigate to='/login'/> : <UserSettingsPage />,
+      children: [
+        { path: '*', element: <Navigate to="/404" /> }
+      ]
+    },
+
+    { path: '/404', element: <Page404 />},
+
     { path: '*', element: <Navigate to="/404" replace /> }
+
   ]);
 }

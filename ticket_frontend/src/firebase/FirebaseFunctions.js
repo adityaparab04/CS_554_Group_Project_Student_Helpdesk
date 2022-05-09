@@ -5,17 +5,17 @@ const auth = getAuth(firebaseApp);
 
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName) {
     let displayName = firstName + ' ' + lastName
-    console.log(firstName, lastName, displayName);
+    // console.log(firstName, lastName, displayName);
     await createUserWithEmailAndPassword(auth, email, password);
-    await createUser(auth.currentUser, firstName, lastName, displayName);
+    await createUser(auth.currentUser, firstName, lastName, displayName, email);
     updateProfile(auth.currentUser, { displayName: displayName });
-    console.log("User Created having UID:", auth.currentUser.uid)
+    console.log("User Created having UID:", auth.currentUser.uid);
 }
 
 async function doSignInWithEmailAndPassword(email, password) {
     await signInWithEmailAndPassword(auth, email, password);
     await getUserInfo(auth.currentUser.uid);
-    console.log("User Signed-In having UID:", auth.currentUser.uid)
+    console.log("User Signed-In having UID:", auth.currentUser.uid);
 }
 
 async function doSignOut() {
