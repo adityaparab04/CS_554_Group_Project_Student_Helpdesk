@@ -173,6 +173,18 @@ async function listTicketsByClientID(clientID){
     return tickets;
 }
 
+async function updateUserInformation(userId, newEmail, newFirstName, newLastName, newDisplayName){
+    const getUser = doc(db, 'Users', userId);
+    const updatedUser = await updateDoc(getUser, {
+        firstName: newFirstName,
+        lastName: newLastName,
+        displayName: newDisplayName,
+        email: newEmail,
+
+    });
+    return updatedUser;
+}
+
 export {
     createUser,
     getAllClients,
@@ -188,5 +200,6 @@ export {
     userUnResolveTicket,
     adminAssignTicket,
     adminUnassignTicket,
-    staffUpdateTicket
+    staffUpdateTicket,
+    updateUserInformation
 }
