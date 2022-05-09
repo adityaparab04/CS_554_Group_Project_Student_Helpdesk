@@ -35,8 +35,8 @@ export default function EditTicket({TicketContent, TicketName, TicketID, isResol
   const handleResolveTicket = async  () => {
     try {
       await userResolveTicket(TicketID);
-      enqueueSnackbar("Ticket replied Successfully", {variant: 'success'});
-      setTicket('')
+      enqueueSnackbar("Ticket resolved Successfully", {variant: 'success'});
+      setTicket('');
     } catch (error) {
       enqueueSnackbar(error.message, {variant: 'error'});
     }
@@ -45,10 +45,12 @@ export default function EditTicket({TicketContent, TicketName, TicketID, isResol
   const handleSubmitReply = async () => {
     try {
       await userUpdateTicket(currentUser, TicketID, ticket);
+      enqueueSnackbar("Ticket replied Successfully", {variant: 'success'});
+      setTicket('');
     } catch (error) {
       enqueueSnackbar(error.message, {variant: 'error'});
     }
-    setOpen(false);
+    // setOpen(false);
   }
 
   return (

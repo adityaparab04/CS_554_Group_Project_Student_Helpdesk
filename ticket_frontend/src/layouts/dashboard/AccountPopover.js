@@ -13,23 +13,6 @@ import account from '../../_mocks_/account';
 import { doSignOut } from '../../firebase/FirebaseFunctions';
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-    linkTo: '/'
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-    linkTo: '#'
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-    linkTo: '#'
-  }
-];
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +21,24 @@ export default function AccountPopover() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
+
+  const MENU_OPTIONS = [
+    {
+      label: 'Home',
+      icon: 'eva:home-fill',
+      linkTo: '/'
+    },
+    {
+      label: 'Profile',
+      icon: 'eva:person-fill',
+      linkTo: `/profile/${currentUser.uid}`
+    },
+    {
+      label: 'Settings',
+      icon: 'eva:settings-2-fill',
+      linkTo: '/settings'
+    }
+  ];
 
   const handleOpen = () => {
     setOpen(true);
