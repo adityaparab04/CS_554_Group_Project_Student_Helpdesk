@@ -1,6 +1,6 @@
 import firebaseApp from "./Firebase";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut,reauthenticateWithCredential,updatePassword,GoogleAuthProvider,FacebookAuthProvider,signInWithPopup,sendPasswordResetEmail } from "firebase/auth";
-import { createUser, getUserInfo } from './DataBase';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut,reauthenticateWithCredential,updatePassword,GoogleAuthProvider,FacebookAuthProvider,signInWithPopup,sendPasswordResetEmail, EmailAuthProvider, updateEmail, EmailAuthCredential } from "firebase/auth";
+import { createUser, getUserInfo, updateUserInformation } from './DataBase';
 const auth = getAuth(firebaseApp);
 
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName) {
@@ -9,7 +9,7 @@ async function doCreateUserWithEmailAndPassword(email, password, firstName, last
     await createUserWithEmailAndPassword(auth, email, password);
     await createUser(auth.currentUser, firstName, lastName, displayName, email);
     updateProfile(auth.currentUser, { displayName: displayName });
-    console.log("User Created having UID:", auth.currentUser.uid);
+    console.log("User Created having UID:", auth.currentUser);
 }
 
 async function doSignInWithEmailAndPassword(email, password) {
@@ -24,13 +24,21 @@ async function doSignOut() {
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
-    let credential = (auth.EmailAuthProvider.credential,
+    let credential = EmailAuthProvider.credential(
         email,
         oldPassword
     );
     await reauthenticateWithCredential(auth.currentUser, credential);
     await updatePassword(auth.currentUser, newPassword);
     await doSignOut();
+}
+
+async function doUpdateUser(email, newEmail, newFirstName, newLastName, newDisplayName, password){
+    const credential = EmailAuthProvider.credential(email, password);
+    await reauthenticateWithCredential(auth.currentUser, credential);
+    await updateEmail(auth.currentUser, newEmail);
+    updateProfile(auth.currentUser, { displayName: newDisplayName });
+    await updateUserInformation(auth.currentUser.uid, newEmail, newFirstName, newLastName, newDisplayName);
 }
 
 async function doGoogleSignIn() {
@@ -44,16 +52,12 @@ async function doPasswordReset(email) {
     await sendPasswordResetEmail(auth, email);
 }
 
-async function doPasswordUpdate(password) {
-    await updatePassword(auth, password);
-}
-
 export {
     doCreateUserWithEmailAndPassword,
     doSignInWithEmailAndPassword,
     doSignOut,
     doChangePassword,
     doGoogleSignIn,
-    doPasswordUpdate,
-    doPasswordReset
+    doPasswordReset,
+    doUpdateUser
 }
