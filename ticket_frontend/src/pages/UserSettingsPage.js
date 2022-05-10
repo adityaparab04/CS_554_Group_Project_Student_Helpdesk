@@ -22,6 +22,7 @@ const UserSettingsPage = () => {
     const [ showCurrentPassword, setShowCurrentPassword ] = useState(false);
     const [ showNewPassword, setShowNewPassword ] = useState(false);
     const [ showConfirmNewPassword, setShowConfirmNewPassword ] = useState(false);
+    const navigate = useNavigate();
     const RegisterSchema = Yup.object().shape({
         email: Yup.string()
           .email('Email must be a valid email address')
@@ -69,12 +70,18 @@ const UserSettingsPage = () => {
         }
     }
 
-    return(
+    if(currentUser.providerId === 'password'){
+        return(
             <Page title="Client">
                 <Container maxWidth="xl">
+                <Grid container justifyContent='space-between'>
                     <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
                         <Logo />
                     </Box>
+                    <Box>
+                        <Button sx={{mt:2.5}} onClick={()=> navigate('/dashboard', ({replace: true}))}> Back to dashboard</Button>
+                    </Box>
+                </Grid>
                     <Box sx={{ pb: 5 }}>
                         <Typography
                             variant='h5'
@@ -207,7 +214,39 @@ const UserSettingsPage = () => {
                     </Grid>
                 </Container>
             </Page>
-    )
+        )
+    }else {
+        return(
+            <Page title="Client">
+                <Container maxWidth='xl'>
+                <Grid container justifyContent='space-between'>
+                    <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
+                        <Logo />
+                    </Box>
+                    <Box>
+                        <Button sx={{mt:2.5}} onClick={()=> navigate('/dashboard', ({replace: true}))}> Back to dashboard</Button>
+                    </Box>
+                </Grid>
+                <Card 
+                    sx={{ maxWidth: 700, mx: "auto", mt: 20, boxShadow: "2px 2px rgba(0, 0, 0, 0.2)" }} 
+                    variant='outlined' 
+                    raised='true'
+                >
+                    <CardContent>
+                        <Typography 
+                            variant='h5'
+                            component='h3'
+                        >
+                        You cannot Change Password because you have signed in through your Google Account..
+                        </Typography>
+                    </CardContent>
+                </Card>
+                </Container>
+            </Page>
+        )
+    }
+
+    
 
 }
 

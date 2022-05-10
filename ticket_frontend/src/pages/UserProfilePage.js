@@ -18,7 +18,7 @@ import { doUpdateUser } from 'src/firebase/FirebaseFunctions';
 const UserProfilePage = () => {
     const { currentUser } = React.useContext(AuthContext);
     const { enqueueSnackbar } = useSnackbar();
-    const [ showPassword, setShowPassword ] = useState(false);
+    // const [ showPassword, setShowPassword ] = useState(false);
     const RegisterSchema = Yup.object().shape({
         firstName: Yup.string()
           .min(2, 'Too Short!')
@@ -43,8 +43,9 @@ const UserProfilePage = () => {
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
           displayName: currentUser.displayName,
+          role: currentUser.role,
+          phoneNumber: currentUser.phoneNumber,
           email: currentUser.email,
-          password: ''
         },
         validationSchema: RegisterSchema,
     });
@@ -54,8 +55,8 @@ const UserProfilePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-            console.log(oldEmail, values.email, values.password)
-            await doUpdateUser(oldEmail, values.email, values.firstName, values.lastName, values.displayName, values.password);
+            // console.log(oldEmail, values.email, values.password)
+            await doUpdateUser(values.firstName, values.lastName, values.displayName, values.phoneNumber);
             setOldEmail(values.email);
             enqueueSnackbar("User information updated successfully", {variant: 'success'});
             // navigate('/dashboard', { replace: true });
@@ -66,9 +67,14 @@ const UserProfilePage = () => {
     return (
         <Page title="Client">
             <Container maxWidth="xl">
+            <Grid container justifyContent='space-between'>
                 <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
                     <Logo />
                 </Box>
+                <Box>
+                    <Button sx={{mt:2.5}} onClick={()=> navigate('/dashboard', ({replace: true}))}> Back to dashboard</Button>
+                </Box>
+            </Grid>
                 <Box sx={{ pb: 5 }}>
                     <Typography
                         variant='h5'
@@ -123,7 +129,7 @@ const UserProfilePage = () => {
                                         helperText={touched.lastName && errors.lastName}
                                     />
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={6}>
                                     <TextField
                                         fullWidth
                                         label="Dislay Name"
@@ -135,8 +141,34 @@ const UserProfilePage = () => {
                                         helperText={touched.displayName && errors.displayName}
                                     />
                                     </Grid>
+                                    <Grid item xs={6}>
+                                    <TextField
+                                        disabled
+                                        fullWidth
+                                        label="Role"
+                                        {...getFieldProps('role')}
+                                        id='role'
+                                        onChange={handleChange}
+                                        value={values.role}
+                                        error={Boolean(touched.role && errors.role)}
+                                        helperText={touched.role && errors.role}
+                                    />
+                                    </Grid>
                                     <Grid item xs={12}>
                                     <TextField
+                                        fullWidth
+                                        label="Phone Number"
+                                        {...getFieldProps('phoneNumber')}
+                                        id='phoneNumber'
+                                        onChange={handleChange}
+                                        value={values.phoneNumber}
+                                        error={Boolean(touched.phoneNumber && errors.phoneNumber)}
+                                        helperText={touched.phoneNumber && errors.phoneNumber}
+                                    />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                    <TextField
+                                        disabled
                                         fullWidth
                                         label="Email"
                                         {...getFieldProps('email')}
@@ -145,28 +177,6 @@ const UserProfilePage = () => {
                                         value={values.email}
                                         error={Boolean(touched.email && errors.email)}
                                         helperText={touched.email && errors.email}
-                                    />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Enter password to update profile"
-                                        {...getFieldProps('password')}
-                                        id='password'
-                                        type={showPassword ? 'text' : 'password'}
-                                        onChange={handleChange}
-                                        value={values.password}
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                                                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            )
-                                        }}
-                                        error={Boolean(touched.password && errors.password)}
-                                        helperText={touched.password && errors.password}
                                     />
                                     </Grid>
                                 </Grid>

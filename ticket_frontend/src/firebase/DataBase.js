@@ -176,14 +176,13 @@ async function listTicketsByClientID(clientID){
     return tickets;
 }
 
-async function updateUserInformation(userId, newEmail, newFirstName, newLastName, newDisplayName){
+async function updateUserInformation(userId, newFirstName, newLastName, newDisplayName, newPhoneNumber){
     const getUser = doc(db, 'Users', userId);
     const updatedUser = await updateDoc(getUser, {
         firstName: newFirstName,
         lastName: newLastName,
         displayName: newDisplayName,
-        email: newEmail,
-
+        phoneNumber: newPhoneNumber,
     });
     return updatedUser;
 }
