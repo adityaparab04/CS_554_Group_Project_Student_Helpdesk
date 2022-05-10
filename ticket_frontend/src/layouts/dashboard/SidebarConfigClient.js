@@ -10,6 +10,11 @@ const sidebarConfigClient = [
     path: '/dashboard/client',
     icon: getIcon('mdi:account-tie-voice')
   },
+  {
+    title: 'Student Help',
+    path: '/dashboard/mainform',
+    icon: getIcon('mdi:account-tie')
+  }
 ];
 
 export default sidebarConfigClient;

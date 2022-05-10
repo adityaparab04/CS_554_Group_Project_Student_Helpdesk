@@ -82,7 +82,7 @@ async function userUpdateTicket(currentUser, ticketID, newText){
     // console.log(currentUser.displayName);
     const getTicket = doc(db, "Tickets", ticketID);
     const comment = {
-        "author": currentUser.displayName, 
+        author: currentUser.firstName + ' '+currentUser.lastName,
         text: newText, 
         Time: Date().toString()
     }
@@ -97,7 +97,7 @@ async function userAddTicket(currentUser, title, text){
     const docRef = await addDoc(collection(db, "Tickets"), {
         ClientID: currentUser.uid,
         StaffID: "",
-        TicketContent: [{author: currentUser.displayName, text: text, Time: Date().toString()}],
+        TicketContent: [{author: currentUser.firstName + ' '+currentUser.lastName, text: text, Time: Date().toString()}],
         TicketTitle: title,
         isAssigned: false,
         isResolved: false,
@@ -162,7 +162,7 @@ async function listTicketsByStaffID(staffID){
 }
 
 async function listTicketsByClientID(clientID){
-    const q = query(collection(db, "Tickets"), where("CLientID", "==", clientID));
+    const q = query(collection(db, "Tickets"), where("ClientID", "==", clientID));
     const clientTickets = await getDocs(q);
     let tickets = [];
     clientTickets.forEach((doc) => {

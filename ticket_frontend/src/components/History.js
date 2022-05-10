@@ -30,7 +30,7 @@ export default function History({content}) {
             <TimelineDot variant="outlined" color="primary" />
             <TimelineConnector />
           </TimelineSeparator>
-          <TimelineContent><Card sx={{backgroundColor: 'primary.lighter',}} >
+          <TimelineContent><Card sx={{backgroundColor: 'primary.light',}} >
             <CardContent>
             <Typography sx={{ color: 'white'}} paragraph variant='body'>{item.text}</Typography>
             </CardContent>

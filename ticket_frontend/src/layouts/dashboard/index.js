@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import DashboardNavbar from './DashboardNavbar';
 import DashboardSidebar from './DashboardSidebar';
 import { AuthContext } from '../../firebase/Auth';
+import ChatWindow from 'src/components/ChatWindow';
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,7 @@ export default function DashboardLayout() {
         <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
         <MainStyle>
           <Outlet />
+          <ChatWindow />
         </MainStyle>
       </RootStyle>
     );
