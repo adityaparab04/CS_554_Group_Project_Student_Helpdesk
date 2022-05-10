@@ -59,6 +59,9 @@ const RegisterPage = () => {
     email: Yup.string()
       .email('Email must be a valid email address')
       .required('Email is required'),
+    phoneNumber: Yup.number()
+      .min(9, 'Invalid Number!')
+      .max(11, 'Invalid Number!'),
     password: Yup.string().min(6, 'Too Short!')
       .required('Password is required'),
     confirmPassword: Yup.string()
@@ -77,7 +80,8 @@ const RegisterPage = () => {
       lastName: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      phoneNumber: ''
     },
     validationSchema: RegisterSchema,
   });
@@ -95,7 +99,8 @@ const RegisterPage = () => {
         values.email,
         values.confirmPassword,
         values.firstName,
-        values.lastName
+        values.lastName,
+        values.phoneNumber
       );
       navigate('/login', { replace: true })
     } catch (error) {
@@ -168,6 +173,17 @@ const RegisterPage = () => {
                   value={values.email}
                   error={Boolean(touched.email && errors.email)}
                   helperText={touched.email && errors.email}
+                />
+                <TextField
+                  fullWidth
+                  label="Phone Number"
+                  {...getFieldProps('phoneNumber')}
+                  id='phoneNumber'
+                  type='number'
+                  onChange={handleChange}
+                  value={values.phoneNumber}
+                  error={Boolean(touched.phoneNumber && errors.phoneNumber)}
+                  helperText={touched.phoneNumber && errors.phoneNumber}
                 />
                 <TextField
                   fullWidth

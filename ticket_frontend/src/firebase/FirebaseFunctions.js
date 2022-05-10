@@ -3,13 +3,12 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, up
 import { createUser, getUserInfo, updateUserInformation } from './DataBase';
 const auth = getAuth(firebaseApp);
 
-async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName) {
+async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber) {
     let displayName = firstName + ' ' + lastName
-    // console.log(firstName, lastName, displayName);
     await createUserWithEmailAndPassword(auth, email, password);
-    await createUser(auth.currentUser, firstName, lastName, displayName, email);
+    await createUser(auth.currentUser, firstName, lastName, displayName, phoneNumber);
     updateProfile(auth.currentUser, { displayName: displayName });
-    console.log("User Created having UID:", auth.currentUser);
+    console.log(auth.currentUser);
 }
 
 async function doSignInWithEmailAndPassword(email, password) {
@@ -43,9 +42,15 @@ async function doUpdateUser(email, newEmail, newFirstName, newLastName, newDispl
 
 async function doGoogleSignIn() {
     let socialProvider = null;
-        socialProvider = new GoogleAuthProvider(auth);
-        console.log(socialProvider);
+    socialProvider = new GoogleAuthProvider(auth);
     await signInWithPopup(auth, socialProvider);
+    console.log(auth.currentUser);
+    const user = auth.currentUser;
+    const displayName = user.displayName;
+    const name = displayName.split(' ');
+    const firstName = name[0];
+    const lastName = name[1];
+    await createUser(auth.currentUser, firstName, lastName, displayName, auth.currentUser.phoneNumber);
 }
 
 async function doPasswordReset(email) {
