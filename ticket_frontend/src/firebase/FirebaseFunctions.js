@@ -32,12 +32,9 @@ async function doChangePassword(email, oldPassword, newPassword) {
     await doSignOut();
 }
 
-async function doUpdateUser(email, newEmail, newFirstName, newLastName, newDisplayName, password){
-    const credential = EmailAuthProvider.credential(email, password);
-    await reauthenticateWithCredential(auth.currentUser, credential);
-    await updateEmail(auth.currentUser, newEmail);
+async function doUpdateUser(newFirstName, newLastName, newDisplayName, newPhoneNumber){
     updateProfile(auth.currentUser, { displayName: newDisplayName });
-    await updateUserInformation(auth.currentUser.uid, newEmail, newFirstName, newLastName, newDisplayName);
+    await updateUserInformation(auth.currentUser.uid, newFirstName, newLastName, newDisplayName, newPhoneNumber);
 }
 
 async function doGoogleSignIn() {
