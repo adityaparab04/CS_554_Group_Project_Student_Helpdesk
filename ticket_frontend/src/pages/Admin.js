@@ -8,6 +8,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { getFirestore } from 'firebase/firestore';
 import firebaseApp from '../firebase/Firebase'; 
 import {  query,collection} from "firebase/firestore"; 
+import ListofUser from 'src/components/ListofUser';
 // ----------------------------------------------------------------------
 
 export default function Admin() {
@@ -31,6 +32,9 @@ export default function Admin() {
         <Grid container spacing={3}>
           <Grid item lg={10}>
             <ListofTickets data={sorted}/>
+          </Grid>
+          <Grid item lg={10}>
+            <ListofUser />
           </Grid>
         </Grid>
       </Container>

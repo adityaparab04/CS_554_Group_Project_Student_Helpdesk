@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import { formatDistance } from 'date-fns';
 import { Link as RouterLink } from 'react-router-dom';
@@ -15,8 +16,8 @@ import EditTicket from './EditTicket';
 // ----------------------------------------------------------------------
 
 
-function TicketItem({ticket}) {
-  const {TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved} = ticket.data;
+function TicketItem({ ticket }) {
+  const { TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved } = ticket.data;
   const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
@@ -37,32 +38,48 @@ function TicketItem({ticket}) {
         </Typography>
       </Box>
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, width: 100, color: 'text.secondary' }}>
-        
-      {formatDistance(Date.parse(TicketContent[TicketContent.length - 1].Time), new Date())}
+
+        {formatDistance(Date.parse(TicketContent[TicketContent.length - 1].Time), new Date())}
       </Typography>
 
-      <EditTicket TicketContent={TicketContent} TicketName={TicketTitle} TicketID={TicketID} isResolved={isResolved}/>
+      <EditTicket TicketContent={TicketContent} TicketName={TicketTitle} TicketID={TicketID} isResolved={isResolved} />
 
-      
+
     </Stack>
   );
 }
 
-export default function Mytickets({data}) {
+export default function Mytickets({ data }) {
+  const [ispreview, setIspreview] = React.useState(true);
   if (!data) {
     return (<div>Loading...</div>);
-  }
-  return (
-    <Card>
-      <CardHeader title="My tickets" />
+  } else {
+    const display = ispreview ? data.slice(0, 5) : data;
+    return (
 
-      <Scrollbar>
+      <Card>
+        <CardHeader title="My tickets" />
+
+
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-        {data.map((ticket,index) => (
+          {display.map((ticket, index) => (
             <TicketItem key={index} ticket={ticket} />
           ))}
         </Stack>
-      </Scrollbar>
-    </Card>
-  );
+        <Divider />
+
+        <Box sx={{ p: 2, textAlign: 'right' }}>
+          <Button
+            onClick={() => setIspreview(!ispreview)}
+            size="small"
+            color="inherit"
+            endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
+          >
+            {ispreview ? 'Show more' : 'Show less'}
+          </Button>
+        </Box>
+      </Card>
+    );
+  }
+
 }

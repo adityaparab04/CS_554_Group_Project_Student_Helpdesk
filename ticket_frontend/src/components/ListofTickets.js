@@ -16,8 +16,8 @@ import AssignDialog from './AssignDialog';
 // ----------------------------------------------------------------------
 
 
-function TicketItem({ticket}) {
-  const {TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved} = ticket.data;
+function TicketItem({ ticket }) {
+  const { TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved } = ticket.data;
   const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
@@ -38,35 +38,50 @@ function TicketItem({ticket}) {
         </Typography>
       </Box>
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, width: 100, color: 'text.secondary' }}>
-        
+
         {formatDistance(Date.parse(TicketContent[TicketContent.length - 1].Time), new Date())}
       </Typography>
 
-      <AssignDialog TicketTitle={TicketTitle} TicketID={TicketID} isAssigned={isAssigned} isResolved={isResolved}/>
+      <AssignDialog TicketTitle={TicketTitle} TicketID={TicketID} isAssigned={isAssigned} isResolved={isResolved} />
 
-      
+
     </Stack>
   );
 }
 
 
-export default function ListofTickets({data}) {
+export default function ListofTickets({ data }) {
+  const [ispreview, setIspreview] = React.useState(true);
   if (!data) {
     return (<div>Loading...</div>);
-  }else{
+  } else {
+    const display = ispreview ? data.slice(0, 5) : data;
+
     return (
       <Card>
         <CardHeader title="All tickets" />
-  
-        <Scrollbar>
-          <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
-            {data.map((ticket,index) => (
-              <TicketItem key={index} ticket={ticket} />
-            ))}
-          </Stack>
-        </Scrollbar>
+
+
+        <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
+          {display.map((ticket, index) => (
+            <TicketItem key={index} ticket={ticket} />
+          ))}
+        </Stack>
+
+        <Divider />
+
+        <Box sx={{ p: 2, textAlign: 'right' }}>
+          <Button
+            onClick={() => setIspreview(!ispreview)}
+            size="small"
+            color="inherit"
+            endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
+          >
+            {ispreview ? 'Show more' : 'Show less'}
+          </Button>
+        </Box>
       </Card>
     );
   }
-  
+
 }
