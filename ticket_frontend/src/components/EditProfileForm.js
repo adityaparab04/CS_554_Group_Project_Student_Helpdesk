@@ -64,6 +64,9 @@ const EditProfile = () => {
     }
     return (
         <Container maxWidth="xl">
+            <Box sx={{mb: 5}}>
+                <Typography variant='h4' component='h2'>Edit your profile..</Typography>
+            </Box>
                 <Grid
                     container
                     justifyContent="space-evenly"

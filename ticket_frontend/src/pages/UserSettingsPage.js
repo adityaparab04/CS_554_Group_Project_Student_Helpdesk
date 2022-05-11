@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 //material ui
-import { Avatar, Box, Button, Container, Drawer, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Drawer, Grid, List, ListItem, ListItemText, ListItemIcon, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
+import EditIcon from '@mui/icons-material/Edit';
+import EmailIcon from '@mui/icons-material/Email';
+import PasswordIcon from '@mui/icons-material/Password';
 
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
@@ -32,6 +35,12 @@ const useStyles = makeStyles({
     },
     root: {
         display: 'flex'
+    },
+    active: {
+        background: 'rgba(0, 171, 85, 0.08)'
+    },
+    listItemText:{
+        fontSize:'0.2em',
     }
 });
 
@@ -53,7 +62,7 @@ const UserSettingsPage = () => {
     const navigate = useNavigate();
     const classes = useStyles();
 
-    const handleProfileForm = () => {
+    const handleProfileEditForm = () => {
         setEditProfileForm(true);
         setChangePasswordForm(false);
         setChangeEmailForm(false);
@@ -80,31 +89,36 @@ const UserSettingsPage = () => {
                 anchor='left'
                 classes={{paper: classes.drawerPaper}}
             >
-            <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-                <Logo />
-            </Box>
-            <Box sx={{ mb: 5, mx: 2.5 }}>
-                <AccountStyle>
-                    <Avatar src={account.photoURL} alt="photoURL" />
-                    <Box sx={{ ml: 2 }}>
-                        <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                            {currentUser.firstName} {currentUser.lastName}
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            {currentUser.role}
-                        </Typography>
-                    </Box>
-                </AccountStyle>
-            </Box>
-            <Box>
-                <Button fullWidth onClick={handleProfileForm}>Edit Profile</Button>
-            </Box>
-            <Box>
-                <Button fullWidth onClick={handleChangeEmailForm}>Update Email</Button>
-            </Box>
-            <Box>
-                <Button fullWidth onClick={handleChangePasswordForm}>Change Your Password</Button>
-            </Box>
+                <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
+                    <Logo />
+                </Box>
+                <Box sx={{ mb: 5, mx: 2.5 }}>
+                    <AccountStyle>
+                        <Avatar src={account.photoURL} alt="photoURL" />
+                        <Box sx={{ ml: 2 }}>
+                            <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+                                {currentUser.firstName} {currentUser.lastName}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                {currentUser.role}
+                            </Typography>
+                        </Box>
+                    </AccountStyle>
+                </Box>
+                <List>
+                    <ListItem button onClick={handleProfileEditForm} className={editProfileForm ? classes.active : null}>
+                        <ListItemIcon><EditIcon fontSize='small'/></ListItemIcon>
+                        <ListItemText secondary>Edit Profile</ListItemText>
+                    </ListItem>
+                    <ListItem button onClick={handleChangeEmailForm} className={changeEmailForm ? classes.active : null}>
+                        <ListItemIcon><EmailIcon fontSize='small'/></ListItemIcon>
+                        <ListItemText secondary>Change Email</ListItemText>
+                    </ListItem>
+                    <ListItem button onClick={handleChangePasswordForm} className={changePasswordForm ? classes.active : null}>
+                        <ListItemIcon><PasswordIcon fontSize='small'/></ListItemIcon>
+                        <ListItemText secondary>Change Password</ListItemText>
+                    </ListItem>
+                </List>
             </Drawer>
             <div className={classes.page}>
             <Container maxWidth="xl">
@@ -114,9 +128,6 @@ const UserSettingsPage = () => {
                     alignItems="flex-end"
                 >
                     <Button sx={{mt:2.5}} onClick={()=> navigate('/dashboard', ({replace: true}))}> Back to dashboard</Button>
-                </Box>
-                <Box sx={{mt:2}}>
-                    <Typography variant='h4' component='h2'>Update your profile..</Typography>
                 </Box>
                 <Box sx={{mt:10}}>
                 { editProfileForm && <EditProfile/>}
