@@ -187,6 +187,14 @@ async function updateUserInformation(userId, newFirstName, newLastName, newDispl
     return updatedUser;
 }
 
+async function updateUserEmail(userId, newEmail){
+    const getUser = doc(db, 'Users', userId);
+    const updatedUser = await updateDoc(getUser, {
+        email: newEmail,
+    });
+    return updatedUser;
+}
+
 export {
     createUser,
     getAllClients,
@@ -203,5 +211,6 @@ export {
     adminAssignTicket,
     adminUnassignTicket,
     staffUpdateTicket,
-    updateUserInformation
+    updateUserInformation,
+    updateUserEmail
 }
