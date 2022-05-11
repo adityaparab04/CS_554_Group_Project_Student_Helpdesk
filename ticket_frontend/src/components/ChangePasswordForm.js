@@ -74,6 +74,9 @@ const ChangePassword = () => {
     if(currentUser.providerId === 'password'){
         return(
             <Container maxWidth="xl">
+            <Box sx={{mb:5}}>
+                <Typography variant='h4' component='h2'>Change your password..</Typography>
+            </Box>
             <Grid container justifyContent="space-evenly">
                     <Card sx={{ maxWidth: 700 }} margin='auto' variant='outlined'>
                         <CardContent>
