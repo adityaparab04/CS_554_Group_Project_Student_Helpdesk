@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Button, Container, Typography, Stack, TextField, IconButton, InputAdornment, Divider } from '@mui/material';
+import { Box, Card, Link, Button, Container, Typography, Stack, TextField, IconButton, InputAdornment, Input, Divider } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 //formik
 import * as Yup from 'yup';
@@ -14,6 +14,7 @@ import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import { AuthContext } from '../firebase/Auth';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
+import { uploadImage } from 'src/firebase/Storage';
 import { useSnackbar } from 'notistack';
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -46,6 +47,13 @@ const RegisterPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [ selectImage, setSelectedImage ] = useState(null);
+
+  const handleSelectImage = (e) => {
+      if(e.target.files[0]){
+          setSelectedImage(e.target.files[0]);
+      }
+  }
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -88,11 +96,14 @@ const RegisterPage = () => {
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, handleChange, values } = formik;
 
   // console.log('Form values', values.email);
-
+  let url = null;
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (values.password !== values.confirmPassword) {
       return false;
+    }
+    if(selectImage){
+      url = await uploadImage(selectImage)
     }
     try {
       await doCreateUserWithEmailAndPassword(
@@ -100,7 +111,8 @@ const RegisterPage = () => {
         values.confirmPassword,
         values.firstName,
         values.lastName,
-        values.phoneNumber
+        values.phoneNumber,
+        url
       );
       navigate('/login', { replace: true })
     } catch (error) {
@@ -225,6 +237,9 @@ const RegisterPage = () => {
                   error={Boolean(touched.confirmPassword && errors.confirmPassword)}
                   helperText={touched.confirmPassword && errors.confirmPassword}
                 />
+                <label htmlFor="contained-button-file">
+                  <Input fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage}/>
+                </label>
                 <LoadingButton
                   fullWidth
                   size="large"

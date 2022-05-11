@@ -3,11 +3,11 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, up
 import { createUser, getUserInfo, updateUserEmail, updateUserInformation } from './DataBase';
 const auth = getAuth(firebaseApp);
 
-async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber) {
+async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url) {
     let displayName = firstName + ' ' + lastName
     await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(auth.currentUser, { displayName: displayName, photoURL: url });
     await createUser(auth.currentUser, firstName, lastName, displayName, phoneNumber);
-    updateProfile(auth.currentUser, { displayName: displayName });
     console.log(auth.currentUser);
 }
 
