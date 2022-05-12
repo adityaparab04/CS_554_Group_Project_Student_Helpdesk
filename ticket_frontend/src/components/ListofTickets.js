@@ -11,6 +11,7 @@ import { mockImgCover } from '../utils/mockImages';
 import Scrollbar from './Scrollbar';
 import Iconify from './Iconify';
 import AssignDialog from './AssignDialog';
+import TicketDetails from './TicketDetails';
 
 
 // ----------------------------------------------------------------------
@@ -28,11 +29,7 @@ function TicketItem({ ticket }) {
         sx={{ width: 48, height: 48, borderRadius: 1.5 }}
       /> */}
       <Box sx={{ width: 800 }}>
-        <Link to="#" color="inherit" underline="hover" component={RouterLink}>
-          <Typography variant="subtitle2" noWrap>
-            {TicketTitle}
-          </Typography>
-        </Link>
+        <TicketDetails TicketContent={TicketContent} TicketTitle={TicketTitle}  />
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
           {TicketContent[TicketContent.length - 1].author}: {TicketContent[TicketContent.length - 1].text}
         </Typography>
