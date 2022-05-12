@@ -24,7 +24,7 @@ export default function ListofUser() {
 });
     return (
         <TableContainer component={Card}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} p={1}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} p={2}>
                 <Typography variant="h5" gutterBottom>
                     User
                 </Typography>

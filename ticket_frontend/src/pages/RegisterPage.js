@@ -47,12 +47,12 @@ const RegisterPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [ selectImage, setSelectedImage ] = useState(null);
+  const [selectImage, setSelectedImage] = useState(null);
 
   const handleSelectImage = (e) => {
-      if(e.target.files[0]){
-          setSelectedImage(e.target.files[0]);
-      }
+    if (e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
   }
 
   const RegisterSchema = Yup.object().shape({
@@ -102,7 +102,7 @@ const RegisterPage = () => {
     if (values.password !== values.confirmPassword) {
       return false;
     }
-    if(selectImage){
+    if (selectImage) {
       url = await uploadImage(selectImage)
     }
     try {
@@ -112,14 +112,15 @@ const RegisterPage = () => {
         values.firstName,
         values.lastName,
         values.phoneNumber,
-        url
+        url,
+        'client'
       );
       navigate('/login', { replace: true })
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
     }
   }
-  
+
 
   // if (currentUser) {
   //   console.log(currentUser);
@@ -238,7 +239,10 @@ const RegisterPage = () => {
                   helperText={touched.confirmPassword && errors.confirmPassword}
                 />
                 <label htmlFor="contained-button-file">
-                  <Input fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage}/>
+                  <Input sx={{display: 'none'}} fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage} />
+                  <Button variant="contained" component="span">
+                    Upload
+                  </Button>
                 </label>
                 <LoadingButton
                   fullWidth

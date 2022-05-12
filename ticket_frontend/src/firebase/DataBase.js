@@ -4,14 +4,14 @@ import firebaseApp from './Firebase';
 import { collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, arrayUnion, arrayRemove  } from "firebase/firestore"; 
 const db = getFirestore(firebaseApp);
 
-async function createUser(user, firstName, lastName, displayName, phoneNumber){
+async function createUser(user, firstName, lastName, displayName, phoneNumber, role){
     const newUser = await setDoc(doc(db, 'Users', user.uid), {
         uid: user.uid,
         firstName: firstName,
         lastName: lastName,
         displayName: displayName,
         email: user.email,
-        role: 'client',
+        role: role,
         profilePhoto: user.photoURL,
         phoneNumber: phoneNumber,
         providerId: user.providerData[0].providerId

@@ -11,6 +11,7 @@ import { useSnackbar } from 'notistack';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import DialogTitle from '@mui/material/DialogTitle';
+import { doCreateUserWithEmailAndPassword } from 'src/firebase/FirebaseFunctions';
 
 export default function AddUser() {
     const { currentUser } = React.useContext(AuthContext);
@@ -19,7 +20,7 @@ export default function AddUser() {
     const [ lastName, setLastName ] = React.useState('');
     const [ displayName, setDisplayName ] = React.useState('');
     const [ phoneNumber, setPhoneNumber ] = React.useState('');
-    const [role, setRole] = React.useState('');
+    const [role, setRole] = React.useState('staff');
     const [email, setEmail] = React.useState('');
     const RegisterSchema = Yup.object().shape({
         firstName: Yup.string()
@@ -55,10 +56,10 @@ export default function AddUser() {
             setFirstName(values.firstName);
             setLastName(values.lastName);
             setDisplayName(values.displayName);
-            setRole(values.role);
             setEmail(values.email);
-            // await doUpdateUser(values.firstName, values.lastName, values.displayName, values.phoneNumber);
-             enqueueSnackbar("User added successfully", {variant: 'success'});
+            await doCreateUserWithEmailAndPassword(values.email, 123456, values.firstName, values.lastName, '', '', 'staff');
+            enqueueSnackbar("User added successfully", {variant: 'success'});
+            setOpen(false);
         }catch(error){
             enqueueSnackbar(error.message, { variant: 'error' });
         }
@@ -75,9 +76,9 @@ export default function AddUser() {
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen} >New User</Button>
+      <Button variant="contained" onClick={handleClickOpen} >New Staff</Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add New User</DialogTitle>
+        <DialogTitle>Add New Staff</DialogTitle>
         <DialogContent >
             <Box sx={{pt:1}}>
         <FormikProvider value={formik}>
@@ -114,18 +115,17 @@ export default function AddUser() {
                                     </Grid>
                                     <Grid item xs={6}>
                                     <TextField
+                                    disabled
                                         fullWidth
-                                        label="Dislay Name"
-                                        {...getFieldProps('displayName')}
-                                        id='displayName'
+                                        label="Password"
+                                        id='password'
                                         onChange={handleChange}
-                                        value={values.displayName}
-                                        error={Boolean(touched.displayName && errors.displayName)}
-                                        helperText={touched.displayName && errors.displayName}
+                                        value='123456'
                                     />
                                     </Grid>
                                     <Grid item xs={6}>
                                     <TextField
+                                    disabled
                                         fullWidth
                                         label="Role"
                                         {...getFieldProps('role')}
@@ -163,7 +163,7 @@ export default function AddUser() {
         
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
+          <Button onClick={handleSubmit}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>

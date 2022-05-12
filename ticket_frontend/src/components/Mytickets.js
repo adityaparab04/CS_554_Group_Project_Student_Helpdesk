@@ -58,8 +58,11 @@ export default function Mytickets({ data }) {
     return (
 
       <Card>
-        <CardHeader title="My tickets" />
-
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} p={2}>
+                <Typography variant="h5" gutterBottom>
+                My tickets
+                </Typography>
+            </Stack>
 
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
           {display.map((ticket, index) => (

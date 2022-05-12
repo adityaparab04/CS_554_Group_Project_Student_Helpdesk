@@ -1,15 +1,19 @@
 import firebaseApp from "./Firebase";
+import firebaseApp2 from "./Firebase2";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut,reauthenticateWithCredential,updatePassword,GoogleAuthProvider,FacebookAuthProvider,signInWithPopup,sendPasswordResetEmail, EmailAuthProvider, updateEmail, EmailAuthCredential } from "firebase/auth";
 import { createUser, getUserInfo, updateUserEmail, updateUserInformation } from './DataBase';
 const auth = getAuth(firebaseApp);
-
-async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url) {
+const auth2 = getAuth(firebaseApp2);
+async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url, role) {
     let displayName = firstName + ' ' + lastName
-    await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(auth.currentUser, { displayName: displayName, photoURL: url });
-    await createUser(auth.currentUser, firstName, lastName, displayName, phoneNumber);
+    await createUserWithEmailAndPassword(auth2, email, password);
+    await updateProfile(auth2.currentUser, { displayName: displayName, photoURL: url });
+    await createUser(auth2.currentUser, firstName, lastName, displayName, phoneNumber, role);
+    await signOut(auth2);
     console.log(auth.currentUser);
 }
+
+
 
 async function doSignInWithEmailAndPassword(email, password) {
     await signInWithEmailAndPassword(auth, email, password);
@@ -58,7 +62,7 @@ async function doGoogleSignIn() {
     const name = displayName.split(' ');
     const firstName = name[0];
     const lastName = name[1];
-    await createUser(auth.currentUser, firstName, lastName, displayName, auth.currentUser.phoneNumber);
+    await createUser(auth.currentUser, firstName, lastName, displayName, auth.currentUser.phoneNumber, 'client');
 }
 
 async function doPasswordReset(email) {

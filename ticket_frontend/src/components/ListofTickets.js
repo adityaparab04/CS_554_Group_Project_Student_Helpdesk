@@ -56,7 +56,11 @@ export default function ListofTickets({ data }) {
 
     return (
       <Card>
-        <CardHeader title="All tickets" />
+         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} p={2}>
+                <Typography variant="h5" gutterBottom>
+                    All Tickets
+                </Typography>
+            </Stack>
 
 
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>

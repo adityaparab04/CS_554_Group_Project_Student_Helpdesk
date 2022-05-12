@@ -56,8 +56,11 @@ export default function StaffTickets({ data }) {
     const display = ispreview ? data.slice(0, 5) : data;
     return (
       <Card>
-        <CardHeader title="Your Assigned Tickets" />
-
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} p={2}>
+                <Typography variant="h5" gutterBottom>
+                Your Assigned Tickets
+                </Typography>
+            </Stack>
 
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
           {display.map((ticket, index) => (

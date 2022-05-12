@@ -27,11 +27,13 @@ export default function Router() {
       element: currentUser? <DashboardLayout /> : <Navigate to="/login" />,
       children: [
         { path: '/dashboard', element: <Navigate to="client" /> },
-        { path: 'admin', element: (currentUser && currentUser.role === 'admin') ? <Admin /> : <Navigate to="/client" /> },
+        { path: 'admin', element: (currentUser && currentUser.role === 'admin') ? <Admin /> :  <Navigate to="/404" /> },
         { path: 'client', element: <Client /> },
+        // { path: 'client', element: (currentUser && currentUser.role === 'client') ? <Client /> :  <Navigate to="/404" /> },
         { path: 'mainform', element: <MainChatPage /> },
         { path: 'chatroom/:roomId', element: <ChatRoomPage /> },
-        { path: 'staff', element: (currentUser && (currentUser.role === 'staff' || currentUser.role === 'admin') ) ? <Staff /> : <Navigate to="/client" /> },
+        // { path: 'staff', element: (currentUser && (currentUser.role === 'staff') ) ? <Staff /> :  <Navigate to="/404" /> },
+        { path: 'staff', element: (currentUser && (currentUser.role === 'staff' || currentUser.role === 'admin') ) ? <Staff /> :  <Navigate to="/404" /> },
         { path: '*', element: <Navigate to="/404" /> }
      
       ]
