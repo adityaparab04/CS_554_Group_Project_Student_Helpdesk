@@ -1,7 +1,7 @@
 import firebaseApp from "./Firebase";
 import firebaseApp2 from "./Firebase2";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut,reauthenticateWithCredential,updatePassword,GoogleAuthProvider,FacebookAuthProvider,signInWithPopup,sendPasswordResetEmail, EmailAuthProvider, updateEmail, EmailAuthCredential } from "firebase/auth";
-import { createUser, getUserInfo, updateUserEmail, updateUserInformation } from './DataBase';
+import { createUser, getUserInfo, updateUserEmail, updateUserInformation, updateProfilePhoto } from './DataBase';
 const auth = getAuth(firebaseApp);
 const auth2 = getAuth(firebaseApp2);
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url, role) {
@@ -11,6 +11,12 @@ async function doCreateUserWithEmailAndPassword(email, password, firstName, last
     await createUser(auth2.currentUser, firstName, lastName, displayName, phoneNumber, role);
     await signOut(auth2);
     console.log(auth.currentUser);
+}
+
+async function updatePhotoUrl(url){
+    await updateProfile(auth.currentUser, { photoURL: url });
+    await updateProfilePhoto(auth.currentUser.uid, url);
+    console.log('profile pic changed in auth');
 }
 
 
@@ -77,5 +83,6 @@ export {
     doChangeEmail,
     doGoogleSignIn,
     doPasswordReset,
-    doUpdateUser
+    doUpdateUser,
+    updatePhotoUrl
 }

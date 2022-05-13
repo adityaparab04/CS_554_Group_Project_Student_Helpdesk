@@ -195,6 +195,15 @@ async function updateUserEmail(userId, newEmail){
     return updatedUser;
 }
 
+async function updateProfilePhoto(userId, url){
+    const getUser = doc(db, 'Users', userId);
+    const updatedUser = await updateDoc(getUser, {
+        profilePhoto: url,
+    });
+    console.log('Profile Pic changed in Db as well')
+    return updatedUser;
+}
+
 export {
     createUser,
     getAllClients,
@@ -212,5 +221,6 @@ export {
     adminUnassignTicket,
     staffUpdateTicket,
     updateUserInformation,
-    updateUserEmail
+    updateUserEmail,
+    updateProfilePhoto
 }

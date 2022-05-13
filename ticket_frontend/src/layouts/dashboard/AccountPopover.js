@@ -29,11 +29,6 @@ export default function AccountPopover() {
       linkTo: '/'
     },
     {
-      label: 'Profile',
-      icon: 'eva:person-fill',
-      linkTo: `/profile/${currentUser.uid}`
-    },
-    {
       label: 'Settings',
       icon: 'eva:settings-2-fill',
       linkTo: '/settings'
