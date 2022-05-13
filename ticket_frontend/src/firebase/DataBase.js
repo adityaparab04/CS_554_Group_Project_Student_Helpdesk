@@ -248,6 +248,6 @@ export {
     updateUserInformation,
     updateUserEmail,
     updateProfilePhoto,
-    removeStaffById
+    removeStaffById,
     deleteUserProfile
 }
