@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { getFirestore } from "firebase/firestore";
 import firebaseApp from './Firebase';
-import { collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, arrayUnion, arrayRemove  } from "firebase/firestore"; 
+import { collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, arrayUnion, arrayRemove ,deleteDoc  } from "firebase/firestore"; 
 const db = getFirestore(firebaseApp);
 
 async function createUser(user, firstName, lastName, displayName, phoneNumber, role){
@@ -44,7 +44,7 @@ async function getAllStaff(){
 }
 
 async function getAllAdmins(){
-    const q = query(collection(db, "Users"), where("role", "==", "admins"));
+    const q = query(collection(db, "Users"), where("role", "==", "admin"));
     const allAdmins = await getDocs(q);
     let admins = [];
     allAdmins.forEach((doc) => {
@@ -204,6 +204,15 @@ async function updateProfilePhoto(userId, url){
     return updatedUser;
 }
 
+async function removeStaffById(id){
+    try {
+        const getUser = doc(db, 'Users', id);
+        await deleteDoc(getUser);
+    } catch (error) {
+        throw error;
+    }
+}
+
 export {
     createUser,
     getAllClients,
@@ -222,5 +231,6 @@ export {
     staffUpdateTicket,
     updateUserInformation,
     updateUserEmail,
-    updateProfilePhoto
+    updateProfilePhoto,
+    removeStaffById
 }

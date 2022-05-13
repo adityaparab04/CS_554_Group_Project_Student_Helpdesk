@@ -11,11 +11,12 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { getFirestore } from 'firebase/firestore';
 import firebaseApp from '../firebase/Firebase';
 import { query, collection,where } from "firebase/firestore";
+import RemoveStaff from './RemoveStaff';
 
 
-export default function ListofUser() {
+export default function ListofStaff() {
     const db = getFirestore(firebaseApp);
-    const q = query(collection(db, "Users"));
+    const q = query(collection(db, "Users") , where("role", "==", "staff"));
     const [snapshot, loading] = useCollection(q);
     if (loading) return <div>Loading...</div>;
     const data = [];
@@ -38,6 +39,7 @@ export default function ListofUser() {
                         <TableCell align="right">Last Name</TableCell>
                         <TableCell align="right">Email Address</TableCell>
                         <TableCell align="right">Role</TableCell>
+                        {/* <TableCell align="right">Options</TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -53,6 +55,7 @@ export default function ListofUser() {
                             <TableCell align="right">{row.data.lastName}</TableCell>
                             <TableCell align="right">{row.data.email}</TableCell>
                             <TableCell align="right">{row.data.role}</TableCell>
+                            <RemoveStaff staffID={row.id} staffName={row.data.firstName + " " + row.data.lastName}/>
                         </TableRow>
                     ))}
                 </TableBody>

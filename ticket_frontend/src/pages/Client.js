@@ -7,6 +7,7 @@ import NewRequest from 'src/components/Newrequest';
 // components
 import Page from '../components/Page';
 import { AuthContext } from '../firebase/Auth';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { getFirestore } from 'firebase/firestore';
 import firebaseApp from '../firebase/Firebase'; 
@@ -18,7 +19,11 @@ export default function Client() {
   const db = getFirestore(firebaseApp);
   const q = query(collection(db, "Tickets"), where("ClientID", "==", currentUser.uid));
   const [snapshot, loading] = useCollection(q);
-  if(loading) return <div>Loading...</div>;
+  if(loading) return (<Page title='Admin'>
+  <Box sx={{minHeight: '1vh', minWidth: '1vw', }}>
+  <CircularProgress sx={{position: 'fixed', top: '50%', left: '50%'}} />
+  </Box>
+</Page>);
   const data = [];
   snapshot.forEach((doc) => {
     data.push({id: doc.id, data: doc.data()});
