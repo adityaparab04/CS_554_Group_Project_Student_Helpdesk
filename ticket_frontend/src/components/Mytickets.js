@@ -59,7 +59,7 @@ export default function Mytickets({ data }) {
 
       <Card>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} p={2}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" component="h2" gutterBottom>
                 My tickets
                 </Typography>
             </Stack>

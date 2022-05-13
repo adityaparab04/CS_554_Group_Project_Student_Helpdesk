@@ -116,7 +116,7 @@ const LoginPage = () => {
       </AuthLayout>
 
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+        <Typography variant="h3" component="h1" sx={{ px: 5, mt: 10, mb: 5 }}>
           Hi, Welcome Back
         </Typography>
         <img src="/static/illustrations/illustration_login.png" alt="login" />
@@ -126,7 +126,7 @@ const LoginPage = () => {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Box sx={{ mb: 5 }}>
-              <Typography variant="h4" gutterBottom>
+              <Typography variant="h4" component="h2" gutterBottom>
                 Sign In To Raise a Ticket.
               </Typography>
               <Typography sx={{ color: 'text.secondary' }}>

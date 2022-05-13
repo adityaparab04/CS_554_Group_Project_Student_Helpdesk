@@ -71,7 +71,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           <AccountStyle>
             <Avatar src={currentUser.profilePhoto} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+              <Typography variant="subtitle2" component='h1' sx={{ color: 'text.primary' }}>
                 {currentUser.firstName} {currentUser.lastName}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

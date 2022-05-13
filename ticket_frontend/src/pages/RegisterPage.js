@@ -136,7 +136,7 @@ const RegisterPage = () => {
         </Link>
       </AuthLayout>
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+        <Typography variant="h3" component="h1" sx={{ px: 5, mt: 10, mb: 5 }}>
           Manage the job more effectively with Minimal
         </Typography>
         <img alt="register" src="/static/illustrations/illustration_register.png" />
@@ -144,7 +144,7 @@ const RegisterPage = () => {
       <Container>
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" component="h2" gutterBottom>
               Register To Raise a Ticket.
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>

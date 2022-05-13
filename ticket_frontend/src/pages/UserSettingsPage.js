@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 //material ui
-import { Avatar, Box, Button, Container, Drawer, Grid, List, ListItem, ListItemText, ListItemIcon, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Drawer, Grid, List, ListItem, ListItemText, ListItemIcon, Typography, AppBar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
@@ -13,14 +13,15 @@ import PasswordIcon from '@mui/icons-material/Password';
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
 
-// mocks_
-import account from 'src/_mocks_/account';
 
 //firebase functions
 import { AuthContext } from 'src/firebase/Auth';
 import EditProfile from 'src/components/EditProfileForm';
 import ChangePassword from 'src/components/ChangePasswordForm';
 import ChangeEmail from 'src/components/ChangeEmailForm';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import DashboardNavbar from 'src/layouts/dashboard/DashboardNavbar';
+import ChangeDisplayPicture from 'src/components/ChangeDisplayPicture';
 
 const useStyles = makeStyles({
     page: {
@@ -31,16 +32,20 @@ const useStyles = makeStyles({
         width: 280
     },
     drawerPaper: {
-        width: 280
+        background: '#f9f9f9',
+        width: 280,
+        borderRight: 'dashed 1px lightgrey'
     },
     root: {
         display: 'flex'
     },
     active: {
-        background: 'rgba(0, 171, 85, 0.08)'
+        background: 'rgba(0, 171, 85, 0.08)',
+        color: '#008900',
+        '&:hover': { color: '#3366FF !important' },
     },
-    listItemText:{
-        fontSize:'0.2em',
+    inactive: {
+        '&:hover': { color: '#3366FF !important' },
     }
 });
 
@@ -58,7 +63,8 @@ const UserSettingsPage = () => {
     const { enqueueSnackbar } = useSnackbar();
     const [ editProfileForm, setEditProfileForm ] = useState(true);
     const [ changePasswordForm, setChangePasswordForm ] = useState(false);
-    const [ changeEmailForm, setChangeEmailForm ] = useState(false)
+    const [ changeEmailForm, setChangeEmailForm ] = useState(false);
+    const [ changeProfilePic, setChangeProfilePic ] = useState(false);
     const navigate = useNavigate();
     const classes = useStyles();
 
@@ -66,16 +72,26 @@ const UserSettingsPage = () => {
         setEditProfileForm(true);
         setChangePasswordForm(false);
         setChangeEmailForm(false);
+        setChangeProfilePic(false);
     }
     
     const handleChangePasswordForm = () => {
         setChangePasswordForm(true);
         setEditProfileForm(false);
         setChangeEmailForm(false);
+        setChangeProfilePic(false);
     }
 
     const handleChangeEmailForm = () => {
         setChangeEmailForm(true);
+        setEditProfileForm(false);
+        setChangePasswordForm(false);
+        setChangeProfilePic(false);
+    }
+
+    const handleChanegProfilePic = () => {
+        setChangeProfilePic(true);
+        setChangeEmailForm(false);
         setEditProfileForm(false);
         setChangePasswordForm(false);
     }
@@ -94,9 +110,9 @@ const UserSettingsPage = () => {
                 </Box>
                 <Box sx={{ mb: 5, mx: 2.5 }}>
                     <AccountStyle>
-                        <Avatar src={account.photoURL} alt="photoURL" />
+                        <Avatar src={currentUser.profilePhoto} alt="photoURL" />
                         <Box sx={{ ml: 2 }}>
-                            <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+                            <Typography variant="subtitle2" component="h1" sx={{ color: 'text.primary' }}>
                                 {currentUser.firstName} {currentUser.lastName}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -106,33 +122,33 @@ const UserSettingsPage = () => {
                     </AccountStyle>
                 </Box>
                 <List>
-                    <ListItem button onClick={handleProfileEditForm} className={editProfileForm ? classes.active : null}>
+                    <ListItem button onClick={handleProfileEditForm} className={editProfileForm ? classes.active : classes.inactive}>
                         <ListItemIcon><EditIcon fontSize='small'/></ListItemIcon>
-                        <ListItemText secondary>Edit Profile</ListItemText>
+                        <ListItemText disableTypography sx={{fontSize: 17, color: 'secondary'}}>Edit Profile</ListItemText>
                     </ListItem>
-                    <ListItem button onClick={handleChangeEmailForm} className={changeEmailForm ? classes.active : null}>
+                    <ListItem button onClick={handleChangeEmailForm} className={changeEmailForm ? classes.active : classes.inactive}>
                         <ListItemIcon><EmailIcon fontSize='small'/></ListItemIcon>
-                        <ListItemText secondary>Change Email</ListItemText>
+                        <ListItemText disableTypography sx={{fontSize: 17}}>Change Email</ListItemText>
                     </ListItem>
-                    <ListItem button onClick={handleChangePasswordForm} className={changePasswordForm ? classes.active : null}>
+                    <ListItem button onClick={handleChangePasswordForm} className={changePasswordForm ? classes.active : classes.inactive}>
                         <ListItemIcon><PasswordIcon fontSize='small'/></ListItemIcon>
-                        <ListItemText secondary>Change Password</ListItemText>
+                        <ListItemText disableTypography sx={{fontSize: 17}}>Change Password</ListItemText>
+                    </ListItem>
+                    <ListItem button onClick={handleChanegProfilePic} className={changeProfilePic ? classes.active : classes.inactive}>
+                        <ListItemIcon><AddAPhotoIcon fontSize='small'/></ListItemIcon>
+                        <ListItemText disableTypography sx={{fontSize: 17}}>Change Display Picture</ListItemText>
                     </ListItem>
                 </List>
             </Drawer>
             <div className={classes.page}>
+            <DashboardNavbar />
+            <br/>
             <Container maxWidth="xl">
-                <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
-                >
-                    <Button sx={{mt:2.5}} onClick={()=> navigate('/dashboard', ({replace: true}))}> Back to dashboard</Button>
-                </Box>
                 <Box sx={{mt:10}}>
                 { editProfileForm && <EditProfile/>}
                 { changePasswordForm && <ChangePassword/>}
                 { changeEmailForm && <ChangeEmail/>}
+                { changeProfilePic && <ChangeDisplayPicture />}
                 </Box>
             </Container>
             </div>
