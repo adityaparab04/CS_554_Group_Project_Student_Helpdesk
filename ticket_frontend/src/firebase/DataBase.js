@@ -1,7 +1,19 @@
 /* eslint-disable no-unused-vars */
 import { getFirestore } from "firebase/firestore";
 import firebaseApp from './Firebase';
-import { collection, addDoc, setDoc, doc, getDoc, getDocs, updateDoc, onSnapshot, query, where, arrayUnion, arrayRemove  } from "firebase/firestore"; 
+import { 
+    collection, 
+    addDoc, 
+    setDoc, 
+    doc, 
+    getDoc, 
+    getDocs, 
+    updateDoc, 
+    onSnapshot, 
+    query, 
+    where, 
+    arrayUnion, 
+    deleteDoc  } from "firebase/firestore"; 
 const db = getFirestore(firebaseApp);
 
 async function createUser(user, firstName, lastName, displayName, phoneNumber, role){
@@ -204,6 +216,12 @@ async function updateProfilePhoto(userId, url){
     return updatedUser;
 }
 
+async function deleteUserProfile(userId){
+    const getUser = doc(db, 'Users', userId);
+    await deleteDoc(getUser);
+    return("user doc deleted successflly");
+}
+
 export {
     createUser,
     getAllClients,
@@ -222,5 +240,6 @@ export {
     staffUpdateTicket,
     updateUserInformation,
     updateUserEmail,
-    updateProfilePhoto
+    updateProfilePhoto,
+    deleteUserProfile
 }

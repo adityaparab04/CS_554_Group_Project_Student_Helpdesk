@@ -1,9 +1,33 @@
 import firebaseApp from "./Firebase";
 import firebaseApp2 from "./Firebase2";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut,reauthenticateWithCredential,updatePassword,GoogleAuthProvider,FacebookAuthProvider,signInWithPopup,sendPasswordResetEmail, EmailAuthProvider, updateEmail, EmailAuthCredential } from "firebase/auth";
-import { createUser, getUserInfo, updateUserEmail, updateUserInformation, updateProfilePhoto } from './DataBase';
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    updateProfile, 
+    signOut,
+    reauthenticateWithCredential,
+    updatePassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    sendPasswordResetEmail, 
+    EmailAuthProvider, 
+    updateEmail, 
+    deleteUser
+} from "firebase/auth";
+
+import { 
+    createUser, 
+    getUserInfo, 
+    updateUserEmail, 
+    updateUserInformation, 
+    updateProfilePhoto, 
+    deleteUserProfile
+} from './DataBase';
+
 const auth = getAuth(firebaseApp);
 const auth2 = getAuth(firebaseApp2);
+
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url, role) {
     let displayName = firstName + ' ' + lastName
     await createUserWithEmailAndPassword(auth2, email, password);
@@ -18,8 +42,6 @@ async function updatePhotoUrl(url){
     await updateProfilePhoto(auth.currentUser.uid, url);
     console.log('profile pic changed in auth');
 }
-
-
 
 async function doSignInWithEmailAndPassword(email, password) {
     await signInWithEmailAndPassword(auth, email, password);
@@ -75,6 +97,17 @@ async function doPasswordReset(email) {
     await sendPasswordResetEmail(auth, email);
 }
 
+async function doDeleteUser(email, password){
+    const credential = EmailAuthProvider.credential(
+        email,
+        password
+    );
+    await reauthenticateWithCredential(auth.currentUser, credential);
+    await deleteUserProfile(auth.currentUser.uid);
+    await deleteUser(auth.currentUser);
+    return("User Deleted from auth successfully");
+}
+
 export {
     doCreateUserWithEmailAndPassword,
     doSignInWithEmailAndPassword,
@@ -84,5 +117,6 @@ export {
     doGoogleSignIn,
     doPasswordReset,
     doUpdateUser,
-    updatePhotoUrl
+    updatePhotoUrl,
+    doDeleteUser
 }

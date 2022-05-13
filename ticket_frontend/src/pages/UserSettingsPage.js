@@ -22,6 +22,7 @@ import ChangeEmail from 'src/components/ChangeEmailForm';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import DashboardNavbar from 'src/layouts/dashboard/DashboardNavbar';
 import ChangeDisplayPicture from 'src/components/ChangeDisplayPicture';
+import DeleteAccount from 'src/components/DeleteAccount';
 
 const useStyles = makeStyles({
     page: {
@@ -65,6 +66,7 @@ const UserSettingsPage = () => {
     const [ changePasswordForm, setChangePasswordForm ] = useState(false);
     const [ changeEmailForm, setChangeEmailForm ] = useState(false);
     const [ changeProfilePic, setChangeProfilePic ] = useState(false);
+    const [ deleteAccountForm, setDeleteAccountForm ] = useState(false);
     const navigate = useNavigate();
     const classes = useStyles();
 
@@ -73,6 +75,7 @@ const UserSettingsPage = () => {
         setChangePasswordForm(false);
         setChangeEmailForm(false);
         setChangeProfilePic(false);
+        setDeleteAccountForm(false);
     }
     
     const handleChangePasswordForm = () => {
@@ -80,6 +83,7 @@ const UserSettingsPage = () => {
         setEditProfileForm(false);
         setChangeEmailForm(false);
         setChangeProfilePic(false);
+        setDeleteAccountForm(false);
     }
 
     const handleChangeEmailForm = () => {
@@ -87,10 +91,20 @@ const UserSettingsPage = () => {
         setEditProfileForm(false);
         setChangePasswordForm(false);
         setChangeProfilePic(false);
+        setDeleteAccountForm(false);
     }
 
     const handleChanegProfilePic = () => {
         setChangeProfilePic(true);
+        setChangeEmailForm(false);
+        setEditProfileForm(false);
+        setChangePasswordForm(false);
+        setDeleteAccountForm(false);
+    }
+
+    const handleDeleteAccountForm = () => {
+        setDeleteAccountForm(true);
+        setChangeProfilePic(false);
         setChangeEmailForm(false);
         setEditProfileForm(false);
         setChangePasswordForm(false);
@@ -138,6 +152,10 @@ const UserSettingsPage = () => {
                         <ListItemIcon><AddAPhotoIcon fontSize='small'/></ListItemIcon>
                         <ListItemText disableTypography sx={{fontSize: 17}}>Change Display Picture</ListItemText>
                     </ListItem>
+                    <ListItem button onClick={handleDeleteAccountForm} className={deleteAccountForm ? classes.active : classes.inactive}>
+                        <ListItemIcon><AddAPhotoIcon fontSize='small'/></ListItemIcon>
+                        <ListItemText disableTypography sx={{fontSize: 17}}>Delete your account</ListItemText>
+                    </ListItem>
                 </List>
             </Drawer>
             <div className={classes.page}>
@@ -149,6 +167,7 @@ const UserSettingsPage = () => {
                 { changePasswordForm && <ChangePassword/>}
                 { changeEmailForm && <ChangeEmail/>}
                 { changeProfilePic && <ChangeDisplayPicture />}
+                { deleteAccountForm && <DeleteAccount />}
                 </Box>
             </Container>
             </div>

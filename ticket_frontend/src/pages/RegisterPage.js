@@ -115,6 +115,7 @@ const RegisterPage = () => {
         url,
         'client'
       );
+      enqueueSnackbar("Account created successfully", { variant: 'success' });
       navigate('/login', { replace: true })
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
