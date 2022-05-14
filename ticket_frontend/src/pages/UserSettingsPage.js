@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack';
 import EditIcon from '@mui/icons-material/Edit';
 import EmailIcon from '@mui/icons-material/Email';
 import PasswordIcon from '@mui/icons-material/Password';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
@@ -153,7 +154,7 @@ const UserSettingsPage = () => {
                         <ListItemText disableTypography sx={{fontSize: 17}}>Change Display Picture</ListItemText>
                     </ListItem>
                     <ListItem button onClick={handleDeleteAccountForm} className={deleteAccountForm ? classes.active : classes.inactive}>
-                        <ListItemIcon><AddAPhotoIcon fontSize='small'/></ListItemIcon>
+                        <ListItemIcon><PersonRemoveIcon fontSize='small'/></ListItemIcon>
                         <ListItemText disableTypography sx={{fontSize: 17}}>Delete your account</ListItemText>
                     </ListItem>
                 </List>

@@ -1,5 +1,6 @@
 import firebaseApp from "./Firebase";
 import firebaseApp2 from "./Firebase2";
+import axios from 'axios';
 import { 
     getAuth, 
     createUserWithEmailAndPassword, 
@@ -29,12 +30,14 @@ const auth = getAuth(firebaseApp);
 const auth2 = getAuth(firebaseApp2);
 
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url, role) {
+    axios.post("http://localhost:9000/email", {
+        email: email
+    });
     let displayName = firstName + ' ' + lastName
     await createUserWithEmailAndPassword(auth2, email, password);
     await updateProfile(auth2.currentUser, { displayName: displayName, photoURL: url });
     await createUser(auth2.currentUser, firstName, lastName, displayName, phoneNumber, role);
     await signOut(auth2);
-    console.log(auth.currentUser);
 }
 
 async function updatePhotoUrl(url){
