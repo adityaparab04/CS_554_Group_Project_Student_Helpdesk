@@ -101,9 +101,11 @@ async function userUpdateTicket(currentUser, ticketID, newText, photo){
         text: newText, 
         Time: Date().toString()
     }
-    await updateDoc(getTicket, {
-        photoURL: arrayUnion(photo)
-    });
+    if(photo !== ''){
+        await updateDoc(getTicket, {
+            photoURL: arrayUnion(photo)
+        });
+    }
     const addComment = await updateDoc(getTicket, {
         TicketContent: arrayUnion(comment)
     });

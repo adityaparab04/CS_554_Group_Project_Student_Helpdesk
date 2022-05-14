@@ -66,6 +66,7 @@ export default function EditTicket({ TicketContent, TicketName, TicketID, isReso
       await userUpdateTicket(currentUser, TicketID, ticket, url);
       enqueueSnackbar("Ticket replied Successfully", { variant: 'success' });
       setTicket('');
+      setSelectedImage(null);
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
     }

@@ -4,8 +4,6 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-// mocks_
-import account from '../../_mocks_/account';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 import { AuthContext } from '../../firebase/Auth';

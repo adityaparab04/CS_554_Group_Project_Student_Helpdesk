@@ -8,8 +8,7 @@ import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '
 // components
 import Iconify from '../../components/Iconify';
 import MenuPopover from '../../components/MenuPopover';
-//
-import account from '../../_mocks_/account';
+
 import { doSignOut } from '../../firebase/FirebaseFunctions';
 // ----------------------------------------------------------------------
 
