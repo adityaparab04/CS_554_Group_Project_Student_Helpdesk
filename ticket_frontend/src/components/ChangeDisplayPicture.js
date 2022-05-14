@@ -8,7 +8,6 @@ import { AuthContext } from 'src/firebase/Auth';
 import { updatePhotoUrl } from 'src/firebase/FirebaseFunctions';
 import { uploadImage } from 'src/firebase/Storage';
 
-import account from 'src/_mocks_/account';
 import NoProfilePic from 'src/img/blank.jpg'
 
 import AddIcon from '@mui/icons-material/Add';

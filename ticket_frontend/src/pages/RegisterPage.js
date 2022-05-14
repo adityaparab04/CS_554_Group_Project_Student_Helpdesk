@@ -107,7 +107,7 @@ const RegisterPage = () => {
       url = await uploadImage(selectImage)
     }
     try {
-      // await emailjs.sendForm('service_kylt3ny', 'template_lhvg46w', e.target, 'srKUKXlWA2UaoCwtZ')
+      // await emailjs.sendForm('service_kylt3ny', 'template_lhvg46w', e.target, 'srKUKXlWA2UaoCwtZ');
       await doCreateUserWithEmailAndPassword(
         values.email,
         values.confirmPassword,
