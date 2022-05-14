@@ -6,12 +6,30 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-import {Card, CardContent, Typography} from '@mui/material';
+import {Box, Card, CardContent, Link, Typography} from '@mui/material';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';    
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-export default function History({content}) {
+export default function History({content, photourls}) {
+  const [open, setOpen] = React.useState(false);
+  const [url,setUrl] = React.useState('');
+  const handleClickOpen = (imgurl) => {
+    setOpen(true);
+    setUrl(imgurl);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <React.Fragment>
-      
+      <Box sx={{maxHeight: 400, overflowY: 'scroll'}}>
       <Timeline >
       {content.map((item, index) => (
         <TimelineItem key={index}>
@@ -38,6 +56,37 @@ export default function History({content}) {
         </TimelineItem>
       ))}
       </Timeline>
+      </Box>
+      <ImageList sx={{ maxHeight: 164 }} cols={5} rowHeight={164} >
+      {photourls.map((item, index) => (
+        <ImageListItem key={index} sx={{'&:hover': {
+          border: '1px solid black',
+          cursor: 'pointer',
+      },}}>
+          <img
+            onClick={() =>handleClickOpen(item)} sx={{"&:hover": {
+              pointer: 'pointer',
+            }}}
+            src={item}
+            srcSet={item}
+            alt={'useruploadedimages' + index}
+            loading="lazy"
+          />
+          <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="xl"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+          <img src={url} srcSet={url} alt={'useruploadedimages' + index}/>
+        </DialogContent>
+      </Dialog>
+        </ImageListItem>
+      ))}
+    </ImageList>
     </React.Fragment>
   );
 }

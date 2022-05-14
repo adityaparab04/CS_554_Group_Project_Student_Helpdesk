@@ -18,7 +18,7 @@ import StaffEditTicket from './StaffEditTicket';
 
 
 function TicketItem({ ticket }) {
-  const { TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved } = ticket.data;
+  const { TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved, photoURL } = ticket.data;
   const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
@@ -42,7 +42,7 @@ function TicketItem({ ticket }) {
 
         {formatDistance(Date.parse(TicketContent[TicketContent.length - 1].Time), new Date())}
       </Typography>
-      <StaffEditTicket TicketContent={TicketContent} TicketName={TicketTitle} TicketID={TicketID} isResolved={isResolved} />
+      <StaffEditTicket TicketContent={TicketContent} TicketName={TicketTitle} TicketID={TicketID} isResolved={isResolved} urls={photoURL} />
     </Stack>
   );
 }

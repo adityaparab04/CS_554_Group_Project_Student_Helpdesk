@@ -13,17 +13,28 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import Iconify from './Iconify';
-import { TextField } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { TextField,Input } from '@mui/material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import IconButton from '@mui/material/IconButton';
 import History from './History';
 import { AuthContext } from 'src/firebase/Auth';
 import { userUpdateTicket, userResolveTicket } from 'src/firebase/DataBase';
 import { useSnackbar } from 'notistack';
+import { uploadImage } from 'src/firebase/Storage';
 
-export default function EditTicket({ TicketContent, TicketName, TicketID, isResolved }) {
+export default function EditTicket({ TicketContent, TicketName, TicketID, isResolved, photoURL }) {
   const [open, setOpen] = React.useState(false);
+  const [selectImage, setSelectedImage] = React.useState(null);
   const [ticket, setTicket] = React.useState('');
   const { currentUser } = React.useContext(AuthContext);
   const { enqueueSnackbar } = useSnackbar();
+  const handleSelectImage = (e) => {
+    console.log('e.target.files[0]')
+    if (e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  }
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -44,7 +55,15 @@ export default function EditTicket({ TicketContent, TicketName, TicketID, isReso
   }
   const handleSubmitReply = async () => {
     try {
-      await userUpdateTicket(currentUser, TicketID, ticket);
+      let url = "";
+      if(selectImage){
+        url = await uploadImage(selectImage);
+      }
+      if ( ticket === '') {
+        enqueueSnackbar('text should not be empty', { variant: 'error' });
+        return;
+      }
+      await userUpdateTicket(currentUser, TicketID, ticket, url);
       enqueueSnackbar("Ticket replied Successfully", { variant: 'success' });
       setTicket('');
     } catch (error) {
@@ -69,9 +88,10 @@ export default function EditTicket({ TicketContent, TicketName, TicketID, isReso
         <DialogTitle>{TicketName}</DialogTitle>
         <DialogContent>
           <Box>
-            <History content={TicketContent} />
+            <History content={TicketContent} photourls={photoURL} />
           </Box>
-          {!isResolved && <TextField
+          {!isResolved &&<Box sx={{ position: 'relative' }}>
+           <TextField
             required
             id="content"
             name="content"
@@ -80,15 +100,24 @@ export default function EditTicket({ TicketContent, TicketName, TicketID, isReso
             label="Enter you problem"
             fullWidth
             multiline
-            rows={10}
+            rows={8}
             variant="filled"
-          />}
-
+          />
+          <Box sx={{ position: 'absolute', bottom: 8, left: 16 }}>
+          <label  htmlFor={"contained-button-file" + TicketID}>
+              <Input sx={{display: 'none'}} fullWidth accept="image/*" id={"contained-button-file" + TicketID} multiple type="file" onChange={handleSelectImage}></Input>
+              <IconButton color="primary" aria-label="upload picture" component="span">
+              <PhotoCamera />
+              </IconButton>
+            </label>
+            </Box>
+          </Box>}
         </DialogContent>
         <DialogActions>
           {!isResolved && <Button onClick={handleSubmitReply}>Submit</Button>}
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
+        
       </Dialog>
     </React.Fragment>
   );

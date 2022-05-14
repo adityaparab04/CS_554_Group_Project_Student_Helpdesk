@@ -18,7 +18,7 @@ import History from './History';
 import { AuthContext } from 'src/firebase/Auth';
 import { staffUpdateTicket } from 'src/firebase/DataBase';
 import { useSnackbar } from 'notistack';
-export default function StaffEditTicket({TicketContent, TicketName, TicketID, isResolved}) {
+export default function StaffEditTicket({TicketContent, TicketName, TicketID, isResolved, urls}) {
   const [open, setOpen] = React.useState(false);
   const [ticket, setTicket] = React.useState('');
   const { currentUser } = React.useContext(AuthContext);
@@ -33,6 +33,10 @@ export default function StaffEditTicket({TicketContent, TicketName, TicketID, is
 
   const handleSubmitReply = async  () => {
     try {
+      if ( ticket === '') {
+        enqueueSnackbar('text should not be empty', { variant: 'error' });
+        return;
+      }
       await staffUpdateTicket(currentUser,TicketID, ticket);
       enqueueSnackbar("Ticket replied Successfully", {variant: 'success'});
       setTicket('')
@@ -53,7 +57,7 @@ export default function StaffEditTicket({TicketContent, TicketName, TicketID, is
         <DialogTitle>{TicketName}</DialogTitle>
         <DialogContent>
           <Box>
-            <History content={TicketContent} />
+            <History content={TicketContent} photourls={urls} />
           </Box>
           {!isResolved && <TextField
             required
@@ -64,7 +68,7 @@ export default function StaffEditTicket({TicketContent, TicketName, TicketID, is
             label="Enter your reply"
             fullWidth
             multiline
-            rows={10}
+            rows={8}
             variant="filled"
           />}
           

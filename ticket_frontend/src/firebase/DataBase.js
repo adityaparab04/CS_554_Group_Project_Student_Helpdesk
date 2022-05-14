@@ -93,7 +93,7 @@ async function userUnResolveTicket(ticketID){
     return unResolvedTicket;
 }
 
-async function userUpdateTicket(currentUser, ticketID, newText){
+async function userUpdateTicket(currentUser, ticketID, newText, photo){
     // console.log(currentUser.displayName);
     const getTicket = doc(db, "Tickets", ticketID);
     const comment = {
@@ -101,14 +101,20 @@ async function userUpdateTicket(currentUser, ticketID, newText){
         text: newText, 
         Time: Date().toString()
     }
+    await updateDoc(getTicket, {
+        photoURL: arrayUnion(photo)
+    });
     const addComment = await updateDoc(getTicket, {
         TicketContent: arrayUnion(comment)
     });
     return addComment;
 }
 
-async function userAddTicket(currentUser, title, text){
-    
+async function userAddTicket(currentUser, title, text, url){
+    let photoURL = []
+    if (url !== ''){
+        photoURL.push(url);
+    }
     const docRef = await addDoc(collection(db, "Tickets"), {
         ClientID: currentUser.uid,
         StaffID: "",
@@ -116,6 +122,7 @@ async function userAddTicket(currentUser, title, text){
         TicketTitle: title,
         isAssigned: false,
         isResolved: false,
+        photoURL: photoURL
       });
     console.log("Document written with ID: ", docRef.id);
     return docRef;

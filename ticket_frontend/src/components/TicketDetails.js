@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Card, Button, Divider, Typography, CardHeader, Stack,Link } from '@mui/material';
 import History from './History';
-export default function TicketDetails({TicketTitle, TicketContent}) {
+export default function TicketDetails({TicketTitle, TicketContent, urls}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -20,7 +20,9 @@ export default function TicketDetails({TicketTitle, TicketContent}) {
 
   return (
     <div>
-      <Link to="#" color="inherit" underline="hover" onClick={handleClickOpen}>
+      <Link sx={{'&:hover': {
+          cursor: 'pointer',
+      },}} to="#" color="inherit" underline="hover" onClick={handleClickOpen}>
           <Typography variant="subtitle2" noWrap>
             {TicketTitle}
           </Typography>
@@ -28,7 +30,7 @@ export default function TicketDetails({TicketTitle, TicketContent}) {
       <Dialog fullWidth maxWidth='md' open={open} onClose={handleClose}>
         <DialogTitle>{TicketTitle}</DialogTitle>
         <DialogContent>
-            <History content={TicketContent}/>
+            <History content={TicketContent} photourls={urls}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

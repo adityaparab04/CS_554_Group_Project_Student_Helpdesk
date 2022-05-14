@@ -18,7 +18,7 @@ import TicketDetails from './TicketDetails';
 
 
 function TicketItem({ ticket }) {
-  const { TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved } = ticket.data;
+  const { TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved, photoURL } = ticket.data;
   const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>
@@ -29,7 +29,7 @@ function TicketItem({ ticket }) {
         sx={{ width: 48, height: 48, borderRadius: 1.5 }}
       /> */}
       <Box sx={{ width: 800 }}>
-        <TicketDetails TicketContent={TicketContent} TicketTitle={TicketTitle}  />
+        <TicketDetails TicketContent={TicketContent} TicketTitle={TicketTitle} urls={photoURL} />
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
           {TicketContent[TicketContent.length - 1].author}: {TicketContent[TicketContent.length - 1].text}
         </Typography>
