@@ -223,6 +223,7 @@ async function removeStaffById(id){
     } catch (error) {
         throw error;
     }
+}
 async function deleteUserProfile(userId){
     const getUser = doc(db, 'Users', userId);
     await deleteDoc(getUser);
@@ -248,6 +249,6 @@ export {
     updateUserInformation,
     updateUserEmail,
     updateProfilePhoto,
-    removeStaffById
+    removeStaffById,
     deleteUserProfile
 }
