@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
@@ -17,6 +16,8 @@ import { AuthContext } from '../firebase/Auth';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { uploadImage } from 'src/firebase/Storage';
 import { useSnackbar } from 'notistack';
+// import emailjs from '@emailjs/browser';
+
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex'
@@ -99,6 +100,7 @@ const RegisterPage = () => {
   // console.log('Form values', values.email);
   let url = null;
   const handleSignUp = async (e) => {
+    
     e.preventDefault();
     if (values.password !== values.confirmPassword) {
       return false;
