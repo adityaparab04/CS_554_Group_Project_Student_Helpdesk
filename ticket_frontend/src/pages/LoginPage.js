@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Page from '../components/Page';
-import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -11,10 +11,10 @@ import { Box, Card, Stack, Link, Button, Divider, Container, Typography, Checkbo
 import { LoadingButton } from '@mui/lab';
 
 //firebase auth function
+import { AuthContext } from '../firebase/Auth';
 import { doGoogleSignIn, doSignInWithEmailAndPassword , doPasswordReset} from '../firebase/FirebaseFunctions';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
-import { AuthContext } from '../firebase/Auth';
 // components
 import Iconify from '../components/Iconify';
 import { useSnackbar } from 'notistack';
@@ -63,7 +63,7 @@ const LoginPage = () => {
     },
     validationSchema: LoginSchema,
   });
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, handleChange } = formik;
+  const { errors, touched, values, isSubmitting, getFieldProps, handleChange } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
