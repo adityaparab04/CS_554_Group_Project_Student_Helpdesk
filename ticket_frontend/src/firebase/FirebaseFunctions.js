@@ -30,12 +30,17 @@ const auth = getAuth(firebaseApp);
 const auth2 = getAuth(firebaseApp2);
 
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url, role) {
+    if(typeof firstName !== 'string' || firstName.length < 2 || firstName.length > 50 ){
+        return false;
+    }
+    if(typeof lastName !== 'string' || lastName.length < 2 || lastName.length > 50 ){
+        return false;
+    }
     let displayName = firstName + ' ' + lastName
     await createUserWithEmailAndPassword(auth2, email, password);
     const res = await axios.post("/email", {
         email: email
     });
-    console.log(res);
     await updateProfile(auth2.currentUser, { displayName: displayName, photoURL: url });
     await createUser(auth2.currentUser, firstName, lastName, displayName, phoneNumber, role);
     await signOut(auth2);

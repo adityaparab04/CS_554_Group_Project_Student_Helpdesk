@@ -48,6 +48,7 @@ const ChangeEmail = () => {
               values.newEmail,
               values.password
             );
+            enqueueSnackbar("email changed successfully", { variant: 'success' })
         }catch (error) {
             enqueueSnackbar(error.message, { variant: 'error' });
         }

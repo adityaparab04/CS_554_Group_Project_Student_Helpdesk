@@ -65,6 +65,7 @@ const ChangePassword = () => {
               values.newPassword,
               values.confirmNewPassword
             );
+            enqueueSnackbar("password changed successfully", { variant: 'success' });
         }catch (error) {
             enqueueSnackbar(error.message, { variant: 'error' });
         }
