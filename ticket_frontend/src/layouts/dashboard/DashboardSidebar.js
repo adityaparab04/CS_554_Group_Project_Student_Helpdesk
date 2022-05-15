@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Link, Button, Dialog, DialogContent, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { Box, Link, Dialog, DialogContent, Drawer, Typography, Avatar, Stack } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 import { AuthContext } from '../../firebase/Auth';
@@ -110,7 +110,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           aria-describedby="alert-dialog-description"
       >
         <DialogContent sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-            <img src={imgUrl} srcSet={imgUrl} alt={'useruploadedimages'}/>
+            <img src={imgUrl ? imgUrl : NoProfilePic} srcSet={imgUrl ? imgUrl : NoProfilePic} alt={'useruploadedimages'}/>
         </DialogContent>
       </Dialog>
 

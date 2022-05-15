@@ -43,7 +43,6 @@ export default function AccountPopover() {
 
   const handleClick = () => {
     doSignOut();
-    // navigate('/',  {replace: true})
   }
 
   return (
