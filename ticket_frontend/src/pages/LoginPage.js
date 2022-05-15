@@ -11,6 +11,7 @@ import { Box, Card, Stack, Link, Button, Divider, Container, Typography, Checkbo
 import { LoadingButton } from '@mui/lab';
 
 //firebase auth function
+import { AuthContext } from '../firebase/Auth';
 import { doGoogleSignIn, doSignInWithEmailAndPassword , doPasswordReset} from '../firebase/FirebaseFunctions';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
