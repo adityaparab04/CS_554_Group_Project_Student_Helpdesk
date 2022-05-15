@@ -7,12 +7,18 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import CheckIcon from '@mui/icons-material/Check';
 import { useSnackbar } from 'notistack';
+import { AuthContext } from '../firebase/Auth';
 
 import ChatMsg from '@mui-treasury/components/chatMsg/ChatMsg';
+import MessageRoom from './MessageRoom';
 
 export default function ChatPage() {
     const { enqueueSnackbar } = useSnackbar();
     const [room, setRoom] = React.useState('');
+    const { currentUser } = React.useContext(AuthContext);
+    const uesername = currentUser.displayName;
+    const id = currentUser.uid;
+    const [data, setData] = React.useState({ name:"", room:"", photoURL:"" });
     const [selectPage, setSelectPage] = React.useState(true);
   const handleChange = (event) => {
     setRoom(event.target.value);
@@ -21,6 +27,7 @@ export default function ChatPage() {
     if (room !== '') {
         setSelectPage(false);
         enqueueSnackbar("Connected to " + room, { variant: 'success' });
+        setData({ name: id, room: room, photoURL: currentUser.profilePhoto });
     }else{
         enqueueSnackbar("Please select a room", { variant: 'error' });
     }
@@ -51,40 +58,6 @@ export default function ChatPage() {
       )
   }
   return (
-    <Box sx={{ width: 400, height: 500}}>
-        <Typography variant="h5" component="h2">Chat Page</Typography>
-        <Box sx={{ height: 400,overflowX: 'hidden',overflowY: 'scroll', pt:5, pr:1.5}}> 
-        <ChatMsg
-      avatar={''}
-      messages={[
-        'Hi Jenny, How r u today?',
-        'Did you train yesterday',
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.',
-      ]}
-    />
-    <ChatMsg
-      side={'right'}
-      messages={[
-        "Great! What's about you?",
-        'Of course I did. Speaking of which check this out',
-      ]}
-    />
-    <ChatMsg avatar={''} messages={['Im good.', 'See u later.']} />
-        </Box>
-        <br />
-        <Box sx={{display:'flex', gap:1,justifyContent:'flex-start'}}>
-        <TextField
-            required
-            id="title"
-            name="title"
-            // value={title}
-            // onChange={(e) => setTitle(e.target.value)}
-            label="Breifly summarize the issue"
-            variant="outlined"
-            fullWidth
-          />
-            <Button size="large" variant='contained' startIcon={<CheckIcon />}>Send</Button>
-        </Box>
-    </Box>
+    <MessageRoom data={data}/>
   )
 }
