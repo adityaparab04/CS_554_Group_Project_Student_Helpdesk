@@ -34,7 +34,7 @@ const sorted = data.sort((a, b) => {
     <Page title="Staff">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
-          <Typography variant="h4">Hi, Welcome back</Typography>
+          <Typography variant="h4" component='h2'>Hi, Welcome back</Typography>
         </Box>
         <Grid container spacing={3}>
           <Grid item lg={10}>

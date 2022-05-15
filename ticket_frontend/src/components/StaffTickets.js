@@ -30,7 +30,7 @@ function TicketItem({ ticket }) {
       /> */}
       <Box sx={{ width: 800 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle2" component='h4' noWrap>
             {TicketTitle}
           </Typography>
         </Link>
@@ -57,7 +57,7 @@ export default function StaffTickets({ data }) {
     return (
       <Card>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} p={2}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" component='h3' gutterBottom>
                 Your Assigned Tickets
                 </Typography>
             </Stack>

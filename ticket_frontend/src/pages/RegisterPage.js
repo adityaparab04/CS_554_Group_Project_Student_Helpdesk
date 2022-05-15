@@ -209,9 +209,11 @@ const RegisterPage = () => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                        <label htmlFor='see-password'>
+                        <IconButton id='see-password' edge="end" onClick={() => setShowPassword((prev) => !prev)}>
                           <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                         </IconButton>
+                        </label>
                       </InputAdornment>
                     )
                   }}
@@ -229,11 +231,13 @@ const RegisterPage = () => {
                   value={values.confirmPassword}
                   InputProps={{
                     endAdornment: (
+                      <label htmlFor="see-confirmPassword">
                       <InputAdornment position="end">
-                        <IconButton edge="end" onClick={() => setShowConfirmPassword((prev) => !prev)}>
+                        <IconButton  id='see-confirmPassword' edge="end" onClick={() => setShowConfirmPassword((prev) => !prev)}>
                           <Iconify icon={showConfirmPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                         </IconButton>
                       </InputAdornment>
+                      </label>
                     )
                   }}
                   error={Boolean(touched.confirmPassword && errors.confirmPassword)}

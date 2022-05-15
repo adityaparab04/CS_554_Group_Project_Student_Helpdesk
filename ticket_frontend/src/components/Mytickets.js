@@ -29,7 +29,7 @@ function TicketItem({ ticket }) {
       /> */}
       <Box sx={{ width: 800 }}>
         <Link to="#" color="inherit" underline="hover" component={RouterLink}>
-          <Typography variant="subtitle2" noWrap>
+          <Typography variant="subtitle2" component="h3" noWrap>
             {TicketTitle}
           </Typography>
         </Link>

@@ -48,7 +48,9 @@ export default function AccountPopover() {
 
   return (
     <>
+      <label htmlFor='menupop-over-btn'>
       <IconButton
+        id='menupop-over-btn'
         ref={anchorRef}
         onClick={handleOpen}
         sx={{
@@ -70,7 +72,7 @@ export default function AccountPopover() {
       >
        <Avatar src={currentUser.profilePhoto} alt="photoURL" />
       </IconButton>
-
+      </label>
       <MenuPopover
         open={open}
         onClose={handleClose}
@@ -78,7 +80,7 @@ export default function AccountPopover() {
         sx={{ width: 220 }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle1" noWrap>
+          <Typography variant="subtitle1" component="h3" noWrap>
             {currentUser.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
