@@ -73,8 +73,8 @@ const RegisterPage = () => {
       .required('Email is required'),
     phoneNumber: Yup.string()
     .matches(phoneRegEx, 'Invalid Phone Number')
-    .min(8, "Phone Number must be atleast 8 characters")
-    .max(10, "Phone Number at most must be 10 characters"),
+    .min(12, "Phone Number must be atleast 12 characters")
+    .max(12, "Phone Number at most must be 12 characters"),
     password: Yup.string().min(6, 'Too Short!')
       .required('Password is required'),
     confirmPassword: Yup.string()
@@ -126,12 +126,10 @@ const RegisterPage = () => {
       enqueueSnackbar("last name should only contain characters", { variant: 'error' });
       return false;
     }
-    if(values.phoneNumber){
-      if(typeof values.phoneNumber !== 'string' || !values.phoneNumber.replace(/\s/g, "" || values.phoneNumber.match(/^\d{3}[-]\d{3}[-]\d{4}$/) === null).length){
+    if(typeof values.phoneNumber !== 'string' || !values.phoneNumber.replace(/\s/g, "" || values.phoneNumber.match(/^\d{3}[-]\d{3}[-]\d{4}$/) === null).length){
         enqueueSnackbar("Please enter a valid input phoneNumber", { variant: 'error' });
         return false;
       }
-    }
     if (selectImage) {
       url = await uploadImage(selectImage)
     }
@@ -217,11 +215,13 @@ const RegisterPage = () => {
                   helperText={touched.email && errors.email}
                 />
                 <TextField
+                  required
                   fullWidth
+                  placeholder='000-000-0000'
                   label="Phone Number"
                   {...getFieldProps('phoneNumber')}
                   id='phoneNumber'
-                  type='number'
+                  type='string'
                   onChange={handleChange}
                   value={values.phoneNumber}
                   error={Boolean(touched.phoneNumber && errors.phoneNumber)}
