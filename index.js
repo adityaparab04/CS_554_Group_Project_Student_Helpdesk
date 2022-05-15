@@ -48,7 +48,7 @@ app.post("/email", (req, res) => {
       console.log("Email sent: " + info.response);
     }
   });
-  res.status(200).json({success: "Message Send successfully"});
+  res.status(200).json({success: "Message Send successfully.."});
 })
 
 io.on("connection", (socket) => {
