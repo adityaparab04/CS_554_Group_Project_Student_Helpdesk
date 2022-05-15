@@ -30,11 +30,12 @@ const auth = getAuth(firebaseApp);
 const auth2 = getAuth(firebaseApp2);
 
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url, role) {
-    axios.post("/email", {
-        email: email
-    });
     let displayName = firstName + ' ' + lastName
     await createUserWithEmailAndPassword(auth2, email, password);
+    const res = await axios.post("/email", {
+        email: email
+    });
+    console.log(res);
     await updateProfile(auth2.currentUser, { displayName: displayName, photoURL: url });
     await createUser(auth2.currentUser, firstName, lastName, displayName, phoneNumber, role);
     await signOut(auth2);
@@ -94,6 +95,9 @@ async function doGoogleSignIn() {
     const firstName = name[0];
     const lastName = name[1];
     await createUser(auth.currentUser, firstName, lastName, displayName, auth.currentUser.phoneNumber, 'client');
+    await axios.post("/social", {
+        email: auth.currentUser.email
+    });
 }
 
 async function doPasswordReset(email) {

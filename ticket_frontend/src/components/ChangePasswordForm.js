@@ -115,9 +115,11 @@ const ChangePassword = () => {
                                             InputProps={{
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <IconButton edge="end" onClick={() => setShowCurrentPassword((prev) => !prev)}>
-                                                        <Iconify icon={showCurrentPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                                        </IconButton>
+                                                        <label htmlFor='show-currentPassword'>
+                                                            <IconButton id='show-currentPassword' edge="end" onClick={() => setShowCurrentPassword((prev) => !prev)}>
+                                                                <Iconify icon={showCurrentPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                                                            </IconButton>
+                                                        </label>
                                                     </InputAdornment>
                                                 )
                                             }}
@@ -138,9 +140,11 @@ const ChangePassword = () => {
                                             InputProps={{
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <IconButton edge="end" onClick={() => setShowNewPassword((prev) => !prev)}>
-                                                        <Iconify icon={showNewPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                                        </IconButton>
+                                                        <label htmlFor='show-NewPassword'>
+                                                            <IconButton id='show-NewPassword' edge="end" onClick={() => setShowNewPassword((prev) => !prev)}>
+                                                                <Iconify icon={showNewPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                                                            </IconButton>
+                                                        </label>
                                                     </InputAdornment>
                                                 )
                                             }}
@@ -161,9 +165,11 @@ const ChangePassword = () => {
                                             InputProps={{
                                                 endAdornment: (
                                                     <InputAdornment position="end">
-                                                        <IconButton edge="end" onClick={() => setShowConfirmNewPassword((prev) => !prev)}>
-                                                        <Iconify icon={showConfirmNewPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                                        </IconButton>
+                                                        <label htmlFor='show-confirmNewPassword'>
+                                                            <IconButton id='show-confirmNewPassword' edge="end" onClick={() => setShowConfirmNewPassword((prev) => !prev)}>
+                                                                <Iconify icon={showConfirmNewPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                                                            </IconButton>
+                                                        </label>
                                                     </InputAdornment>
                                                 )
                                             }}
@@ -204,7 +210,7 @@ const ChangePassword = () => {
                         <CardContent>
                             <Typography 
                                 variant='h5'
-                                component='h3'
+                                component='h2'
                             >
                             You cannot Change Password because you have signed in through your Google Account..
                             </Typography>

@@ -135,9 +135,11 @@ const LoginPage = () => {
             </Box>
             <>
             <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined" onClick={handleSocialSignIn} alt='google signin'>
-                <Iconify icon="eva:google-fill" color="#DF3E30" height={24} />
-              </Button>
+                <Button id='google-signinBtn' fullWidth size="large" color="inherit" variant="outlined" onClick={handleSocialSignIn} alt='google signin'>
+                <label htmlFor='google-signinBtn'>
+                  <Iconify icon="eva:google-fill" color="#DF3E30" height={24} />
+                </label>
+                </Button>
             </Stack>
 
             <Divider sx={{ my: 3 }}>
@@ -172,9 +174,11 @@ const LoginPage = () => {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton onClick={handleShowPassword} edge="end">
+                        <label htmlFor='see-loginPassword'>
+                          <IconButton id='see-loginPassword' onClick={handleShowPassword} edge="end">
                             <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                           </IconButton>
+                        </label>
                         </InputAdornment>
                       )
                     }}

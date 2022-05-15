@@ -110,11 +110,13 @@ const ChangeEmail = () => {
                                         value={values.password}
                                         InputProps={{
                                             endAdornment: (
+                                                <label htmlFor='changeEmailPassword'>
                                                 <InputAdornment position="end">
-                                                    <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                                                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                                                    <IconButton id='changeEmailPassword' edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                                                        <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                                                     </IconButton>
                                                 </InputAdornment>
+                                                </label>
                                             )
                                         }}
                                         error={Boolean(touched.password && errors.password)}
@@ -154,7 +156,7 @@ const ChangeEmail = () => {
                         <CardContent>
                             <Typography 
                                 variant='h5'
-                                component='h3'
+                                component='h2'
                             >
                             You cannot Change Email because you have signed in through your Google Account..
                             </Typography>

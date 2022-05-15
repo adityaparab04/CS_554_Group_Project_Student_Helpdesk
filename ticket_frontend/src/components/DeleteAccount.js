@@ -105,11 +105,13 @@ const DeleteAccount = () => {
                                         value={values.password}
                                         InputProps={{
                                             endAdornment: (
+                                                <label htmlFor="delete-showPassword">
                                                 <InputAdornment position="end">
-                                                    <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                                                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                                    </IconButton>
+                                                        <IconButton id='delete-showPassword' edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                                                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                                                        </IconButton>
                                                 </InputAdornment>
+                                                </label>
                                             )
                                         }}
                                         error={Boolean(touched.password && errors.password)}
@@ -126,7 +128,6 @@ const DeleteAccount = () => {
                                 <Button 
                                     variant="contained" 
                                     size='small' 
-                                    type='submit'
                                     color='error'
                                     onClick={handleClickOpen}
                                 >
@@ -174,7 +175,7 @@ const DeleteAccount = () => {
                     <CardContent>
                         <Typography 
                             variant='h5'
-                            component='h3'
+                            component='h2'
                         >
                         You cannot Delete account because you have signed in through your Google.
                         </Typography>

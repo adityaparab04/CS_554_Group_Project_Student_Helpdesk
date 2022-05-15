@@ -49,6 +49,25 @@ app.post("/email", (req, res) => {
     }
   });
   res.status(200).json({success: "Message Send successfully.."});
+});
+
+app.post("/social", (req, res) => {
+  const email = req.body.email;
+  var mailOptions = {
+    from: "mutables.ticketing.system@gmail.com",
+    to: email,
+    subject: "New log in",
+    text: "Your Account was signed in to The Mutables Ticket Website!!",
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+  res.status(200).json({success: "Message Send successfully.."});
 })
 
 io.on("connection", (socket) => {

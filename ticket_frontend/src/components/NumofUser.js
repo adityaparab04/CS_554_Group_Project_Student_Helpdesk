@@ -50,7 +50,7 @@ export default function NumofUser() {
         <Iconify icon='ep:user' width={24} height={24} />
       </IconWrapperStyle>
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
-      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+      <Typography variant="subtitle2" component='h4' sx={{ opacity: 0.72 }}>
         Number of Client
       </Typography>
     </RootStyle>
