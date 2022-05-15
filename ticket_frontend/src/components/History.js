@@ -76,7 +76,7 @@ export default function History({content, photourls}) {
         open={open}
         onClose={handleClose}
         fullWidth
-        maxWidth="xl"
+        maxWidth="md"
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

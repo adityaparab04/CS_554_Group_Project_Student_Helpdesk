@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Button, Container, Typography, Stack, TextField, IconButton, InputAdornment, Input, Divider } from '@mui/material';
+import { Box, Card, Link, Container, Typography, Stack, TextField, IconButton, InputAdornment, Input } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 //formik
 import * as Yup from 'yup';
@@ -12,10 +12,10 @@ import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
-import { AuthContext } from '../firebase/Auth';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { uploadImage } from 'src/firebase/Storage';
 import { useSnackbar } from 'notistack';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -55,22 +55,26 @@ const RegisterPage = () => {
       setSelectedImage(e.target.files[0]);
     }
   }
+  var phoneRegEx = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
+      .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
       .required('First name required'),
     lastName: Yup.string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
+      .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
       .required('Last name required'),
     email: Yup.string()
       .email('Email must be a valid email address')
       .required('Email is required'),
-    phoneNumber: Yup.number()
-      .min(10, 'Invalid Number!')
-      .max(10, 'Invalid Number!'),
+    phoneNumber: Yup.string()
+    .matches(phoneRegEx, 'Invalid Phone Number')
+    .min(8, "Phone Number must be atleast 8 characters")
+    .max(10, "Phone Number at most must be 10 characters"),
     password: Yup.string().min(6, 'Too Short!')
       .required('Password is required'),
     confirmPassword: Yup.string()
@@ -101,11 +105,37 @@ const RegisterPage = () => {
     
     e.preventDefault();
     if (values.password !== values.confirmPassword) {
+      enqueueSnackbar("passwords not same", { variant: 'error' });
       return false;
+    }
+    if(!values.firstName || values.firstName.length < 2 || values.firstName.length > 50 || !values.firstName.replace(/\s/g, "").length ){
+      enqueueSnackbar("invalid firstname", { variant: 'error' });
+      return false
+    }
+
+    if(values.firstName.toLowerCase().replace(/[^a-z]/g, "").length !== values.firstName.length){
+      enqueueSnackbar("first name should only contain characters", { variant: 'error' });
+      return false;
+    }
+
+    if(!values.lastName || values.lastName.length < 2 || values.lastName.length > 50 || !values.lastName.replace(/\s/g, "").length ){
+      enqueueSnackbar("invalid lastname", { variant: 'error' });
+      return false;
+    }
+    if(values.lastName.toLowerCase().replace(/[^a-z]/g, "").length !== values.lastName.length){
+      enqueueSnackbar("last name should only contain characters", { variant: 'error' });
+      return false;
+    }
+    if(values.phoneNumber){
+      if(typeof values.phoneNumber !== 'string' || !values.phoneNumber.replace(/\s/g, "" || values.phoneNumber.match(/^\d{3}[-]\d{3}[-]\d{4}$/) === null).length){
+        enqueueSnackbar("Please enter a valid input phoneNumber", { variant: 'error' });
+        return false;
+      }
     }
     if (selectImage) {
       url = await uploadImage(selectImage)
     }
+
     try {
       await doCreateUserWithEmailAndPassword(
         values.email,
@@ -243,9 +273,15 @@ const RegisterPage = () => {
                   error={Boolean(touched.confirmPassword && errors.confirmPassword)}
                   helperText={touched.confirmPassword && errors.confirmPassword}
                 />
+                <Box sx={{textAlign:'center'}}>
+                {selectImage ? <Typography variant='body1'>{selectImage.name}</Typography> : null}
                 <label htmlFor="contained-button-file">
-                  <Input fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage} />
+                  <Input sx={{display: 'none'}} fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage} />
+                  <IconButton color="primary" aria-label="upload picture" component="span">
+                    <PhotoCamera />
+                </IconButton>
                 </label>
+                </Box>
                 <LoadingButton
                   fullWidth
                   size="large"

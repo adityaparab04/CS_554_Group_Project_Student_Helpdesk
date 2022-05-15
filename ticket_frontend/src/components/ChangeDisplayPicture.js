@@ -10,7 +10,6 @@ import { uploadImage } from 'src/firebase/Storage';
 
 import NoProfilePic from 'src/img/blank.jpg';
 
-import AddIcon from '@mui/icons-material/Add';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 const useStyles = makeStyles({
