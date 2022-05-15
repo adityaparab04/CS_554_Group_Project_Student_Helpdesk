@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Box, Button, Card, CardMedia, Container, Dialog, DialogContent, Grid, Input, IconButton, Typography } from '@mui/material';
+import { Box, Button, Card, CardMedia, Container, Dialog, DialogContent, Input, IconButton, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
 
@@ -10,7 +10,6 @@ import { uploadImage } from 'src/firebase/Storage';
 
 import NoProfilePic from 'src/img/blank.jpg';
 
-import AddIcon from '@mui/icons-material/Add';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 const useStyles = makeStyles({

@@ -1,11 +1,9 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Card, Button, Divider, Typography, CardHeader, Stack,Link } from '@mui/material';
+import { Button, Typography,Link } from '@mui/material';
 import History from './History';
 export default function TicketDetails({TicketTitle, TicketContent, urls}) {
   const [open, setOpen] = React.useState(false);

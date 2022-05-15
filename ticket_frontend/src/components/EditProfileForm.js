@@ -1,7 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
-import { Box, Button, Card, CardContent, Container, Grid, IconButton, InputAdornment, Typography, TextField } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import React, {  useState } from 'react';
+import { Box, Button, Card, CardContent, Container, Grid, Typography, TextField } from '@mui/material';
 import { useSnackbar } from 'notistack';
 //formik
 import * as Yup from 'yup';
@@ -46,8 +44,7 @@ const EditProfile = () => {
         },
         validationSchema: RegisterSchema,
     });
-    const { errors, touched, isSubmitting, getFieldProps, handleChange, values } = formik;
-    const navigate = useNavigate();
+    const { errors, touched, getFieldProps, handleChange, values } = formik;
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{

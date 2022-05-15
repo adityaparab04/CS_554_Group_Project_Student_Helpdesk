@@ -1,14 +1,7 @@
-import { faker } from '@faker-js/faker';
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { formatDistance } from 'date-fns';
-import { Link as RouterLink } from 'react-router-dom';
 // material
-import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader } from '@mui/material';
-// utils
-import { mockImgCover } from '../utils/mockImages';
-//
-import Scrollbar from './Scrollbar';
+import { Box, Stack, Card, Button, Divider, Typography } from '@mui/material';
 import Iconify from './Iconify';
 import AssignDialog from './AssignDialog';
 import TicketDetails from './TicketDetails';
@@ -18,7 +11,7 @@ import TicketDetails from './TicketDetails';
 
 
 function TicketItem({ ticket }) {
-  const { TicketTitle, TicketContent, ClientID, UpdateTime, isAssigned, isResolved, photoURL } = ticket.data;
+  const { TicketTitle, TicketContent, isAssigned, isResolved, photoURL } = ticket.data;
   const TicketID = ticket.id;
   return (
     <Stack direction="row" alignItems="center" spacing={2} padding={1}>

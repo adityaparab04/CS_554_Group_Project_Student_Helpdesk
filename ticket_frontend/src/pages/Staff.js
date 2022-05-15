@@ -1,6 +1,5 @@
 // material
 import { Box, Grid, Container, Typography } from '@mui/material';
-import ListofTickets from 'src/components/ListofTickets';
 import StaffTickets from 'src/components/StaffTickets';
 // components
 import Page from '../components/Page';

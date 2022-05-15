@@ -1,4 +1,4 @@
-import { Typography, Button, TextField } from '@mui/material'
+import { Typography, Button } from '@mui/material'
 import React from 'react'
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -9,14 +9,12 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useSnackbar } from 'notistack';
 import { AuthContext } from '../firebase/Auth';
 
-import ChatMsg from '@mui-treasury/components/chatMsg/ChatMsg';
 import MessageRoom from './MessageRoom';
 
 export default function ChatPage() {
     const { enqueueSnackbar } = useSnackbar();
     const [room, setRoom] = React.useState('');
     const { currentUser } = React.useContext(AuthContext);
-    const uesername = currentUser.displayName;
     const id = currentUser.uid;
     const [data, setData] = React.useState({ name:"", room:"", photoURL:"" });
     const [selectPage, setSelectPage] = React.useState(true);

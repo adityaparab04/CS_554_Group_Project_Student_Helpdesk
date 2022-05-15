@@ -1,17 +1,12 @@
-import { faker } from '@faker-js/faker';
-import PropTypes from 'prop-types';
-import { formatDistance } from 'date-fns';
-import { Link as RouterLink } from 'react-router-dom';
 import * as React from 'react';
 // material
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { Box, Stack, Link, Card, Button, Divider, Typography, CardHeader, Input } from '@mui/material';
+import { Box, Stack, Card, Button, CardHeader, Input } from '@mui/material';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import IconButton from '@mui/material/IconButton';
 // utils
 import Iconify from './Iconify';
-import AssignDialog from './AssignDialog';
 import { AuthContext } from 'src/firebase/Auth';
 import { useSnackbar } from 'notistack';
 import { uploadImage } from 'src/firebase/Storage';

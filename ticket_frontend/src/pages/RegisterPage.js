@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Button, Container, Typography, Stack, TextField, IconButton, InputAdornment, Input, Divider } from '@mui/material';
+import { Box, Card, Link, Container, Typography, Stack, TextField, IconButton, InputAdornment, Input } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 //formik
 import * as Yup from 'yup';
@@ -12,7 +12,6 @@ import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
-import { AuthContext } from '../firebase/Auth';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { uploadImage } from 'src/firebase/Storage';
 import { useSnackbar } from 'notistack';

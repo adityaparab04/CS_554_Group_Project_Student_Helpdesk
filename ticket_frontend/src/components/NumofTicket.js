@@ -8,7 +8,7 @@ import Iconify from './Iconify';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { getFirestore } from 'firebase/firestore';
 import firebaseApp from '../firebase/Firebase'; 
-import {  query,collection,where} from "firebase/firestore"; 
+import {  query,collection} from "firebase/firestore"; 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Card)(({ theme }) => ({
