@@ -1,11 +1,8 @@
 import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
 import DialogContent from '@mui/material/DialogContent';
-import { Box, Button, Card, CardContent, Container, Grid, IconButton, InputAdornment, Typography, TextField } from '@mui/material';
-import DialogContentText from '@mui/material/DialogContentText';
-import { AuthContext } from '../firebase/Auth';
+import { Box, Button, Grid, TextField } from '@mui/material';
 import { useSnackbar } from 'notistack';
 //formik
 import * as Yup from 'yup';
@@ -14,12 +11,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { doCreateUserWithEmailAndPassword } from 'src/firebase/FirebaseFunctions';
 
 export default function AddUser() {
-    const { currentUser } = React.useContext(AuthContext);
     const { enqueueSnackbar } = useSnackbar();
     const [ firstName, setFirstName ] = React.useState('');
     const [ lastName, setLastName ] = React.useState('');
     const [ displayName, setDisplayName ] = React.useState('');
-    const [ phoneNumber, setPhoneNumber ] = React.useState('');
     const [role, setRole] = React.useState('staff');
     const [email, setEmail] = React.useState('');
     const RegisterSchema = Yup.object().shape({

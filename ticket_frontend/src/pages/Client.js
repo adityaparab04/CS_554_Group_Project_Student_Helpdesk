@@ -1,7 +1,6 @@
 // material
 import { Box, Grid, Container, Typography } from '@mui/material';
 import * as React from 'react';
-import ListofTickets from 'src/components/ListofTickets';
 import Mytickets from 'src/components/Mytickets';
 import NewRequest from 'src/components/Newrequest';
 // components

@@ -1,17 +1,6 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import { Card, CardContent, CardHeader } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
+import { Card, CardContent } from '@mui/material';
 import Popper from '@mui/material/Popper';
-import Popover from '@mui/material/Popover';
 import Fab from '@mui/material/Fab';
 import ChatIcon from '@mui/icons-material/Chat';
 import ChatPage from './ChatPage';

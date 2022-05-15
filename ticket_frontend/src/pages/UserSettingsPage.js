@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 //material ui
-import { Avatar, Box, Button, Container, Dialog, DialogContent, Drawer, Grid, List, ListItem, ListItemText, ListItemIcon, Typography, AppBar } from '@mui/material';
+import { Avatar, Box, Container, Dialog, DialogContent, Drawer, List, ListItem, ListItemText, ListItemIcon, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
-import { useSnackbar } from 'notistack';
 import EditIcon from '@mui/icons-material/Edit';
 import EmailIcon from '@mui/icons-material/Email';
 import PasswordIcon from '@mui/icons-material/Password';
@@ -63,7 +61,6 @@ const AccountStyle = styled('div')(({ theme }) => ({
 
 const UserSettingsPage = () => {
     const { currentUser } = React.useContext(AuthContext);
-    const { enqueueSnackbar } = useSnackbar();
     const [ editProfileForm, setEditProfileForm ] = useState(true);
     const [ changePasswordForm, setChangePasswordForm ] = useState(false);
     const [ changeEmailForm, setChangeEmailForm ] = useState(false);
@@ -71,7 +68,6 @@ const UserSettingsPage = () => {
     const [ deleteAccountForm, setDeleteAccountForm ] = useState(false);
     const [ open, setOpen ] = useState(false);
     const [ imgUrl, setUrl ] = useState('');
-    const navigate = useNavigate();
     const classes = useStyles();
 
     const handleClickOpen = (imgurl) => {
