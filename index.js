@@ -1,8 +1,11 @@
-const express = require("express")
+const express = require("express");
+const path = require('path');
+const dotenv = require('dotenv');
 const { Server } = require("socket.io");
 const nodemailer = require('nodemailer');
 var http = require('http');
-const cors = require("cors")
+const cors = require("cors");
+dotenv.config({ path: './config/config.env' });
 
 const app = express();
 app.use(cors());
@@ -19,7 +22,7 @@ const io = new Server(server, {
   }
 });
 
-app.get("/", (req, res) => {res.send("Mutables chat system backend."); res.end()});
+// app.get("/", (req, res) => {res.send("Mutables chat system backend."); res.end()});
 
 var transporter = nodemailer.createTransport({
   service: "gmail",
@@ -45,6 +48,7 @@ app.post("/email", (req, res) => {
       console.log("Email sent: " + info.response);
     }
   });
+  res.status(200).json({success: "Message Send successfully"});
 })
 
 io.on("connection", (socket) => {
@@ -59,6 +63,12 @@ io.on("connection", (socket) => {
   })
 
 });
+
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html')));
+}
 
 const port = process.env.PORT || 9000
 

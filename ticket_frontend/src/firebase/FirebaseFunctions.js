@@ -30,7 +30,7 @@ const auth = getAuth(firebaseApp);
 const auth2 = getAuth(firebaseApp2);
 
 async function doCreateUserWithEmailAndPassword(email, password, firstName, lastName, phoneNumber, url, role) {
-    axios.post("http://localhost:9000/email", {
+    axios.post("/email", {
         email: email
     });
     let displayName = firstName + ' ' + lastName

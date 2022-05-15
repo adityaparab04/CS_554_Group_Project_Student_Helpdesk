@@ -34,8 +34,8 @@ export default function MessageRoom({ data }) {
         }
     }
     useEffect(() => {
-        const socket = io("http://localhost:9000")
-        setSocket(socket)
+        const socket = io("/");
+        setSocket(socket);
         socket.on("connect", () => {
             console.log("socket Connected")
             socket.emit("joinRoom", data.room)

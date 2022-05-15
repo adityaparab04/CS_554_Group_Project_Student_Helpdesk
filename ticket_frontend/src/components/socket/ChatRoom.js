@@ -16,7 +16,7 @@ const ChatRoom = (props) => {
     const [ socket, setSocket ] = useState()
     const {roomId} = useParams();
     useEffect(() => {
-        const socket = io("http://localhost:9000")
+        const socket = io("/")
         setSocket(socket)
 
         socket.on("connect", () => {
