@@ -22,7 +22,9 @@ students will use to take IT support. There will be 3 main users: Students, Empl
 [Walkthorugh Video](https://www.youtube.com)
 
 1. Navigate to the root directory of the project and run `npm install`
-2. `npm run dev` to start the application
+2. Navigate to the ticket_frontend of the project and run `npm install`
+3. Navigate back to the root directory to start the application
+4. `npm run dev` to start the application
 
 ## Reference
 
