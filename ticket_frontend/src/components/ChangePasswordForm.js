@@ -104,6 +104,7 @@ const ChangePassword = () => {
                                         </Grid>
                                         <Grid item xs={12}>
                                         <TextField
+                                            required
                                             fullWidth
                                             label="Current Password"
                                             {...getFieldProps('currentPassword')}
@@ -126,6 +127,7 @@ const ChangePassword = () => {
                                         </Grid>
                                         <Grid item xs={12}>
                                         <TextField
+                                            required
                                             fullWidth
                                             label="New Password"
                                             {...getFieldProps('newPassword')}
@@ -148,6 +150,7 @@ const ChangePassword = () => {
                                         </Grid>
                                         <Grid item xs={12}>
                                         <TextField
+                                            required
                                             fullWidth
                                             label="Confirm New Password"
                                             {...getFieldProps('confirmNewPassword')}

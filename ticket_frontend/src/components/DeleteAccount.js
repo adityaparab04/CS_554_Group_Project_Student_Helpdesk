@@ -1,5 +1,5 @@
 import React, { useState, useContext} from "react";
-import { Box, Button, Card, CardContent, Container, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
 //formik
@@ -16,6 +16,7 @@ const DeleteAccount = () => {
     const { currentUser } = useContext(AuthContext);
     const { enqueueSnackbar } = useSnackbar();
     const [ showPassword, setShowPassword] = useState(false);
+    const [ open, setOpen ] = useState(false);
 
     const RegisterSchema = Yup.object().shape({
         email: Yup.string()
@@ -34,6 +35,14 @@ const DeleteAccount = () => {
       });
     
     const { errors, touched, getFieldProps, handleChange, values } = formik;
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleDeleteAccount = async (e) => {
         e.preventDefault();
@@ -63,7 +72,7 @@ const DeleteAccount = () => {
             <Card sx={{ maxWidth: 700 }} margin='auto' variant='outlined'>
                 <CardContent>
                     <FormikProvider value={formik}>
-                        <Form autoComplete="off" noValidate onSubmit={handleDeleteAccount}>
+                        <Form autoComplete="off" noValidate>
                             <Grid 
                                 container 
                                 justifyContent="space-evenly"
@@ -72,8 +81,9 @@ const DeleteAccount = () => {
                             >
                                 <Grid item xs={12}>
                                     <TextField
+                                    required
                                         fullWidth
-                                        label="Enter your email.."
+                                        label="Enter your email"
                                         {...getFieldProps('email')}
                                         id='email'
                                         type='email'
@@ -85,8 +95,9 @@ const DeleteAccount = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
+                                        required
                                         fullWidth
-                                        label="Enter your password.."
+                                        label="Enter your password"
                                         {...getFieldProps('password')}
                                         id='password'
                                         type={showPassword ? 'text' : 'password'}
@@ -117,6 +128,7 @@ const DeleteAccount = () => {
                                     size='small' 
                                     type='submit'
                                     color='error'
+                                    onClick={handleClickOpen}
                                 >
                                 Delete Account
                                 </Button>
@@ -126,6 +138,29 @@ const DeleteAccount = () => {
                 </CardContent>
             </Card>
             </Grid>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                fullWidth
+                maxWidth="sm"
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+            <DialogTitle id="alert-dialog-title">
+            {"Do you really want to delete the account?"}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Click yes to confirm.
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button autoFocus onClick={handleClose}>Disagree</Button>
+                <Button color='error' onClick={handleDeleteAccount} autoFocus>
+                    Agree
+                </Button>
+            </DialogActions>
+            </Dialog>
             </Container>
         )
     }else{

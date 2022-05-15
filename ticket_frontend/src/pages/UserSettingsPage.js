@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 //material ui
-import { Avatar, Box, Button, Container, Drawer, Grid, List, ListItem, ListItemText, ListItemIcon, Typography, AppBar } from '@mui/material';
+import { Avatar, Box, Button, Container, Dialog, DialogContent, Drawer, Grid, List, ListItem, ListItemText, ListItemIcon, Typography, AppBar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
@@ -14,6 +14,7 @@ import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import Page from 'src/components/Page';
 import Logo from 'src/components/Logo';
 
+import NoProfilePic from 'src/img/blank.jpg';
 
 //firebase functions
 import { AuthContext } from 'src/firebase/Auth';
@@ -68,8 +69,19 @@ const UserSettingsPage = () => {
     const [ changeEmailForm, setChangeEmailForm ] = useState(false);
     const [ changeProfilePic, setChangeProfilePic ] = useState(false);
     const [ deleteAccountForm, setDeleteAccountForm ] = useState(false);
+    const [ open, setOpen ] = useState(false);
+    const [ imgUrl, setUrl ] = useState('');
     const navigate = useNavigate();
     const classes = useStyles();
+
+    const handleClickOpen = (imgurl) => {
+        setOpen(true);
+        setUrl(imgurl);
+    };
+    
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleProfileEditForm = () => {
         setEditProfileForm(true);
@@ -125,7 +137,12 @@ const UserSettingsPage = () => {
                 </Box>
                 <Box sx={{ mb: 5, mx: 2.5 }}>
                     <AccountStyle>
-                        <Avatar src={currentUser.profilePhoto} alt="photoURL" />
+                    <Avatar 
+                        sx={{cursor: 'pointer'}}
+                        src={currentUser.profilePhoto} 
+                        alt="photoURL" 
+                        onClick={() => handleClickOpen((currentUser.profilePhoto !== null) ? currentUser.profilePhoto : NoProfilePic )}
+                    />
                         <Box sx={{ ml: 2 }}>
                             <Typography variant="subtitle2" component="h1" sx={{ color: 'text.primary' }}>
                                 {currentUser.firstName} {currentUser.lastName}
@@ -159,6 +176,18 @@ const UserSettingsPage = () => {
                     </ListItem>
                 </List>
             </Drawer>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                fullWidth
+                maxWidth="sm"
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+                    <img src={imgUrl} srcSet={imgUrl} alt={'useruploadedimages'}/>
+                </DialogContent>
+            </Dialog>
             <div className={classes.page}>
             <DashboardNavbar />
             <br/>

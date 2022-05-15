@@ -86,6 +86,7 @@ const ChangeEmail = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                 <TextField
+                                    required
                                     fullWidth
                                     label="Enter a new Email"
                                     {...getFieldProps('newEmail')}
@@ -99,6 +100,7 @@ const ChangeEmail = () => {
                                 </Grid>
                                     <Grid item xs={12}>
                                     <TextField
+                                        required
                                         fullWidth
                                         label="Enter your password to confirm changes"
                                         {...getFieldProps('password')}

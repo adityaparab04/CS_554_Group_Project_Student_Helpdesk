@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { Box, Link, Button, Dialog, DialogContent, Drawer, Typography, Avatar, Stack } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 import { AuthContext } from '../../firebase/Auth';
@@ -16,6 +16,8 @@ import NavSection from '../../components/NavSection';
 import sidebarConfig from './SidebarConfig';
 import sidebarConfigClient from './SidebarConfigClient';
 import sidebarConfigStaff from './SidebarConfigStaff';
+
+import NoProfilePic from 'src/img/blank.jpg';
 // ----------------------------------------------------------------------
 
 const DRAWER_WIDTH = 280;
@@ -45,6 +47,15 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const isDesktop = useResponsive('up', 'lg');
   const { currentUser } = useContext(AuthContext);
+  const [ open, setOpen ] = useState(false);
+  const [ imgUrl, setUrl ] = useState('');
+  const handleClickOpen = (imgurl) => {
+      setOpen(true);
+      setUrl(imgurl);
+  };
+  const handleClose = () => {
+      setOpen(false);
+  };
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -65,25 +76,43 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none" component={RouterLink} to="/settings">
-          <AccountStyle>
-            <Avatar src={currentUser.profilePhoto} alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" component='h1' sx={{ color: 'text.primary' }}>
-                {currentUser.firstName} {currentUser.lastName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {currentUser.role}
-              </Typography>
-            </Box>
-          </AccountStyle>
-        </Link>
+        <AccountStyle>
+          <Avatar 
+            sx={{cursor: 'pointer'}}
+            src={currentUser.profilePhoto} 
+            alt="photoURL" 
+            onClick={() => handleClickOpen((currentUser.profilePhoto !== null) ? currentUser.profilePhoto : NoProfilePic )}
+          />
+            <Link underline="none" component={RouterLink} to="/settings">
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle2" component='h1' sx={{ color: 'text.primary' }}>
+                  {currentUser.firstName} {currentUser.lastName}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {currentUser.role}
+                </Typography>
+              </Box>
+            </Link>
+        </AccountStyle>
       </Box>
 
       {currentUser.role === 'admin' && <NavSection navConfig={sidebarConfig} />}
       {currentUser.role === 'staff' && <NavSection navConfig={sidebarConfigStaff} />}
       {currentUser.role === 'client' && <NavSection navConfig={sidebarConfigClient} />}
       <Box sx={{ flexGrow: 1 }} />
+
+      <Dialog
+          open={open}
+          onClose={handleClose}
+          fullWidth
+          maxWidth="sm"
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+      >
+        <DialogContent sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+            <img src={imgUrl} srcSet={imgUrl} alt={'useruploadedimages'}/>
+        </DialogContent>
+      </Dialog>
 
       <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack

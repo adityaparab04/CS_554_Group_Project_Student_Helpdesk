@@ -1,18 +1,21 @@
-import { Navigate, useRoutes } from 'react-router-dom';
 import React, { useContext} from 'react';
+import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
+//pages
 import NotFound from './pages/Page404';
 import Admin from './pages/Admin';
 import Client from './pages/Client';
 import Staff from './pages/Staff';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import MainChatPage from './components/socket/MainForm.js';
-import ChatRoomPage from './components/socket/ChatRoom.js';
-import UserProfilePage from './pages/UserProfilePage';
 import UserSettingsPage from './pages/UserSettingsPage';
 import Page404 from './pages/Page404';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+
+//socket components
+import MainChatPage from './components/socket/MainForm.js';
+import ChatRoomPage from './components/socket/ChatRoom.js';
+
 // ----------------------------------------------------------------------
 
 import { AuthContext } from './firebase/Auth';
@@ -48,14 +51,6 @@ export default function Router() {
         
         { path: 'register', element: <RegisterPage />},
         { path: '404', element: <NotFound /> },
-        { path: '*', element: <Navigate to="/404" /> }
-      ]
-    },
-
-    {
-      path: '/profile/:uid',
-      element: !currentUser ? <Navigate to='/login'/> : <UserProfilePage />,
-      children: [
         { path: '*', element: <Navigate to="/404" /> }
       ]
     },

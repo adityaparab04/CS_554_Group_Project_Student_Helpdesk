@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Box, Card, CardContent, Container, Grid, IconButton, Input, InputAdornment, Typography, TextField, Button, CardMedia } from '@mui/material';
+import { Box, Button, Card, CardMedia, Container, Dialog, DialogContent, Grid, Input, IconButton, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useSnackbar } from 'notistack';
 
@@ -8,9 +8,10 @@ import { AuthContext } from 'src/firebase/Auth';
 import { updatePhotoUrl } from 'src/firebase/FirebaseFunctions';
 import { uploadImage } from 'src/firebase/Storage';
 
-import NoProfilePic from 'src/img/blank.jpg'
+import NoProfilePic from 'src/img/blank.jpg';
 
 import AddIcon from '@mui/icons-material/Add';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 const useStyles = makeStyles({
     card: {
@@ -32,8 +33,17 @@ const useStyles = makeStyles({
 const ChangeDisplayPicture = () => {
     const { currentUser } = useContext(AuthContext);
     const { enqueueSnackbar } = useSnackbar();
-    const [ selectImage, setSelectedImage ] = useState(null);
     const classes = useStyles();
+    const [ selectImage, setSelectedImage ] = useState(null);
+    const [ open, setOpen ] = React.useState(false);
+    const [ imgUrl, setUrl ] = React.useState('');
+    const handleClickOpen = (imgurl) => {
+        setOpen(true);
+        setUrl(imgurl);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
     let url = null;
     const handleChangeProfilePic = async () => {
         if(selectImage){
@@ -64,16 +74,41 @@ const ChangeDisplayPicture = () => {
                     className={classes.media} 
                     component='img'
                     image={(currentUser.profilePhoto !== null) ? currentUser.profilePhoto : NoProfilePic }
-                    title='Profile Image'>
+                    title='Profile Image'
+                    onClick={() =>handleClickOpen((currentUser.profilePhoto !== null) ? currentUser.profilePhoto : NoProfilePic )} sx={{"&:hover": {
+                        pointer: 'pointer'
+                    }}}
+                    >
                 </CardMedia>
             </Card>
-            <Box sx={{ textAlign: 'center', mt: 10 }}>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                fullWidth
+                maxWidth="md"
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogContent sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+                    <img src={imgUrl} srcSet={imgUrl} alt={'useruploadedimages'}/>
+                </DialogContent>
+            </Dialog>
+            <Box sx={{ textAlign: 'center', mt: 5 }}>
             <label htmlFor="contained-button-file">
-                <Input fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage}> {" "} </Input>
+                <Input sx={{display: "none"}} fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage}> {" "} </Input>
+                <IconButton color="primary" aria-label="upload picture" component="span">
+                    <PhotoCamera />
+                </IconButton>
             </label>
+            <br/>
+            { selectImage ? 
             <Button variant="contained" component="span" onClick={handleChangeProfilePic}>
                 Upload a new image
-            </Button>
+            </Button> : 
+            <Button disabled variant="contained" component="span" onClick={handleChangeProfilePic}>
+                Upload a new image
+            </Button> 
+            }
             </Box>
             <br/>
         </Container>
