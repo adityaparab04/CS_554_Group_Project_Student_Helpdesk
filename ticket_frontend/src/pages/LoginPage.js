@@ -46,6 +46,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 const LoginPage = () => {
+  const { currentUser } = React.useContext(AuthContext);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -72,6 +73,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       await doSignInWithEmailAndPassword(values.email, values.password);
+      
       navigate('/dashboard', { replace: true })
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
@@ -103,9 +105,6 @@ const LoginPage = () => {
       }
     };
 
-  // if(currentUser){
-  //   return <Navigate to='/dashboard' />
-  // }
   return (
     <RootStyle title="Login | Minimal-UI">
       <AuthLayout>

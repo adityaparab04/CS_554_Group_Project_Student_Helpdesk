@@ -23,21 +23,31 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 
 export default function Router() {
   const { currentUser } = useContext(AuthContext);
-  // console.log(currentUser)
+  let page = <Navigate to="404" />;
+  if (currentUser && currentUser.role === 'client'){
+    page =  <Navigate to="client" />
+  }
+  else if( currentUser && currentUser.role === 'staff'){
+    page = <Navigate to="staff" />
+  }
+  else if( currentUser && currentUser.role === 'admin'){
+    page = <Navigate to="admin" />
+  }else{
+    page = <Navigate to="404" />
+  }
   return useRoutes([
     {
       path: '/dashboard',
       element: currentUser? <DashboardLayout /> : <Navigate to="/login" />,
       children: [
-        { path: '/dashboard', element: <Navigate to="client" /> },
-        { path: 'admin', element: (currentUser && currentUser.role === 'admin') ? <Admin /> :  <Navigate to="/404" /> },
-        { path: 'client', element: <Client /> },
-        // { path: 'client', element: (currentUser && currentUser.role === 'client') ? <Client /> :  <Navigate to="/404" /> },
+        { path: '/dashboard', element: page },
+        { path: 'admin', element: (currentUser && currentUser.role === 'admin') ? <Admin /> :  <Navigate to="404" /> },
+        { path: 'client', element: (currentUser && currentUser.role === 'client') ? <Client /> :  <Navigate to="404" /> },
         { path: 'mainform', element: <MainChatPage /> },
         { path: 'chatroom/:roomId', element: <ChatRoomPage /> },
-        // { path: 'staff', element: (currentUser && (currentUser.role === 'staff') ) ? <Staff /> :  <Navigate to="/404" /> },
-        { path: 'staff', element: (currentUser && (currentUser.role === 'staff' || currentUser.role === 'admin') ) ? <Staff /> :  <Navigate to="/404" /> },
-        { path: '*', element: <Navigate to="/404" /> }
+        { path: 'staff', element: (currentUser && (currentUser.role === 'staff') ) ? <Staff /> :  <Navigate to="404" /> },
+        { path: '404', element: <NotFound /> },
+        { path: '*', element: <Navigate to="404" /> }
      
       ]
     },
