@@ -12,9 +12,6 @@ import Page404 from './pages/Page404';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 
-//socket components
-import MainChatPage from './components/socket/MainForm.js';
-import ChatRoomPage from './components/socket/ChatRoom.js';
 
 // ----------------------------------------------------------------------
 
@@ -43,8 +40,6 @@ export default function Router() {
         { path: '/dashboard', element: page },
         { path: 'admin', element: (currentUser && currentUser.role === 'admin') ? <Admin /> :  <Navigate to="404" /> },
         { path: 'client', element: (currentUser && currentUser.role === 'client') ? <Client /> :  <Navigate to="404" /> },
-        { path: 'mainform', element: <MainChatPage /> },
-        { path: 'chatroom/:roomId', element: <ChatRoomPage /> },
         { path: 'staff', element: (currentUser && (currentUser.role === 'staff') ) ? <Staff /> :  <Navigate to="404" /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="404" /> }
