@@ -36,8 +36,8 @@ const EditProfile = () => {
             .required('Last name required'),
         phoneNumber: Yup.string()
             .matches(phoneRegEx, 'Invalid Phone Number')
-            .min(8, "Phone Number must be atleast 8 characters")
-            .max(10, "Phone Number at most must be 10 characters"),
+            .min(12, "Phone Number must be atleast 12 characters")
+            .max(12, "Phone Number at most must be 12 characters"),
         email: Yup.string()
           .email('Email must be a valid email address')
           .required('Email is required'),
@@ -67,6 +67,10 @@ const EditProfile = () => {
 
         if(!values.displayName || values.displayName.length < 2 ||  !values.displayName.replace(/\s/g, "").length){
             enqueueSnackbar("invalid displayName", { variant: 'error' });
+            return false;
+        }
+        if(typeof values.phoneNumber !== 'string' || !values.phoneNumber.replace(/\s/g, "" || values.phoneNumber.match(/^\d{3}[-]\d{3}[-]\d{4}$/) === null).length){
+            enqueueSnackbar("Please enter a valid input phoneNumber", { variant: 'error' });
             return false;
         }
 
