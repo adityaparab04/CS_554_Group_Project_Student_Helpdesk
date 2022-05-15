@@ -71,7 +71,6 @@ app.post("/social", (req, res) => {
 })
 
 io.on("connection", (socket) => {
-  console.log(socket.id)
 
   socket.on("joinRoom", room => {
 		socket.join(room)
