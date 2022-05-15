@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Button, Container, Typography, Stack, TextField, IconButton, InputAdornment, Input, Divider } from '@mui/material';
@@ -16,7 +16,6 @@ import { AuthContext } from '../firebase/Auth';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { uploadImage } from 'src/firebase/Storage';
 import { useSnackbar } from 'notistack';
-// import emailjs from '@emailjs/browser';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -70,8 +69,8 @@ const RegisterPage = () => {
       .email('Email must be a valid email address')
       .required('Email is required'),
     phoneNumber: Yup.number()
-      .min(9, 'Invalid Number!')
-      .max(11, 'Invalid Number!'),
+      .min(10, 'Invalid Number!')
+      .max(10, 'Invalid Number!'),
     password: Yup.string().min(6, 'Too Short!')
       .required('Password is required'),
     confirmPassword: Yup.string()
@@ -95,9 +94,8 @@ const RegisterPage = () => {
     },
     validationSchema: RegisterSchema,
   });
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, handleChange, values } = formik;
+  const { errors, touched, isSubmitting, getFieldProps, handleChange, values } = formik;
 
-  // console.log('Form values', values.email);
   let url = null;
   const handleSignUp = async (e) => {
     
@@ -109,7 +107,6 @@ const RegisterPage = () => {
       url = await uploadImage(selectImage)
     }
     try {
-      // await emailjs.sendForm('service_kylt3ny', 'template_lhvg46w', e.target, 'srKUKXlWA2UaoCwtZ');
       await doCreateUserWithEmailAndPassword(
         values.email,
         values.confirmPassword,
@@ -126,12 +123,6 @@ const RegisterPage = () => {
     }
   }
 
-
-  // if (currentUser) {
-  //   console.log(currentUser);
-  //   return <Navigate to='/dashboard' />;
-  // }
-
   return (
     <RootStyle title="Register | Minimal-UI">
       <AuthLayout>
@@ -142,7 +133,7 @@ const RegisterPage = () => {
       </AuthLayout>
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
         <Typography variant="h3" component="h1" sx={{ px: 5, mt: 10, mb: 5 }}>
-          Manage the job more effectively with Minimal
+          Manage the job more effectively with Mutables Ticket Website
         </Typography>
         <img alt="register" src="/static/illustrations/illustration_register.png" />
       </SectionStyle>
@@ -161,6 +152,7 @@ const RegisterPage = () => {
               <Stack spacing={3}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                   <TextField
+                    required
                     fullWidth
                     label="First Name"
                     {...getFieldProps('firstName')}
@@ -171,6 +163,7 @@ const RegisterPage = () => {
                     helperText={touched.firstName && errors.firstName}
                   />
                   <TextField
+                    required
                     fullWidth
                     label="Last Name"
                     {...getFieldProps('lastName')}
@@ -182,6 +175,7 @@ const RegisterPage = () => {
                   />
                 </Stack>
                 <TextField
+                  required
                   fullWidth
                   label="Email"
                   {...getFieldProps('email')}
@@ -204,6 +198,7 @@ const RegisterPage = () => {
                   helperText={touched.phoneNumber && errors.phoneNumber}
                 />
                 <TextField
+                  required
                   fullWidth
                   label="Password"
                   {...getFieldProps('password')}
@@ -224,6 +219,7 @@ const RegisterPage = () => {
                   helperText={touched.password && errors.password}
                 />
                 <TextField
+                  required
                   fullWidth
                   label="Confirm Password"
                   {...getFieldProps('confirmPassword')}
@@ -244,10 +240,7 @@ const RegisterPage = () => {
                   helperText={touched.confirmPassword && errors.confirmPassword}
                 />
                 <label htmlFor="contained-button-file">
-                  <Input sx={{display: 'none'}} fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage} />
-                  <Button variant="contained" component="span">
-                    Upload
-                  </Button>
+                  <Input fullWidth accept="image/*" id="contained-button-file" multiple type="file" onChange={handleSelectImage} />
                 </label>
                 <LoadingButton
                   fullWidth
