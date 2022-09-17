@@ -1,4 +1,4 @@
-<h1 align="center">CS 554 Group Project The mutables</h1>
+<h1 align="center">CS 554 Group Project The mutables - Ticketing System</h1>
 
 ## Project Description
 
